@@ -12,7 +12,7 @@ async fn main() {
     let config = init_config();
     // Initialize scheduler
     let scheduler_handle = tokio::spawn(async move {
-        initialize_scheduler()
+        return initialize_scheduler(config)
     });
     let out = scheduler_handle.await.unwrap().await;
     println!("GOT {:?}", out);
