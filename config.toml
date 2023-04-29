@@ -1,0 +1,6 @@
+[roles]
+scheduler = true
+worker = true
+
+[config]
+# Discord settings for user here in future token, etc...

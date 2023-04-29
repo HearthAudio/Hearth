@@ -1,0 +1,1 @@
+// Main handler for worker role
