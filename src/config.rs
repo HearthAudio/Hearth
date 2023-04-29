@@ -5,6 +5,7 @@ use std::process::exit;
 use toml;
 
 
+//TODO: Load config into global constant on load
 
 #[derive(Deserialize)]
 pub struct Config {

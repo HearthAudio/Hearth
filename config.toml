@@ -1,6 +1,12 @@
 [roles]
 scheduler = true
-worker = true
+worker = false
 
 [config]
 # Discord settings for user here in future token, etc...
+
+[workers]
+worker1 = "https://xxxxxxxxx1.internal.lanternsystems.com" # Something like this
+worker2 = "https://xxxxxxxxx2.internal.lanternsystems.com" # Something like this
+worker3 = "https://xxxxxxxxx3.internal.lanternsystems.com" # Something like this
+# You don't have to add the internal worker inside of the scheduler (if configured) here

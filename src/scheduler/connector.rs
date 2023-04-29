@@ -12,26 +12,39 @@ use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use std::mem;
+use std::time::Duration;
+use kafka::producer::{Producer, Record, RequiredAcks};
+use crate::scheduler::distributor::Job;
+use std::sync::Mutex;
+use once_cell::sync::Lazy;
+use serde_derive::Serialize;
 
+static KAFKA_CLIENT: Lazy<Mutex<Option<KafkaClient>>> = Lazy::new(|| Mutex::new(None));
 
 pub fn initialize_api() {
     env_logger::init();
     let broker = "kafka-3b1bc0b9-maxall4-aea3.aivencloud.com:23552".to_owned();
-    consume(vec![broker],vec!["communication"]);
+    let client = initialize_client(vec![broker]);
+    initialize_consume(vec!["communication"],client);
 }
 
 // All other job communication is passed directly to worker instead of running through scheduler
-#[derive(Deserialize,Debug)]
-enum WorkerMessageType {
-    WorkerAnalytics,
-    QueueJob,
-    DirectWorkerCommunication // NOT DECODED
+#[derive(Deserialize,Debug,Serialize)]
+pub enum MessageType {
+    // Internal
+    InternalWorkerAnalytics,
+    InternalWorkerQueueJob,
+    // External
+    ExternalQueueJob,
+    // Other
+    DirectWorkerCommunication, // NOT DECODED
+
 }
 
-#[derive(Deserialize,Debug)]
+#[derive(Deserialize,Debug,Serialize)]
 struct Analytics {
     cpu_usage: u8,
     memory_usage: u8,
@@ -39,24 +52,23 @@ struct Analytics {
     disk_usage: u8
 }
 
-#[derive(Deserialize,Debug)]
-struct QueueJob {
-    guild_id: String,
-    voice_channel_id: String,
-    volume: u8
+#[derive(Deserialize,Debug,Serialize)]
+pub struct JobRequest {
+    pub guild_id: String,
+    pub voice_channel_id: String
 }
 
-#[derive(Deserialize,Debug)]
-struct WorkerMessage {
-    message_type: WorkerMessageType,
-    analytics: Some(Analytics),
-    queue_job: Some(QueueJob)
-    // add the other fields if you need them
+#[derive(Deserialize,Debug,Serialize)]
+pub struct Message {
+    pub message_type: MessageType, // Handles how message should be parsed
+    pub analytics: Option<Analytics>, // Analytics sent by each worker
+    pub queue_job_request: Option<JobRequest>,
+    pub queue_job_internal: Option<Job>,
+    pub request_id: String, // Unique string provided by client to identify this request
+    pub worker_id: Option<u16> // ID Unique to each worker
 }
 
-
-pub fn consume(brokers: Vec<String>,topics: Vec<&str>) {
-
+pub fn initialize_client(brokers: Vec<String>) -> KafkaClient {
     // ~ OpenSSL offers a variety of complex configurations. Here is an example:
     let mut builder = SslConnector::builder(SslMethod::tls()).unwrap();
     builder.set_cipher_list("DEFAULT").unwrap();
@@ -86,6 +98,24 @@ pub fn consume(brokers: Vec<String>,topics: Vec<&str>) {
         SecurityConfig::new(connector)
     );
 
+    return client;
+
+}
+
+pub fn initialize_producer(client: KafkaClient) -> Producer {
+    let mut producer = Producer::from_client(client)
+        // ~ give the brokers one second time to ack the message
+        .with_ack_timeout(Duration::from_secs(1))
+        // ~ require only one broker to ack the message
+        .with_required_acks(RequiredAcks::One)
+        // ~ build the producer with the above settings
+        .create().unwrap();
+    return producer;
+}
+
+
+pub fn initialize_consume(topics: Vec<&str>,client: KafkaClient) {
+
     let mut consumer = Consumer::from_client(client)
         .with_topic(String::from("api_hook"))
         .create()
@@ -99,12 +129,17 @@ pub fn consume(brokers: Vec<String>,topics: Vec<&str>) {
 
         for ms in mss.iter() {
             for m in ms.messages() {
-                let key: Thing = serde_json::from_slice(&m.key).unwrap();
-                println!(
-                    "{}:{:?}",
-                    ms.topic(),
-                    key
-                );
+                let parsed_message: Message = serde_json::from_slice(&m.key).unwrap();
+                match parsed_message.message_type {
+                    MessageType::ExternalQueueJob => {
+                        // Handle event listener
+                    }
+                }
+                // println!(
+                //     "{}:{:?}",
+                //     ms.topic(),
+                //     key
+                // );
             }
             let _ = consumer.consume_messageset(ms);
         }
@@ -112,3 +147,8 @@ pub fn consume(brokers: Vec<String>,topics: Vec<&str>) {
     }
 }
 
+pub fn send_message(message: &Message, topic: &str, mut producer: Producer) {
+    // Send message to worker
+    let data = serde_json::to_string(message).unwrap().as_bytes();
+    producer.send(&Record::from_value(topic, data)).unwrap();
+}

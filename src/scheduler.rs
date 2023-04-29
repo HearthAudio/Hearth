@@ -1,9 +1,9 @@
 // Main handler for scheduler role
 
-use actix_web::dev::Server;
-use crate::scheduler::API::initialize_api;
+use crate::scheduler::connector::initialize_api;
 
-mod API;
+mod connector;
+mod distributor;
 
 
 pub async fn initialize_scheduler() {
