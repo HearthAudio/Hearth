@@ -20,6 +20,7 @@ use kafka::producer::{Producer, Record, RequiredAcks};
 use crate::scheduler::distributor::{distribute_job, Job};
 use std::sync::Mutex;
 use once_cell::sync::Lazy;
+use serde::ser::Error;
 use serde_derive::Serialize;
 use crate::config::{ReconfiguredConfig};
 
@@ -27,12 +28,13 @@ static KAFKA_CLIENT: Lazy<Mutex<Option<KafkaClient>>> = Lazy::new(|| Mutex::new(
 
 pub fn initialize_api(config: &ReconfiguredConfig) {
     env_logger::init();
-    let broker = "kafka-3b1bc0b9-maxall4-aea3.aivencloud.com:23552".to_owned();
-    initialize_consume(vec!["communication"],vec![broker],config);
+    let broker = "kafka-185690f4-maxall4-aea3.aivencloud.com:23552".to_owned();
+    initialize_consume(vec![broker],config);
 }
 
 // All other job communication is passed directly to worker instead of running through scheduler
 #[derive(Deserialize,Debug,Serialize)]
+#[serde(tag = "type")]
 pub enum MessageType {
     // Internal
     InternalWorkerAnalytics,
@@ -93,10 +95,51 @@ pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
     let connector = builder.build();
 
     // ~ instantiate KafkaClient with the previous OpenSSL setup
-    let client = KafkaClient::new_secure(
+    let mut client = KafkaClient::new_secure(
         brokers.to_owned(),
         SecurityConfig::new(connector)
     );
+
+    // ~ communicate with the brokers
+    match client.load_metadata_all() {
+        Err(e) => {
+            println!("{:?}", e);
+            drop(client);
+            process::exit(1);
+        }
+        Ok(_) => {
+            // ~ at this point we have successfully loaded
+            // metadata via a secured connection to one of the
+            // specified brokers
+
+            if client.topics().len() == 0 {
+                println!("No topics available!");
+            } else {
+                // ~ now let's communicate with all the brokers in
+                // the cluster our topics are spread over
+
+                let topics: Vec<String> = client.topics().names().map(Into::into).collect();
+                match client.fetch_offsets(topics.as_slice(), FetchOffset::Latest) {
+                    Err(e) => {
+                        println!("{:?}", e);
+                        drop(client);
+                        process::exit(1);
+                    }
+                    Ok(toffsets) => {
+                        println!("Topic offsets:");
+                        for (topic, mut offs) in toffsets {
+                            offs.sort_by_key(|x| x.partition);
+                            println!("{}", topic);
+                            for off in offs {
+                                println!("\t{}: {:?}", off.partition, off.offset);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     return client;
 
@@ -114,10 +157,10 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume(topics: Vec<&str>,brokers: Vec<String>,config: &ReconfiguredConfig) {
+pub fn initialize_consume(brokers: Vec<String>,config: &ReconfiguredConfig) {
 
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
-        .with_topic(String::from("api_hook"))
+        .with_topic(String::from("communication"))
         .create()
         .unwrap();
 
@@ -131,21 +174,26 @@ pub fn initialize_consume(topics: Vec<&str>,brokers: Vec<String>,config: &Reconf
 
         for ms in mss.iter() {
             for m in ms.messages() {
-                let parsed_message: Message = serde_json::from_slice(&m.key).unwrap();
-                match parsed_message.message_type {
-                    MessageType::ExternalQueueJob => {
-                        // Handle event listener
-                        distribute_job(parsed_message, &mut producer, config);
-                    }
-                    MessageType::DirectWorkerCommunication => {
-                        // We don't need to parse this as the scheduler
+                let parsed_message : Result<Message, serde_json::Error> = serde_json::from_slice(&m.key);
+                match parsed_message {
+                    Ok(message) => {
+                        match message.message_type {
+                            MessageType::ExternalQueueJob => {
+                                // Handle event listener
+                                distribute_job(message, &mut producer, config);
+                            }
+                            MessageType::DirectWorkerCommunication => {
+                                // We don't need to parse this as the scheduler
+                            },
+                            MessageType::InternalWorkerAnalytics => {
+                                //TODO
+                            },
+                            MessageType::InternalWorkerQueueJob => {
+                                // We don't need to parse this as the scheduler
+                            }
+                        }
                     },
-                    MessageType::InternalWorkerAnalytics => {
-                        //TODO
-                    },
-                    MessageType::InternalWorkerQueueJob => {
-                        // We don't need to parse this as the scheduler
-                    }
+                    Err(e) => println!("{} - Failed to parse message",e),
                 }
                 // println!(
                 //     "{}:{:?}",
