@@ -5,7 +5,8 @@ use once_cell::sync::Lazy;
 use serde::{Serialize,Deserialize};
 use nanoid::nanoid;
 use crate::config::ReconfiguredConfig;
-use crate::scheduler::connector::{initialize_client, initialize_producer, JobRequest, Message, MessageType, send_message};
+use crate::scheduler::connector::{send_message};
+use crate::utils::generic_connector::{Message,MessageType};
 // Handles distribution across worker nodes via round robin or maybe another method?
 
 #[derive(Deserialize,Debug,Serialize)]

@@ -4,7 +4,7 @@ use crate::config::ReconfiguredConfig;
 use crate::scheduler::connector::initialize_api;
 
 mod connector;
-mod distributor;
+pub(crate) mod distributor;
 
 
 pub async fn initialize_scheduler(config: ReconfiguredConfig) {

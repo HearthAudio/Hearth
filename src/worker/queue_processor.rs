@@ -1,3 +1,3 @@
-// Processing streaming jobs from fluvio queue
+// Processing streaming jobs from kafka queue
 
 // Parallelize with tokio

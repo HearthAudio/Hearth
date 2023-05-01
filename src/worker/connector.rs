@@ -1,1 +1,1 @@
-// Connects to fluvio
+// Connects to kafka

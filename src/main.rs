@@ -6,6 +6,8 @@ mod config;
 
 mod scheduler;
 
+mod utils;
+
 #[tokio::main]
 async fn main() {
     // Load config
