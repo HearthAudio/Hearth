@@ -15,8 +15,9 @@ use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 use serde::{Deserialize};
 
 use std::mem;
+use std::str::from_utf8;
 use std::time::Duration;
-use kafka::producer::{Producer, Record, RequiredAcks};
+use kafka::producer::{AsBytes, Producer, Record, RequiredAcks};
 use crate::scheduler::distributor::{distribute_job, Job};
 use std::sync::Mutex;
 use once_cell::sync::Lazy;
@@ -174,7 +175,8 @@ pub fn initialize_consume(brokers: Vec<String>,config: &ReconfiguredConfig) {
 
         for ms in mss.iter() {
             for m in ms.messages() {
-                let parsed_message : Result<Message, serde_json::Error> = serde_json::from_slice(&m.key);
+                let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(&m.value);
+
                 match parsed_message {
                     Ok(message) => {
                         match message.message_type {
