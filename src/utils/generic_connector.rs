@@ -16,6 +16,7 @@ use serde::{Deserialize};
 
 use std::time::Duration;
 use kafka::producer::{Producer, Record, RequiredAcks};
+use log::{debug, error, info, warn};
 use crate::scheduler::distributor::{Job};
 use serde_derive::Serialize;
 use crate::config::{ReconfiguredConfig};
@@ -35,6 +36,14 @@ pub enum MessageType {
 }
 
 #[derive(Deserialize,Debug,Serialize)]
+#[serde(tag = "type")]
+pub enum AssetType {
+    DirectAssetLink,
+    YoutubeLink,
+    SoundcloudLink
+}
+
+#[derive(Deserialize,Debug,Serialize)]
 pub struct Analytics {
     cpu_usage: u8,
     memory_usage: u8,
@@ -45,7 +54,9 @@ pub struct Analytics {
 #[derive(Deserialize,Debug,Serialize)]
 pub struct JobRequest {
     pub guild_id: String,
-    pub voice_channel_id: String
+    pub voice_channel_id: String,
+    pub asset_url: String,
+    pub asset_type: AssetType
 }
 
 #[derive(Deserialize,Debug,Serialize)]
@@ -55,7 +66,7 @@ pub struct Message {
     pub queue_job_request: Option<JobRequest>,
     pub queue_job_internal: Option<Job>,
     pub request_id: String, // Unique string provided by client to identify this request
-    pub worker_id: Option<usize> // ID Unique to each worker
+    pub worker_id: Option<usize>, // ID Unique to each worker
 }
 
 pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
@@ -68,7 +79,7 @@ pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
     let cert_key = "service.key";
     let ca_cert = "ca.pem";
 
-    println!("loading cert-file={}, key-file={}", cert_file, cert_key);
+    info!("loading cert-file={}, key-file={}", cert_file, cert_key);
 
     builder
         .set_certificate_file(cert_file, SslFiletype::PEM)
@@ -91,7 +102,7 @@ pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
     // ~ communicate with the brokers
     match client.load_metadata_all() {
         Err(e) => {
-            println!("{:?}", e);
+            error!("{:?}", e);
             drop(client);
             process::exit(1);
         }
@@ -101,7 +112,7 @@ pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
             // specified brokers
 
             if client.topics().len() == 0 {
-                println!("No topics available!");
+                warn!("No topics available!");
             } else {
                 // ~ now let's communicate with all the brokers in
                 // the cluster our topics are spread over
@@ -109,17 +120,17 @@ pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
                 let topics: Vec<String> = client.topics().names().map(Into::into).collect();
                 match client.fetch_offsets(topics.as_slice(), FetchOffset::Latest) {
                     Err(e) => {
-                        println!("{:?}", e);
+                        error!("{:?}", e);
                         drop(client);
                         process::exit(1);
                     }
                     Ok(toffsets) => {
-                        println!("Topic offsets:");
+                        info!("Topic offsets:");
                         for (topic, mut offs) in toffsets {
                             offs.sort_by_key(|x| x.partition);
-                            println!("{}", topic);
+                            info!("{}", topic);
                             for off in offs {
-                                println!("\t{}: {:?}", off.partition, off.offset);
+                                info!("\t{}: {:?}", off.partition, off.offset);
                             }
                         }
                     }
@@ -157,7 +168,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>,config: &ReconfiguredConf
     loop {
         let mss = consumer.poll().unwrap();
         if mss.is_empty() {
-            println!("{} No messages available right now.",id);
+            debug!("{} No messages available right now.",id);
         }
 
         for ms in mss.iter() {
@@ -167,7 +178,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>,config: &ReconfiguredConf
                     Ok(message) => {
                         callback(message,&mut producer, config);
                     },
-                    Err(e) => println!("{} - Failed to parse message",e),
+                    Err(e) => error!("{} - Failed to parse message",e),
                 }
             }
             let _ = consumer.consume_messageset(ms);

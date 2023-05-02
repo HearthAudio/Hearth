@@ -3,6 +3,7 @@ use std::thread;
 use crate::utils::initialize_consume_generic;
 
 use kafka::producer::{Producer};
+use log::{debug, info};
 use tokio::task::spawn_blocking;
 use crate::scheduler::distributor::{distribute_job};
 use crate::config::ReconfiguredConfig;
@@ -29,10 +30,10 @@ fn parse_message_callback(parsed_message: Message,mut producer: &mut Producer,co
             // TODO
         },
         MessageType::InternalWorkerQueueJob => {
-            println!("{:?}",parsed_message);
+            debug!("{:?}",parsed_message);
             let handler = thread::spawn(|| {
                 // thread code
-                process_job()
+                process_job(parsed_message)
             });
             // res.await;
         }

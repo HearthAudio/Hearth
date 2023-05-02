@@ -11,12 +11,19 @@ mod config;
 mod scheduler;
 
 mod worker;
+
+mod logger;
+
 use futures::future::{join_all, lazy};
 use futures::{FutureExt, join};
 use tokio::runtime::Builder;
 use tokio::task::{JoinError, JoinHandle, JoinSet};
+use crate::deco::print_intro;
+use crate::logger::setup_logger;
 
 mod utils;
+
+mod deco;
 
 // This is a bit of a hack to get around annoying type issues
 async fn initialize_scheduler_internal(config: ReconfiguredConfig) {
@@ -27,51 +34,28 @@ async fn initialize_worker_internal(config: ReconfiguredConfig) {
     initialize_worker(config).await;
 }
 
+//TODO Add fern as logging library instead of env_logger
 #[tokio::main]
 async fn main() {
-    //TODO: Abide by config roles for scheduler and worker
+    print_intro();
     // Load config
     // TODO: This is a bit of a hack we should probably pass config by pointer
     let worker_config = init_config();
     let scheduler_config = worker_config.clone();
-    env_logger::init();
+    setup_logger();
     //
-    let scheduler = tokio::spawn(async move {
-        return initialize_scheduler_internal(scheduler_config).await;
-    });
-    let worker = tokio::spawn(async move {
-       return initialize_worker_internal(worker_config).await;
-    });
-    let futures = vec![
-        scheduler,
-        worker,
-    ];
+    let mut futures = vec![];
+    if worker_config.roles.worker {
+        let worker = tokio::spawn(async move {
+            return initialize_worker_internal(worker_config).await;
+        });
+        futures.push(worker);
+    }
+    if scheduler_config.roles.scheduler {
+        let scheduler = tokio::spawn(async move {
+            return initialize_scheduler_internal(scheduler_config).await;
+        });
+        futures.push(scheduler);
+    }
     futures::future::join_all(futures).await;
 }
-
-//
-// use std::time::Duration;
-//
-// fn work1() {
-//     // std::thread::sleep(Duration::from_secs(5));
-//     loop {
-//         println!("HI1")
-//     }
-// }
-//
-// fn work2() {
-//     loop {
-//         println!("HI2")
-//     }
-// }
-//
-// #[tokio::main]
-// async fn main() -> () {
-//     let tasks = vec![
-//         tokio::spawn(async move { work1() }),
-//         tokio::spawn(async move { work2() }),
-//     ];
-//
-//     futures::future::join_all(tasks).await;
-// }
-//

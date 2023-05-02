@@ -1,0 +1,1277 @@
+[2023-05-02T02:47:17Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:47:17Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:47:17Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:47:17Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:47:17Z DEBUG kafka::consumer::builder] initialized: Consumer { config: Config { group: "", fallback_offset: Latest, retry_max_bytes_limit: 0 }, state: State { assignments: Assignments([Assignment { topic: "communication", partitions: [] }]), fetch_offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }}, retry_partitions: [], consumed_offsets: {} } }
+[2023-05-02T02:47:17Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:47:17Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:47:17Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:47:17Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:47:17Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:17Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:17Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:17Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:17Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:17Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:17Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:17Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:17Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:18Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:18Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:18Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:18Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:18Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:18Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:18Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:18Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:18Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:19Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:19Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:20Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:20Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:20Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:20Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:20Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:20Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:20Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:20Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:20Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:21Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:21Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:21Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:21Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:47:21Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:47:21Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:47:21Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:47:21Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:34Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:53:34Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:53:34Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:53:35Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:53:35Z DEBUG kafka::consumer::builder] initialized: Consumer { config: Config { group: "", fallback_offset: Latest, retry_max_bytes_limit: 0 }, state: State { assignments: Assignments([Assignment { topic: "communication", partitions: [] }]), fetch_offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }}, retry_partitions: [], consumed_offsets: {} } }
+[2023-05-02T02:53:35Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:53:35Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:53:35Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:53:35Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:35Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:35Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:35Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:35Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:35Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:35Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:35Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:36Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:36Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:36Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:36Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:36Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:36Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:36Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:36Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:36Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:37Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:37Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:38Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:38Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:38Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:38Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:38Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:38Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:38Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:38Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:56Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:53:57Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:53:57Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:53:57Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:53:57Z DEBUG kafka::consumer::builder] initialized: Consumer { config: Config { group: "", fallback_offset: Latest, retry_max_bytes_limit: 0 }, state: State { assignments: Assignments([Assignment { topic: "communication", partitions: [] }]), fetch_offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }}, retry_partitions: [], consumed_offsets: {} } }
+[2023-05-02T02:53:57Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:53:57Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:53:57Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:53:57Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:57Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:57Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:57Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:57Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:57Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:57Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:58Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:58Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:58Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:58Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:58Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:58Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:58Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:58Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:58Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:53:59Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:53:59Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:53:59Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:53:59Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:09Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:54:09Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:54:09Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:54:09Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:54:09Z DEBUG kafka::consumer::builder] initialized: Consumer { config: Config { group: "", fallback_offset: Latest, retry_max_bytes_limit: 0 }, state: State { assignments: Assignments([Assignment { topic: "communication", partitions: [] }]), fetch_offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }}, retry_partitions: [], consumed_offsets: {} } }
+[2023-05-02T02:54:09Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:54:10Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:54:10Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:54:10Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:10Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:10Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:10Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:10Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:10Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:10Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:10Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:10Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:11Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:11Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:11Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:11Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:11Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:11Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:11Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:11Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:11Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:12Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:12Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:12Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:12Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:12Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:12Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:12Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:12Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:45Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:54:45Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 14, 0, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 18 bytes to: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" } => Ok(18)
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 135 bytes from: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client] __get_response: received bytes: [0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 5, 0, 14, 57, 53, 46, 49, 49, 49, 46, 50, 49, 50, 46, 50, 51, 53, 0, 0, 92, 0, 0, 0, 0, 4, 0, 12, 50, 48, 57, 46, 57, 52, 46, 54, 51, 46, 56, 57, 0, 0, 92, 0, 0, 0, 0, 6, 0, 12, 49, 53, 50, 46, 52, 52, 46, 52, 54, 46, 51, 52, 0, 0, 92, 0, 0, 0, 0, 1, 0, 0, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 5, 0, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 5]
+[2023-05-02T02:54:45Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:54:45Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 53, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 255, 255, 255, 255, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 1]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 57 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(57)
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client] __get_response: received bytes: [0, 0, 0, 2, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 38]
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 53, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 255, 255, 255, 255, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 1]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 57 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(57)
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client] __get_response: received bytes: [0, 0, 0, 3, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 38]
+[2023-05-02T02:54:45Z DEBUG kafka::consumer::builder] initialized: Consumer { config: Config { group: "", fallback_offset: Latest, retry_max_bytes_limit: 0 }, state: State { assignments: Assignments([Assignment { topic: "communication", partitions: [] }]), fetch_offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }}, retry_partitions: [], consumed_offsets: {} } }
+[2023-05-02T02:54:45Z DEBUG kafka::client] fetch_metadata: requesting metadata from kafka-185690f4-maxall4-aea3.aivencloud.com:23552
+[2023-05-02T02:54:45Z DEBUG kafka::client::network] Established: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" }
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 14, 0, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 18 bytes to: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" } => Ok(18)
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 135 bytes from: KafkaConnection { id: 0, secured: true, host: "kafka-185690f4-maxall4-aea3.aivencloud.com:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client] __get_response: received bytes: [0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 5, 0, 14, 57, 53, 46, 49, 49, 49, 46, 50, 49, 50, 46, 50, 51, 53, 0, 0, 92, 0, 0, 0, 0, 4, 0, 12, 50, 48, 57, 46, 57, 52, 46, 54, 51, 46, 56, 57, 0, 0, 92, 0, 0, 0, 0, 6, 0, 12, 49, 53, 50, 46, 52, 52, 46, 52, 54, 46, 51, 52, 0, 0, 92, 0, 0, 0, 0, 1, 0, 0, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 5, 0, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 5]
+[2023-05-02T02:54:45Z DEBUG kafka::client::state] updating metadata from: MetadataResponse { header: HeaderResponse { correlation: 1 }, brokers: [BrokerMetadata { node_id: 5, host: "95.111.212.235", port: 23552 }, BrokerMetadata { node_id: 4, host: "209.94.63.89", port: 23552 }, BrokerMetadata { node_id: 6, host: "152.44.46.34", port: 23552 }], topics: [TopicMetadata { error: 0, topic: "communication", partitions: [PartitionMetadata { error: 0, id: 0, leader: 4, replicas: [4, 5], isr: [4, 5] }] }] }
+[2023-05-02T02:54:45Z DEBUG kafka::client::network] Established: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" }
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 53, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 255, 255, 255, 255, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 1]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 57 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(57)
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client] __get_response: received bytes: [0, 0, 0, 2, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 38]
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 4, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:45Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 5, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:45Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 6, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:45Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:45Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:45Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 7, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:45Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:46Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:46Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 8, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:46Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:46Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 9, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:46Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:46Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 10, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:46Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:46Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 11, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:46Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:46Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 12, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:46Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:46Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 13, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:46Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:46Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 14, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:46Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:46Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:46Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 15, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:46Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 16, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 17, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 18, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 19, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 20, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 21, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 22, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 23, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:47Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:47Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:47Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 24, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:47Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:48Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:48Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 25, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:48Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:48Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 26, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:48Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:48Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 27, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:48Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:48Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 28, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:48Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:48Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 29, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:48Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:48Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 30, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:48Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:48Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 31, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:48Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:48Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:48Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 32, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:48Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 33, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 34, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 35, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 36, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 37, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 38, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 39, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 40, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:49Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:49Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:49Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 41, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:49Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:50Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:50Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 42, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:50Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:50Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 43, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:50Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:50Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 44, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:50Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:50Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 45, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:50Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:50Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 46, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:50Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:50Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 47, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:50Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:50Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 48, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:50Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:50Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:50Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 49, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:50Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:51Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:51Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 50, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:51Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:51Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 51, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:51Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:51Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 52, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:51Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:51Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 53, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:51Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:51Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 54, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:51Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:51Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 55, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:51Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:51Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 56, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:51Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:51Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:51Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 57, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:51Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:52Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:52Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 58, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:52Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:52Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 59, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:52Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:52Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 60, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:52Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:52Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 61, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:52Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:52Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 62, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:52Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:52Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 63, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:52Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:52Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 64, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:52Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:52Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:52Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 65, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:52Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 66, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 67, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 68, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 69, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 70, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 71, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 72, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 73, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:53Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:53Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:53Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 74, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:53Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:54Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:54Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 75, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:54Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:54Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 76, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:54Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:54Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 77, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:54Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:54Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 78, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:54Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:54Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 79, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:54Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:54Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 80, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:54Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:54Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 81, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:54Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:54Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:54Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 82, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:54Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 83, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 84, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 85, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 86, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 87, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 88, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 89, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 90, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:55Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:55Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:55Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 91, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:55Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:56Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:56Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 92, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:56Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:56Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 93, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:56Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:56Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 94, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:56Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:56Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 95, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:56Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:56Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 96, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:56Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:56Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 97, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:56Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:56Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 98, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 4 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Read 45 bytes from: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(())
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] no data received for communication:0 (max_bytes: 32768 / fetch_offset: 38 / highwatermark_offset: 38)
+[2023-05-02T02:54:56Z DEBUG lantern::utils::generic_connector] SCHEDULER No messages available right now.
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] commit_consumed: ignoring commit request since no group defined
+[2023-05-02T02:54:56Z DEBUG kafka::consumer] fetching messages: (fetch-offsets: {"communication:0": FetchState { offset: 38, max_bytes: 32768 }})
+[2023-05-02T02:54:56Z TRACE kafka::client] __send_request: Sending bytes: [0, 0, 0, 61, 0, 1, 0, 0, 0, 0, 0, 99, 0, 0, 255, 255, 255, 255, 0, 0, 0, 100, 0, 0, 16, 0, 0, 0, 0, 1, 0, 13, 99, 111, 109, 109, 117, 110, 105, 99, 97, 116, 105, 111, 110, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 128, 0]
+[2023-05-02T02:54:56Z TRACE kafka::client::network] Sent 65 bytes to: KafkaConnection { id: 1, secured: true, host: "209.94.63.89:23552" } => Ok(65)
+[2023-05-02T02:56:31Z INFO lantern::utils::generic_connector] loading cert-file=service.cert, key-file=service.key
+[2023-05-02T02:56:31Z INFO lantern::utils::generic_connector] Topic offsets:
+[2023-05-02T02:56:31Z INFO lantern::utils::generic_connector] communication
+[2023-05-02T02:56:31Z INFO lantern::utils::generic_connector] 	0: 38
+[2023-05-02T02:56:31Z INFO lantern::utils::generic_connector] loading cert-file=service.cert, key-file=service.key
+[2023-05-02T02:56:31Z INFO lantern::utils::generic_connector] Topic offsets:
+[2023-05-02T02:56:31Z INFO lantern::utils::generic_connector] communication
+[2023-05-02T02:56:31Z INFO lantern::utils::generic_connector] 	0: 38
+[37m[2023-05-02T02:58:28Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T02:58:28Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T02:58:28Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T02:58:28Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 38[0m
+[37m[2023-05-02T02:58:28Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T02:58:29Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T02:58:29Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T02:58:29Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 38[0m
+[31m[2023-05-02T02:59:04Z [31mERROR[0m lantern::utils::generic_connector [31m] missing field `asset_url` at line 1 column 123 - Failed to parse message[0m
+[37m[2023-05-02T02:59:44Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T02:59:44Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T02:59:44Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T02:59:44Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 39[0m
+[37m[2023-05-02T02:59:44Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T02:59:44Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T02:59:44Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T02:59:44Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 39[0m
+[31m[2023-05-02T02:59:51Z [31mERROR[0m lantern::utils::generic_connector [31m] missing field `asset_url` at line 1 column 123 - Failed to parse message[0m
+[37m[2023-05-02T03:00:34Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:00:34Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:00:34Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:00:34Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 42[0m
+[37m[2023-05-02T03:00:34Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:00:34Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:00:34Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:00:34Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 42[0m
+[37m[2023-05-02T03:01:33Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:01:33Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:01:33Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:01:33Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:01:33Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:01:33Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:01:33Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:01:33Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:03:53Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:03:54Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:03:54Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:03:54Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:03:54Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:03:54Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:03:54Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:03:54Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:04:13Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:04:42Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 44[0m
+[37m[2023-05-02T03:05:40Z [32mINFO[0m lantern::worker::connector [37m] Message { message_type: InternalWorkerQueueJob, analytics: None, queue_job_request: None, queue_job_internal: Some(Job { guild_id: "freuofr89", voice_channel_id: "00290f09woijs", job_id: "ZGJJx-fb21efNUpwu10ao", asset_url: "ghifenfijsdijf", asset_type: DirectAssetLink }), request_id: "jinfrenuf984w98431298", worker_id: Some(0) }[0m
+[37m[2023-05-02T03:05:40Z [32mINFO[0m lantern::worker::queue_processor [37m] Job Processed![0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 46[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 46[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] loading cert-file=service.cert, key-file=service.key[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] Topic offsets:[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] communication[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 46[0m
+[37m[2023-05-02T03:09:18Z [32mINFO[0m lantern::utils::generic_connector [37m] 	0: 46[0m

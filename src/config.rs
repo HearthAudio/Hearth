@@ -4,18 +4,12 @@ use std::fs;
 use toml;
 use hashbrown::HashMap;
 
-// let mut map = HashMap::new();
-// map.insert(1, "one");
-
 //TODO: Load config into global constant on load
 
 #[derive(Deserialize)]
 pub struct InternalConfig {
     pub workers: Vec<String>
 }
-
-
-
 
 #[derive(Deserialize)]
 pub struct Config {
@@ -34,7 +28,7 @@ pub struct ReconfiguredConfig {
     pub config: ReconfiguredInternalConfig
 }
 
-//TODO: Try to convert toml definition to enum for cleaner abstraction. Or if not possible re-encapsulate into enum
+
 #[derive(Deserialize,Clone)]
 pub struct Roles {
     pub worker: bool,
