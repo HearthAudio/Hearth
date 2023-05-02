@@ -41,7 +41,7 @@ fn parse_message_callback(parsed_message: Message,mut producer: &mut Producer,co
             //     // thread code
             //     block_on(process_job(parsed_message, &proc_config));
             // });
-            let scheduler = tokio::task::spawn(async move {
+            let scheduler = tokio::task::spawn_blocking(async move {
                 process_job(parsed_message, &proc_config).await;
             });
             // res.await;

@@ -63,11 +63,21 @@ A Discord Bot is an autonomous unit that connects to the Discord platform to pro
        copyright notices and licenses, will be listed and made available to
        you.
 
-3. If your Bot has less than 1000 Discord Servers SECTION 1 will apply but SECTION 2 will not.
+3. If your Bot has less than 1000 Discord Servers Clause 6 applies if you have more than 1000 discord servers Clause 6 DOES NOT APPLY.
 
-4. If your Bot has more than 1000 Discord Servers SECTION 2 will apply to you but SECTION 1 will not
+4. If your Bot has more than 1000 Discord Servers you need to contact Bryght, LLC within 14 Days of passing
+1000 Discord servers additionally a custom agreement explicitly permitting usage above 1000 users must be signed and agreed to by both parties
+within 30 days of passing 1000 Discord servers. Or you will be in violation of this contract. 
 
-## SECTION 1
-TODO
-## SECTION 2
-TODO
+5. Clause 7 only applies if you have not made a custom agreement with Bryght, LLC to provide warranty.
+6. Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+7. THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+8. The Parties also agree to all the following conditions:
+   1. You may not remove or alter any copyright, trademark, or other proprietary rights notice contained in any portion of the Licensed Software,
+   2. Your Products may not compete with the Licensed Software,
+9. If you materially breach this Agreement, we will provide a 90 (ninety) days written notice to you during which any such breach(es) may be cured, failing which we will terminate the agreement. You undertake to pay a contractual penalty for each case of negligent breach of this Agreement of USD 1000 (one thousand thousand US dollars), which shall not be subject to a judicial right of reduction. We shall in any case be free to assert any further damage/loss or other claims. The amount of contractual penalty shall be offset against claims for damages, if any. Additionally, for every 30 days you are in violation of this contract you will owe an additional 15% of your monthly revenue to Bryght, LLC in damages for violation of the contract.
+10. Both Parties shall comply with all applicable laws and regulations relating to the Licensed Software in the countries in which the Parties use or modify the Licensed Software.
+11. All notices and communications between the Parties shall be in writing and shall be deemed given when received. For avoidance of doubt, email is considered a written form of communication.
+12. This Agreement shall be construed, interpreted, and governed by the laws of the State of Delaware in the United States of America.
+13. This Agreement constitutes the complete agreement between the Parties and supersedes all prior or contemporaneous discussions, representations, and proposals, written or oral, with respect to the subject matters discussed herein. No modification of this Agreement will be effective unless contained in a written document executed by an authorized representative of each Party. If any provision of the Agreement is found void or unenforceable, the remainder will remain valid and enforceable according to its terms. If any remedy provided is determined to have failed for its essential purpose, all limitations of liability and exclusions of damages set forth in this Agreement shall remain in effect.
+14. TODO: Binding Arbitration
