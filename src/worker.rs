@@ -6,6 +6,8 @@ use crate::config::ReconfiguredConfig;
 use crate::worker::connector::initialize_api;
 
 mod connector;
+mod queue_processor;
+mod analytics_reporter;
 
 pub async fn initialize_worker(config: ReconfiguredConfig) {
     println!("Worker INIT");
