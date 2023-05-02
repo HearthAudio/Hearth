@@ -145,7 +145,7 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>,config: &ReconfiguredConfig,callback: fn(Message, &mut Producer, &ReconfiguredConfig)) {
+pub fn initialize_consume_generic(brokers: Vec<String>,config: &ReconfiguredConfig,callback: fn(Message, &mut Producer, &ReconfiguredConfig),id: &str) {
 
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))
@@ -157,7 +157,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>,config: &ReconfiguredConf
     loop {
         let mss = consumer.poll().unwrap();
         if mss.is_empty() {
-            println!("No messages available right now.");
+            println!("{} No messages available right now.",id);
         }
 
         for ms in mss.iter() {

@@ -1,7 +1,6 @@
 // Loads config file
 use serde_derive::Deserialize;
 use std::fs;
-use std::process::exit;
 use toml;
 use hashbrown::HashMap;
 
@@ -24,17 +23,19 @@ pub struct Config {
     pub config: InternalConfig
 }
 
+#[derive(Clone)]
 pub struct ReconfiguredInternalConfig {
     pub workers: HashMap<u16,String>
 }
 
+#[derive(Clone)]
 pub struct ReconfiguredConfig {
     pub roles: Roles,
     pub config: ReconfiguredInternalConfig
 }
 
 //TODO: Try to convert toml definition to enum for cleaner abstraction. Or if not possible re-encapsulate into enum
-#[derive(Deserialize)]
+#[derive(Deserialize,Clone)]
 pub struct Roles {
     pub worker: bool,
     pub scheduler: bool

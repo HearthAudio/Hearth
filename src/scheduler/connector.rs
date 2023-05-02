@@ -7,7 +7,6 @@ use crate::config::ReconfiguredConfig;
 use crate::utils::generic_connector::{Message, MessageType, send_message_generic};
 
 pub fn initialize_api(config: &ReconfiguredConfig) {
-    env_logger::init();
     let broker = "kafka-185690f4-maxall4-aea3.aivencloud.com:23552".to_owned();
     initialize_scheduler_consume(vec![broker],config);
 }
@@ -18,22 +17,17 @@ fn parse_message_callback(parsed_message: Message,mut producer: &mut Producer,co
             // Handle event listener
             distribute_job(parsed_message, &mut producer, config);
         }
-        MessageType::DirectWorkerCommunication => {
-            // We don't need to parse this as the scheduler
-        },
         MessageType::InternalWorkerAnalytics => {
             //TODO
         },
-        MessageType::InternalWorkerQueueJob => {
-            println!("{:?}",parsed_message);
-            // We don't need to parse this as the scheduler
-        }
+        MessageType::DirectWorkerCommunication => {},   // We don't need to parse this as the scheduler
+        MessageType::InternalWorkerQueueJob => {} // We don't need to parse this as the scheduler
     }
 }
 
 
 pub fn initialize_scheduler_consume(brokers: Vec<String>,config: &ReconfiguredConfig) {
-    initialize_consume_generic(brokers,config,parse_message_callback);
+    initialize_consume_generic(brokers,config,parse_message_callback,"SCHEDULER");
 }
 
 pub fn send_message(message: &Message, topic: &str, mut producer: &mut Producer) {
