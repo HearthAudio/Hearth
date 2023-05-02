@@ -1,10 +1,17 @@
 use std::future;
 use std::future::Future;
 use std::pin::Pin;
+
+use futures::{FutureExt, join};
+use futures::future::{join_all, lazy};
+use tokio::runtime::Builder;
+use tokio::task::{JoinHandle, JoinSet};
+
 use crate::config::*;
+use crate::deco::print_intro;
+use crate::logger::setup_logger;
 use crate::scheduler::*;
 use crate::worker::*;
-use tokio::main;
 
 mod config;
 
@@ -14,23 +21,16 @@ mod worker;
 
 mod logger;
 
-use futures::future::{join_all, lazy};
-use futures::{FutureExt, join};
-use tokio::runtime::Builder;
-use tokio::task::{JoinError, JoinHandle, JoinSet};
-use crate::deco::print_intro;
-use crate::logger::setup_logger;
-
 mod utils;
 
 mod deco;
 
 // This is a bit of a hack to get around annoying type issues
-async fn initialize_scheduler_internal(config: ReconfiguredConfig) {
+async fn initialize_scheduler_internal(config: Config) {
     initialize_scheduler(config).await;
 }
 
-async fn initialize_worker_internal(config: ReconfiguredConfig) {
+async fn initialize_worker_internal(config: Config) {
     initialize_worker(config).await;
 }
 
@@ -39,11 +39,11 @@ async fn initialize_worker_internal(config: ReconfiguredConfig) {
 async fn main() {
     print_intro();
     // Load config
-    // TODO: This is a bit of a hack we should probably pass config by pointer
     let worker_config = init_config();
     let scheduler_config = worker_config.clone();
+    // Setup logger
     setup_logger();
-    //
+    // Depending on roles initialize worker and or scheduler on separate threads
     let mut futures = vec![];
     if worker_config.roles.worker {
         let worker = tokio::spawn(async move {

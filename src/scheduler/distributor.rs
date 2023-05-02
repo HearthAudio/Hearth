@@ -4,15 +4,15 @@ use log::error;
 use once_cell::sync::Lazy;
 use serde::{Serialize,Deserialize};
 use nanoid::nanoid;
-use crate::config::ReconfiguredConfig;
+use crate::config::Config;
 use crate::scheduler::connector::{send_message};
 use crate::utils::generic_connector::{AssetType, Message, MessageType};
 // Handles distribution across worker nodes via round robin or maybe another method?
 
 #[derive(Deserialize,Debug,Serialize)]
 pub struct Job {
-    pub guild_id: String,
-    pub voice_channel_id: String,
+    pub guild_id: u64,
+    pub voice_channel_id: u64,
     pub job_id: String,
     pub asset_url: String,
     pub asset_type: AssetType
@@ -21,7 +21,7 @@ pub struct Job {
 static ROUND_ROBIN: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
 
 // TODO: Implement Adaptive load balancing instead of round robin
-pub fn distribute_job(message : Message,producer: &mut Producer,config: &ReconfiguredConfig) {
+pub fn distribute_job(message : Message,producer: &mut Producer,config: &Config) {
     let mut guard = ROUND_ROBIN.lock().unwrap();
     let job_id = nanoid!();
     let queue_job_request = message.queue_job_request;
@@ -44,9 +44,10 @@ pub fn distribute_job(message : Message,producer: &mut Producer,config: &Reconfi
 
             send_message(internal_message,"communication",producer);
             *guard += 1;
-            if *guard == config.config.workers.len() {
-                *guard = 0;
-            }
+            //TODO: Create worker ID Ping Pong
+            // if *guard == config.config.workers.len() {
+            //     *guard = 0;
+            // }
         },
         None => error!("Failed to distribute job!")
     }

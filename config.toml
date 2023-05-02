@@ -3,10 +3,5 @@ scheduler = true
 worker = true
 
 [config]
-# Discord settings for user here in future token, etc...
-workers = [
-    "https://xxxxxxxxx1.internal.lanternsystems.com",
-    "https://xxxxxxxxx2.internal.lanternsystems.com",
-    "https://xxxxxxxxx3.internal.lanternsystems.com"
-] # Something like this
+discord_bot_id = 1103007551165046854
 # You don't have to add the internal worker inside of the scheduler (if configured) here

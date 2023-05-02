@@ -1,25 +1,21 @@
 // Internal connector
 
-use kafka;
-use openssl;
-
-
 use std::process;
-use kafka::consumer::{Consumer};
-
-use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
-
-use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
-
-use serde::{Deserialize};
-
-
 use std::time::Duration;
+
+use kafka;
+use kafka::consumer::Consumer;
 use kafka::producer::{Producer, Record, RequiredAcks};
 use log::{debug, error, info, warn};
-use crate::scheduler::distributor::{Job};
+use openssl;
+use serde::Deserialize;
 use serde_derive::Serialize;
-use crate::config::{ReconfiguredConfig};
+
+use crate::config::Config;
+use crate::scheduler::distributor::Job;
+
+use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
+use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 
 // All other job communication is passed directly to worker instead of running through scheduler
 #[derive(Deserialize,Debug,Serialize)]
@@ -53,8 +49,8 @@ pub struct Analytics {
 
 #[derive(Deserialize,Debug,Serialize)]
 pub struct JobRequest {
-    pub guild_id: String,
-    pub voice_channel_id: String,
+    pub guild_id: u64,
+    pub voice_channel_id: u64,
     pub asset_url: String,
     pub asset_type: AssetType
 }
@@ -156,7 +152,7 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>,config: &ReconfiguredConfig,callback: fn(Message, &mut Producer, &ReconfiguredConfig),id: &str) {
+pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback: fn(Message, &mut Producer, &Config),id: &str) {
 
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))

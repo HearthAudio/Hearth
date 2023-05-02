@@ -1,33 +1,22 @@
+use std::fs;
+
+use log::error;
 // Loads config file
 use serde_derive::Deserialize;
-use std::fs;
 use toml;
-use hashbrown::HashMap;
 
 //TODO: Load config into global constant on load
 
-#[derive(Deserialize)]
+#[derive(Deserialize,Clone)]
 pub struct InternalConfig {
-    pub workers: Vec<String>
+    pub discord_bot_id: u64
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize,Clone)]
 pub struct Config {
     pub roles: Roles,
     pub config: InternalConfig
 }
-
-#[derive(Clone)]
-pub struct ReconfiguredInternalConfig {
-    pub workers: HashMap<u16,String>
-}
-
-#[derive(Clone)]
-pub struct ReconfiguredConfig {
-    pub roles: Roles,
-    pub config: ReconfiguredInternalConfig
-}
-
 
 #[derive(Deserialize,Clone)]
 pub struct Roles {
@@ -35,13 +24,13 @@ pub struct Roles {
     pub scheduler: bool
 }
 
-pub fn init_config() -> ReconfiguredConfig {
+pub fn init_config() -> Config {
     let filename = "config.toml"; //TODO: Change to environment variable
 
     let contents = match fs::read_to_string(filename) {
         Ok(c) => c,
         Err(error) => {
-            println!("{}",error);
+            error!("{}",error);
             panic!("Could not read config file `{}`", filename);
         }
     };
@@ -49,24 +38,10 @@ pub fn init_config() -> ReconfiguredConfig {
     let config: Config = match toml::from_str(&contents) {
         Ok(d) => d,
         Err(error) => {
-            println!("{}",error);
+            error!("{}",error);
             panic!("Unable to load config data from `{}`", filename);
         }
     };
 
-    let mut worker_hash = HashMap::new();
-
-    for (i , worker) in config.config.workers.into_iter().enumerate() {
-        worker_hash.insert(i as u16,worker);
-    }
-
-    let reconfigured_config : ReconfiguredConfig = ReconfiguredConfig {
-        roles: config.roles,
-        config: ReconfiguredInternalConfig {
-            workers: worker_hash,
-        },
-    };
-
-
-    return reconfigured_config;
+    return config;
 }

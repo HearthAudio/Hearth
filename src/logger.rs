@@ -1,6 +1,7 @@
 use std::time::SystemTime;
-use log::{Level, LevelFilter};
+
 use fern::colors::{Color, ColoredLevelConfig};
+use log::{Level, LevelFilter};
 
 pub fn setup_logger() -> Result<(), fern::InitError> {
     let colors_line = ColoredLevelConfig::new()
