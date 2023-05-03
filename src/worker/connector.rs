@@ -1,11 +1,11 @@
 use std::thread;
 
 use kafka::producer::Producer;
-use log::{debug, info};
+use log::{info};
 use tokio::runtime;
 
 use crate::config::Config;
-use crate::scheduler::distributor::distribute_job;
+
 use crate::utils::generic_connector::{Message, MessageType, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
@@ -22,7 +22,7 @@ async fn test() {
     }
 }
 
-fn parse_message_callback(parsed_message: Message,mut producer: &mut Producer,config: &Config) {
+fn parse_message_callback(parsed_message: Message,_producer: &mut Producer,config: &Config) {
     //TODO: Check if this message is for us
     //TODO: Also worker ping pong stuff
     match parsed_message.message_type {
@@ -37,7 +37,7 @@ fn parse_message_callback(parsed_message: Message,mut producer: &mut Producer,co
             info!("{:?}",parsed_message);
             //TODO: This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
             let rt = runtime::Handle::current();
-            let handler = thread::spawn(move || {
+            let _handler = thread::spawn(move || {
                 // thread code
                 rt.block_on(process_job(parsed_message, &proc_config));
             });
@@ -55,6 +55,6 @@ pub fn initialize_worker_consume(brokers: Vec<String>,config: &Config) {
     initialize_consume_generic(brokers,config,parse_message_callback,"WORKER");
 }
 
-pub fn send_message(message: &Message, topic: &str, mut producer: &mut Producer) {
+pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {
     send_message_generic(message,topic,producer);
 }

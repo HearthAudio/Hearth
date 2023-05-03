@@ -30,6 +30,6 @@ pub fn initialize_scheduler_consume(brokers: Vec<String>,config: &Config) {
     initialize_consume_generic(brokers,config,parse_message_callback,"SCHEDULER");
 }
 
-pub fn send_message(message: &Message, topic: &str, mut producer: &mut Producer) {
+pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {
     send_message_generic(message,topic,producer);
 }

@@ -141,7 +141,7 @@ pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
 }
 
 pub fn initialize_producer(client: KafkaClient) -> Producer {
-    let mut producer = Producer::from_client(client)
+    let producer = Producer::from_client(client)
         // ~ give the brokers one second time to ack the message
         .with_ack_timeout(Duration::from_secs(1))
         // ~ require only one broker to ack the message
@@ -183,7 +183,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback:
     }
 }
 
-pub fn send_message_generic(message: &Message, topic: &str, mut producer: &mut Producer) {
+pub fn send_message_generic(message: &Message, topic: &str, producer: &mut Producer) {
     // Send message to worker
     let data = serde_json::to_string(message).unwrap();
     producer.send(&Record::from_value(topic, data)).unwrap();

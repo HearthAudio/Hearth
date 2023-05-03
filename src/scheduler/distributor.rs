@@ -21,7 +21,7 @@ pub struct Job {
 static ROUND_ROBIN: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
 
 // TODO: Implement Adaptive load balancing instead of round robin
-pub fn distribute_job(message : Message,producer: &mut Producer,config: &Config) {
+pub fn distribute_job(message : Message,producer: &mut Producer,_config: &Config) {
     let mut guard = ROUND_ROBIN.lock().unwrap();
     let job_id = nanoid!();
     let queue_job_request = message.queue_job_request;
