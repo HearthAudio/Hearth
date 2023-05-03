@@ -8,7 +8,7 @@ pub use crate::worker::connector::initialize_api;
 pub mod connector;
 pub mod queue_processor;
 pub mod analytics_reporter;
-pub mod bot_handler;
+pub mod webhook_handler;
 
 pub async fn initialize_worker(config: Config) {
     println!("Worker INIT");

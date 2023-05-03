@@ -56,10 +56,25 @@ struct ResumeMessage {
     d: ResumeData
 }
 
+#[derive(Serialize)]
+pub struct VoiceDataRequestData {
+    pub guild_id: String,
+    pub channel_id: String,
+    pub self_mute: bool,
+    pub self_deaf: bool
+}
+
+#[derive(Serialize)]
+struct VoiceDataRequest {
+    op: u8,
+    d: VoiceDataRequestData
+}
+
 pub struct VoiceConnectData {
     pub session_id: String,
     pub endpoint: String,
 }
+
 
 pub enum WebsocketInterconnectType {
     VoiceConnectDataResult,
@@ -67,7 +82,8 @@ pub enum WebsocketInterconnectType {
 }
 
 pub struct WebsocketInterconnect {
-    pub voice_connect_data: VoiceConnectData,
+    pub voice_connect_data: Option<VoiceConnectData>,
+    pub voice_connect_request: Option<VoiceDataRequestData>,
     pub com_type: WebsocketInterconnectType
 }
 
@@ -127,10 +143,22 @@ pub async fn initialize_websocket(config: &Config,tx: Sender<WebsocketInterconne
     resume_gateway(identify_result,config,tx,rx).await;
 }
 
+async fn handle_voice_req_result(tx : &Sender<WebsocketInterconnect>,rx : &Receiver<WebsocketInterconnect>,endpoint : &Option<String>,session_id : &Option<String>) {
+        tx.send(WebsocketInterconnect {
+            com_type: WebsocketInterconnectType::VoiceConnectDataResult,
+            voice_connect_data: Some(VoiceConnectData {
+                endpoint: endpoint.clone().unwrap().to_string(),
+                session_id: session_id.clone().unwrap().to_string()
+            }),
+            voice_connect_request: None
+        }).unwrap();
+}
+
 async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<WebsocketInterconnect>,rx: Receiver<WebsocketInterconnect>) {
     // Connect to Gateway using URL
+    let url = identify.resume_url.replace("\"",""); // For some reason resume_url comes with qoute marks around it
     let x = connect_async(
-        Url::parse(&identify.resume_url).unwrap()
+        Url::parse(&url).unwrap()
     ).await;
     match x {
         Err(e) => {
@@ -139,8 +167,11 @@ async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<
         }
         Ok((mut socket,_)) => {
             println!("Connected");
-            let (heart_tx, heart_rx) : (Sender<String>,Receiver<String>) = flume::unbounded();
             let mut connection_state = ConnectionState::PreHeartBeatConfig;
+            let mut voice_state_update = false;
+            let mut voice_server_update = false;
+            let mut endpoint : Option<String> = None;
+            let mut session_id : Option<String> = None;
 
             let mut interval = tokio::time::interval(Duration::from_millis(1000));
             let (mut writer, mut rec) = socket.split();
@@ -168,7 +199,26 @@ async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<
                                                     };
                                                     let json_rep = serde_json::to_string(&message).unwrap();
                                                     writer.send(Message::from(json_rep)).await.expect("Failed to send HeartBeat INTERRUPT");
-                                             }
+                                             },
+                                            0 => {
+                                                match lookup_v.get("t").expect("NO T").as_str().unwrap() {
+                                                    "VOICE_SERVER_UPDATE" => {
+                                                        voice_server_update = true;
+                                                        endpoint = Some(lookup_v.get("d").unwrap().get("endpoint").unwrap().to_string());
+                                                        if voice_state_update && voice_server_update {
+                                                             handle_voice_req_result(&tx,&rx,&endpoint,&session_id);
+                                                        }
+                                                    },
+                                                    "VOICE_STATE_UPDATE" => {
+                                                        voice_state_update = true;
+                                                        session_id = Some(lookup_v.get("d").unwrap().get("session_id").unwrap().to_string());
+                                                        if voice_state_update && voice_server_update {
+                                                             handle_voice_req_result(&tx,&rx,&endpoint,&session_id);
+                                                        }
+                                                    },
+                                                    _ => {}
+                                                }
+                                            }
                                             _ => {}
                                         }
 
@@ -186,14 +236,22 @@ async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<
                                     op: 1
                         };
                         let json_rep = serde_json::to_string(&message).unwrap();
-                        writer.send(Message::Text(json_rep)).await.expect("Failed to send HeartBeat INTERVAL");
+                        println!("INT");
+                        //TODO: Fix hearbeats
+                        // writer.send(Message::Text(json_rep)).await.expect("Failed to send HeartBeat INTERVAL");
                     },
                     flume_msg = rx.recv_async() => {
                         //TODO: Replace unwrap with match
                         let parsed_msg : WebsocketInterconnect = flume_msg.unwrap();
                         match parsed_msg.com_type {
                             WebsocketInterconnectType::VoiceDataRequest => {
-                                //TODO: Voice Data request
+                                let connect_request = parsed_msg.voice_connect_request.unwrap();
+                                let voice_data_request = VoiceDataRequest {
+                                    op: 4,
+                                    d: connect_request
+                                };
+                                let json_rep = serde_json::to_string(&voice_data_request).unwrap();
+                                writer.send(Message::from(json_rep)).await.expect("Failed to send Voice Data Request");
                             },
                             WebsocketInterconnectType::VoiceConnectDataResult => {}
                         }
@@ -223,6 +281,7 @@ async fn identify(config: &Config) -> Option<IdentifyDataResult> {
         .await
         .unwrap();
     let url = resp.get("url").expect("No URL");
+    println!("{}",url);
     // Connect to Gateway using URL
     let x = connect_async(
         Url::parse(&format!("{}?v=10&encoding=json", url)).unwrap()

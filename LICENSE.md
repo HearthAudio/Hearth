@@ -3,7 +3,7 @@
 
 Version 1.0
 
-Copyright © 2022 SixtyFPS GmbH <https://slint-ui.com/imprint.html>
+Copyright © 2023 Bryght, LLC <https://lantern.com/imprint.html>
 
 Bryght, LLC (**Bryght**, **us**, **we** or **our**) grants a license to the
 software (**Licensed Software**), as specified herein, subject to the Terms and
@@ -35,7 +35,7 @@ include but is not limited to Text & Audio channels.
 To constitute a Discord Server these channels must be hosted on the Discord platform.
 
 ## Discord Bot
-A Discord Bot is an autonomous unit that connects to the Discord platform to provide services which may include but are not limited to
+A Discord Bot is an autonomous unit that interacts with the Discord platform to provide services which may include but are not limited to
 1. Audio streaming
 2. Textual interaction
 3. Audio interaction

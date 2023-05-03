@@ -14,7 +14,7 @@ use crate::deco::print_intro;
 use crate::logger::setup_logger;
 use crate::scheduler::*;
 use crate::worker::*;
-use crate::worker::bot_handler::{initialize_websocket, VoiceConnectData, WebsocketInterconnect};
+use crate::worker::webhook_handler::{initialize_websocket, VoiceConnectData, WebsocketInterconnect};
 
 mod config;
 
