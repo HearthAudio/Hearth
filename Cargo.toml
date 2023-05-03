@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-songbird = { version = "0.3.2", features = ["driver"] }
+songbird = { version = "0.3.2", features = ["twilight-native","gateway","zlib-stock"] }
 toml = "0.7.3"
 serde_derive = "1.0.160"
 serde = "1.0.160"
@@ -22,6 +22,7 @@ hashbrown = "0.13.2"
 futures = "0.3.28"
 fern = { version = "0.6.2", features = ["colored"] }
 reqwest = "0.11.17"
-tokio-tungstenite = { version = "0.18.0", features = ["native-tls"] }
-webhook = "2.1.2"
-flume = "0.10.14"
+twilight-gateway = { version = "0.15.2", features=["zlib-stock"] }
+twilight-http = { version = "0.15.2" }
+twilight-model = { version = "0.15.2" }
+twilight-standby = { version = "0.15.2" }

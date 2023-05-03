@@ -2,7 +2,6 @@
 
 use std::process;
 use std::time::Duration;
-use flume::{Receiver, Sender};
 
 use kafka;
 use kafka::consumer::Consumer;
@@ -13,9 +12,7 @@ use serde::Deserialize;
 use serde_derive::Serialize;
 
 use crate::config::Config;
-use crate::IPCWebsocketConnector;
 use crate::scheduler::distributor::Job;
-use crate::worker::webhook_handler::WebsocketInterconnect;
 
 use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
@@ -155,7 +152,7 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback: fn(Message, &mut Producer, &Config,ipc: Option<IPCWebsocketConnector>),id: &str,ipc: Option<IPCWebsocketConnector>) {
+pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback: fn(Message, &mut Producer, &Config),id: &str) {
 
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))
@@ -175,7 +172,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback:
                 let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(&m.value);
                 match parsed_message {
                     Ok(message) => {
-                        callback(message,&mut producer, config,ipc.clone());
+                        callback(message,&mut producer, config);
                     },
                     Err(e) => error!("{} - Failed to parse message",e),
                 }
