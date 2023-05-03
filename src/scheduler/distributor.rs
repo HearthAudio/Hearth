@@ -11,8 +11,8 @@ use crate::utils::generic_connector::{AssetType, Message, MessageType};
 
 #[derive(Deserialize,Debug,Serialize)]
 pub struct Job {
-    pub guild_id: u64,
-    pub voice_channel_id: u64,
+    pub guild_id: String,
+    pub voice_channel_id: String,
     pub job_id: String,
     pub asset_url: String,
     pub asset_type: AssetType

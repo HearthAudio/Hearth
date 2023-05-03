@@ -4,6 +4,7 @@ use std::future::Future;
 use std::pin::Pin;
 use flume::{Receiver, Sender};
 use crate::config::Config;
+use crate::IPCWebsocketConnector;
 pub use crate::worker::connector::initialize_api;
 use crate::worker::webhook_handler::WebsocketInterconnect;
 
@@ -12,8 +13,8 @@ pub mod queue_processor;
 pub mod analytics_reporter;
 pub mod webhook_handler;
 
-pub async fn initialize_worker(config: Config,tx : Sender<WebsocketInterconnect>,rx : Receiver<WebsocketInterconnect>) {
+pub async fn initialize_worker(config: Config,ipc: IPCWebsocketConnector) {
     println!("Worker INIT");
     // Init server
-    initialize_api(&config,tx,rx);
+    initialize_api(&config,ipc);
 }

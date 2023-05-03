@@ -17,6 +17,7 @@ use tokio_tungstenite::{connect_async, MaybeTlsStream, WebSocketStream};
 use tokio_tungstenite::tungstenite::{connect, Message};
 use tokio_tungstenite::tungstenite::protocol::CloseFrame;
 use crate::config::Config;
+use crate::IPCWebsocketConnector;
 
 #[derive(Serialize)]
 struct HeartBeatMessage {
@@ -43,20 +44,20 @@ struct IdentifyMessage {
     d: IdentifyData
 }
 
-#[derive(Serialize)]
+#[derive(Serialize,Debug)]
 struct ResumeData {
     token: String,
     session_id: String,
     seq: u64
 }
 
-#[derive(Serialize)]
+#[derive(Serialize,Debug)]
 struct ResumeMessage {
     op: u8, // Resume is op code 6
     d: ResumeData
 }
 
-#[derive(Serialize)]
+#[derive(Serialize,Debug)]
 pub struct VoiceDataRequestData {
     pub guild_id: String,
     pub channel_id: String,
@@ -64,23 +65,24 @@ pub struct VoiceDataRequestData {
     pub self_deaf: bool
 }
 
-#[derive(Serialize)]
+#[derive(Serialize,Debug)]
 struct VoiceDataRequest {
     op: u8,
     d: VoiceDataRequestData
 }
-
+#[derive(Debug)]
 pub struct VoiceConnectData {
     pub session_id: String,
     pub endpoint: String,
 }
 
-
+#[derive(Debug)]
 pub enum WebsocketInterconnectType {
     VoiceConnectDataResult,
     VoiceDataRequest
 }
 
+#[derive(Debug)]
 pub struct WebsocketInterconnect {
     pub voice_connect_data: Option<VoiceConnectData>,
     pub voice_connect_request: Option<VoiceDataRequestData>,
@@ -130,6 +132,7 @@ async fn reeval_connection_state(mut connection_state: &ConnectionState, mut wri
                     seq: sequence.expect("No Sequence"),
                 }
             };
+            println!("Sending Resume Message: {:?}",message);
             let json_rep = serde_json::to_string(&message).unwrap();
             let x = Message::from(json_rep);
             writer.send(x).await.expect("Failed to send Resume");
@@ -138,13 +141,12 @@ async fn reeval_connection_state(mut connection_state: &ConnectionState, mut wri
     }
 }
 
-pub async fn initialize_websocket(config: &Config,tx: Sender<WebsocketInterconnect>,rx: Receiver<WebsocketInterconnect>) {
-    let identify_result = identify(config).await.unwrap();
-    resume_gateway(identify_result,config,tx,rx).await;
+pub async fn initialize_websocket(config: &Config,ipc: IPCWebsocketConnector) {
+    identify(config,ipc).await;
 }
 
-async fn handle_voice_req_result(tx : &Sender<WebsocketInterconnect>,rx : &Receiver<WebsocketInterconnect>,endpoint : &Option<String>,session_id : &Option<String>) {
-        tx.send(WebsocketInterconnect {
+async fn handle_voice_req_result(ipc: &IPCWebsocketConnector,endpoint : &Option<String>,session_id : &Option<String>) {
+        ipc.voice_data_response_tx.send(WebsocketInterconnect {
             com_type: WebsocketInterconnectType::VoiceConnectDataResult,
             voice_connect_data: Some(VoiceConnectData {
                 endpoint: endpoint.clone().unwrap().to_string(),
@@ -153,8 +155,10 @@ async fn handle_voice_req_result(tx : &Sender<WebsocketInterconnect>,rx : &Recei
             voice_connect_request: None
         }).unwrap();
 }
-
-async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<WebsocketInterconnect>,rx: Receiver<WebsocketInterconnect>) {
+//TODO: Dead Code We need to add support for disconnecting https://discord.com/developers/docs/topics/gateway#disconnecting
+//TODO: A bunch of crappy duplicated code
+//TODO: This is pretty much dead for now
+async fn resume_gateway(identify: IdentifyDataResult,config: &Config,ipc: IPCWebsocketConnector) {
     // Connect to Gateway using URL
     let url = identify.resume_url.replace("\"",""); // For some reason resume_url comes with qoute marks around it
     let x = connect_async(
@@ -184,6 +188,7 @@ async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<
                             Some(msg) => {
                                 let msg = msg.unwrap();
                                 let mut lookup: Result<HashMap<String, Value>,serde_json::Error> = serde_json::from_str(&msg.to_string());
+                                println!("PLKVAL {:?}",msg);
                                 match lookup {
                                     Ok(lookup_v) => {
                                         match lookup_v.get("op").expect("No OP Code").as_u64().unwrap() {
@@ -201,19 +206,21 @@ async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<
                                                     writer.send(Message::from(json_rep)).await.expect("Failed to send HeartBeat INTERRUPT");
                                              },
                                             0 => {
+                                                println!("ZERO MSG:");
+                                                println!("{:?}",lookup_v);
                                                 match lookup_v.get("t").expect("NO T").as_str().unwrap() {
                                                     "VOICE_SERVER_UPDATE" => {
                                                         voice_server_update = true;
                                                         endpoint = Some(lookup_v.get("d").unwrap().get("endpoint").unwrap().to_string());
                                                         if voice_state_update && voice_server_update {
-                                                             handle_voice_req_result(&tx,&rx,&endpoint,&session_id);
+                                                             handle_voice_req_result(&ipc,&endpoint,&session_id);
                                                         }
                                                     },
                                                     "VOICE_STATE_UPDATE" => {
                                                         voice_state_update = true;
                                                         session_id = Some(lookup_v.get("d").unwrap().get("session_id").unwrap().to_string());
                                                         if voice_state_update && voice_server_update {
-                                                             handle_voice_req_result(&tx,&rx,&endpoint,&session_id);
+                                                             handle_voice_req_result(&ipc,&endpoint,&session_id);
                                                         }
                                                     },
                                                     _ => {}
@@ -240,9 +247,11 @@ async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<
                         //TODO: Fix hearbeats
                         // writer.send(Message::Text(json_rep)).await.expect("Failed to send HeartBeat INTERVAL");
                     },
-                    flume_msg = rx.recv_async() => {
+                    flume_msg = ipc.voice_data_request_rx.recv_async() => {
+                        println!("WH Hook Recieved");
                         //TODO: Replace unwrap with match
                         let parsed_msg : WebsocketInterconnect = flume_msg.unwrap();
+                        println!("RECV WH {:?}",parsed_msg);
                         match parsed_msg.com_type {
                             WebsocketInterconnectType::VoiceDataRequest => {
                                 let connect_request = parsed_msg.voice_connect_request.unwrap();
@@ -252,6 +261,7 @@ async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<
                                 };
                                 let json_rep = serde_json::to_string(&voice_data_request).unwrap();
                                 writer.send(Message::from(json_rep)).await.expect("Failed to send Voice Data Request");
+                                println!("SENT REQ");
                             },
                             WebsocketInterconnectType::VoiceConnectDataResult => {}
                         }
@@ -262,15 +272,7 @@ async fn resume_gateway(identify: IdentifyDataResult,config: &Config,tx: Sender<
     };
 }
 
-async fn identify(config: &Config) -> Option<IdentifyDataResult> {
-    // let connection_info = ConnectionInfo {
-    //     channel_id: Some(ChannelId(voice_channel_id)),
-    //     guild_id: GuildId(guild_id),
-    //     user_id: UserId(config.config.discord_bot_id),
-    //     token: "".to_string(),
-    //     session_id: "".to_string(),
-    //     endpoint: "".to_string(),
-    // };
+async fn identify(config: &Config,ipc: IPCWebsocketConnector) {
     //TODO: Build into Struct instead of Hashmap
     //TODO: Proper error handling to auto retry a few times before failing
     // Get Gateway URL
@@ -290,23 +292,27 @@ async fn identify(config: &Config) -> Option<IdentifyDataResult> {
         Err(e) => {
             //TODO: Retry
             println!("{}",e);
-            return None;
         }
         Ok((mut socket,_)) => {
             println!("Connected");
             let mut connection_state = ConnectionState::PreHeartBeatConfig;
 
             let mut interval = tokio::time::interval(Duration::from_millis(1000));
+            let mut voice_state_update = false;
+            let mut voice_server_update = false;
+            let mut endpoint : Option<String> = None;
+            let mut session_id : Option<String> = None;
             let (mut writer, mut rec) = socket.split();
 
             // Echo incoming WebSocket messages and send a message periodically every second.
-            return loop {
+            loop {
                 tokio::select! {
                     msg = rec.next() => {
                         match msg {
                             Some(msg) => {
                                 let msg = msg.unwrap();
                                 let mut lookup: Result<HashMap<String, Value>,serde_json::Error> = serde_json::from_str(&msg.to_string());
+                                println!("{:?}",msg);
                                 match lookup {
                                     Ok(lookup_v) => {
                                         match lookup_v.get("op").expect("No OP Code").as_u64().unwrap() {
@@ -325,17 +331,31 @@ async fn identify(config: &Config) -> Option<IdentifyDataResult> {
                                                     writer.send(Message::from(json_rep)).await.expect("Failed to send HeartBeat INTERRUPT");
                                              }
                                             0 => {
-                                                println!("OPCODE1 RECV");
-                                                let resume_url = lookup_v.get("d").unwrap().get("resume_gateway_url").unwrap().to_string();
-                                                let session_id = lookup_v.get("d").unwrap().get("session_id").unwrap().to_string();
-                                                let last_sequence = lookup_v.get("s").unwrap();
-                                                writer.close().await;
-                                                let result = IdentifyDataResult {
-                                                    session_id: session_id,
-                                                    resume_url: resume_url,
-                                                    last_sequence: last_sequence.as_u64().unwrap()
-                                                };
-                                                break Some(result);
+                                                match lookup_v.get("t").expect("NO T").as_str().unwrap() {
+                                                    "VOICE_SERVER_UPDATE" => {
+                                                        voice_server_update = true;
+                                                        println!("VSEU");
+                                                        endpoint = Some(lookup_v.get("d").unwrap().get("endpoint").unwrap().to_string());
+                                                        if voice_state_update && voice_server_update {
+                                                             handle_voice_req_result(&ipc,&endpoint,&session_id).await;
+                                                        }
+                                                    },
+                                                    "VOICE_STATE_UPDATE" => {
+                                                        voice_state_update = true;
+                                                        println!("VSTU");
+                                                        session_id = Some(lookup_v.get("d").unwrap().get("session_id").unwrap().to_string());
+                                                        if voice_state_update && voice_server_update {
+                                                             handle_voice_req_result(&ipc,&endpoint,&session_id).await;
+                                                        }
+                                                    },
+                                                    "READY" => {
+                                                        println!("READY!");
+                                                        let resume_url = lookup_v.get("d").unwrap().get("resume_gateway_url").unwrap().to_string();
+                                                        let session_id = lookup_v.get("d").unwrap().get("session_id").unwrap().to_string();
+                                                        let last_sequence = lookup_v.get("s").unwrap();
+                                                    }
+                                                    _ => {}
+                                                }
                                             }
                                             _ => {}
                                         }
@@ -348,7 +368,35 @@ async fn identify(config: &Config) -> Option<IdentifyDataResult> {
                             }
                             None => {},
                         }
-                    }
+                    },
+                    flume_msg = ipc.voice_data_request_rx.recv_async() => {
+                        println!("WH Hook Recieved");
+                        //TODO: Replace unwrap with match
+                        let parsed_msg : WebsocketInterconnect = flume_msg.unwrap();
+                        println!("RECV WH {:?}",parsed_msg);
+                        match parsed_msg.com_type {
+                            WebsocketInterconnectType::VoiceDataRequest => {
+                                let connect_request = parsed_msg.voice_connect_request.unwrap();
+                                let voice_data_request = VoiceDataRequest {
+                                    op: 4,
+                                    d: connect_request
+                                };
+                                let json_rep = serde_json::to_string(&voice_data_request).unwrap();
+                                writer.send(Message::from(json_rep)).await.expect("Failed to send Voice Data Request");
+                                println!("SENT REQ {:?}",voice_data_request);
+                            },
+                            WebsocketInterconnectType::VoiceConnectDataResult => {}
+                        }
+                    },
+                    _ = interval.tick() => {
+                        let message = HeartBeatMessage {
+                                    op: 1
+                        };
+                        let json_rep = serde_json::to_string(&message).unwrap();
+                        println!("INT");
+                        //TODO: Fix hearbeats
+                        // writer.send(Message::Text(json_rep)).await.expect("Failed to send HeartBeat INTERVAL");
+                    },
                 }
             };
         }

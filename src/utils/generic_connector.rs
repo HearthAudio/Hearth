@@ -13,6 +13,7 @@ use serde::Deserialize;
 use serde_derive::Serialize;
 
 use crate::config::Config;
+use crate::IPCWebsocketConnector;
 use crate::scheduler::distributor::Job;
 use crate::worker::webhook_handler::WebsocketInterconnect;
 
@@ -51,8 +52,8 @@ pub struct Analytics {
 
 #[derive(Deserialize,Debug,Serialize)]
 pub struct JobRequest {
-    pub guild_id: u64,
-    pub voice_channel_id: u64,
+    pub guild_id: String,
+    pub voice_channel_id: String,
     pub asset_url: String,
     pub asset_type: AssetType
 }
@@ -154,7 +155,7 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback: fn(Message, &mut Producer, &Config,tx : Option<Sender<WebsocketInterconnect>>,rx : Option<Receiver<WebsocketInterconnect>>),id: &str,tx : Option<Sender<WebsocketInterconnect>>,rx : Option<Receiver<WebsocketInterconnect>>) {
+pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback: fn(Message, &mut Producer, &Config,ipc: Option<IPCWebsocketConnector>),id: &str,ipc: Option<IPCWebsocketConnector>) {
 
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))
@@ -174,7 +175,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback:
                 let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(&m.value);
                 match parsed_message {
                     Ok(message) => {
-                        callback(message,&mut producer, config,tx.clone(),rx.clone());
+                        callback(message,&mut producer, config,ipc.clone());
                     },
                     Err(e) => error!("{} - Failed to parse message",e),
                 }
