@@ -2,12 +2,11 @@ use std::thread;
 
 use kafka::producer::Producer;
 use log::{debug, info};
-use tokio::task::spawn_blocking;
+use tokio::runtime;
 
 use crate::config::Config;
 use crate::scheduler::distributor::distribute_job;
 use crate::utils::generic_connector::{Message, MessageType, send_message_generic};
-use futures::executor::block_on;
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::queue_processor::process_job;
@@ -35,15 +34,17 @@ fn parse_message_callback(parsed_message: Message,mut producer: &mut Producer,co
         },
         MessageType::InternalWorkerQueueJob => {
             let proc_config = config.clone();
-            debug!("{:?}",parsed_message);
+            info!("{:?}",parsed_message);
             //TODO: This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
-            // let handler = thread::spawn(move || {
-            //     // thread code
-            //     block_on(process_job(parsed_message, &proc_config));
-            // });
-            let scheduler = tokio::task::spawn_blocking(async move {
-                process_job(parsed_message, &proc_config).await;
+            let rt = runtime::Handle::current();
+            let handler = thread::spawn(move || {
+                // thread code
+                rt.block_on(process_job(parsed_message, &proc_config));
             });
+            // let scheduler = tokio::task::spawn(async move {
+            //     // process_job(parsed_message, &proc_config).await;
+            //     info!("XXX")
+            // });
             // res.await;
         }
     }

@@ -781,6 +781,7 @@ name = "lantern"
 version = "0.1.0"
 dependencies = [
  "fern",
+ "flume",
  "futures",
  "hashbrown 0.13.2",
  "humantime",
@@ -1880,7 +1881,9 @@ checksum = "54319c93411147bced34cb5609a80e0a8e44c5999c93903a81cd866630ec0bfd"
 dependencies = [
  "futures-util",
  "log",
+ "native-tls",
  "tokio",
+ "tokio-native-tls",
  "tungstenite 0.18.0",
 ]
 
@@ -2049,6 +2052,7 @@ dependencies = [
  "http",
  "httparse",
  "log",
+ "native-tls",
  "rand",
  "sha1",
  "thiserror",

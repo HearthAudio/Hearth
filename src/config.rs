@@ -9,7 +9,8 @@ use toml;
 
 #[derive(Deserialize,Clone)]
 pub struct InternalConfig {
-    pub discord_bot_id: u64
+    pub discord_bot_id: u64,
+    pub discord_bot_token: String,
 }
 
 #[derive(Deserialize,Clone)]

@@ -22,5 +22,6 @@ hashbrown = "0.13.2"
 futures = "0.3.28"
 fern = { version = "0.6.2", features = ["colored"] }
 reqwest = "0.11.17"
-tokio-tungstenite = "0.18.0"
+tokio-tungstenite = { version = "0.18.0", features = ["native-tls"] }
 webhook = "2.1.2"
+flume = "0.10.14"
