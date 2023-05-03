@@ -1,5 +1,5 @@
 # TODO:
-- [ ] Add Effects
+- [ ] Add Effects (Volume,Timescale,Rotation,Vibrato,Channel Mix, and Distortion)
 - [ ] Add YouTube support
 - [ ] Add Soundcloud support
 - [ ] Add env variable for setting config file and kafka ssl 
