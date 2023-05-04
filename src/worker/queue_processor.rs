@@ -38,8 +38,6 @@ pub struct ProcessorIPC {
 pub async fn process_job(message: Message, config: &Config, sender: Sender<ProcessorIPCData>) {
     let queue_job = message.queue_job_internal.unwrap();
     let job_id = queue_job.job_id;
-    // ipc.sender.send(false).await.unwrap(); // bool value does not matter
-    println!("Sent REQ");
     sender.send(ProcessorIPCData {
         action: ProcessorIncomingAction::SongbirdInstanceRequest,
         job_id: job_id.clone(),

@@ -21,7 +21,7 @@ use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 
 // All other job communication is passed directly to worker instead of running through scheduler
-#[derive(Deserialize,Debug,Serialize)]
+#[derive(Deserialize,Debug,Serialize,Clone)]
 #[serde(tag = "type")]
 pub enum MessageType {
     // Internal
@@ -36,7 +36,7 @@ pub enum MessageType {
 
 }
 
-#[derive(Deserialize,Debug,Serialize)]
+#[derive(Deserialize,Debug,Serialize,Clone)]
 #[serde(tag = "type")]
 pub enum AssetType {
     DirectAssetLink,
@@ -44,7 +44,7 @@ pub enum AssetType {
     SoundcloudLink
 }
 
-#[derive(Deserialize,Debug,Serialize)]
+#[derive(Deserialize,Debug,Serialize,Clone)]
 pub struct Analytics {
     cpu_usage: u8,
     memory_usage: u8,
@@ -52,26 +52,54 @@ pub struct Analytics {
     disk_usage: u8
 }
 
-#[derive(Deserialize,Debug,Serialize)]
+#[derive(Deserialize,Debug,Serialize,Clone)]
 pub struct JobRequest {
     pub guild_id: String,
     pub voice_channel_id: String,
-    pub asset_url: String,
-    pub asset_type: AssetType
 }
 
-#[derive(Deserialize,Debug,Serialize)]
+#[derive(Deserialize,Debug,Serialize,Clone)]
+#[serde(tag = "type")]
+pub enum DWCActionType {
+    LeaveChannel,
+    SeekToPosition,
+    PlayDirectLink,
+    PlayFromYoutube,
+    PlayFromSoundcloud,
+    DestroyPlayback,
+    SetPlaybackVolume,
+    PausePlayback,
+    ResumePlayback,
+    GetTrackCompleteTimestamp,
+    QueueTracks
+}
+
+#[derive(Deserialize,Debug,Serialize,Clone)]
 pub struct DirectWorkerCommunication {
     pub job_id: String,
-    pub leave_channel_guild_id: Option<String>
+    pub leave_channel_guild_id: Option<String>,
+    pub action_type: DWCActionType
 }
 
-#[derive(Deserialize,Debug,Serialize)]
+#[derive(Deserialize,Debug,Serialize,Clone)]
+pub enum JobEventType {
+    ChannelLeave,
+    ChannelMove,
+    AudioEnd,
+    AudioStart,
+}
+
+#[derive(Deserialize,Debug,Serialize,Clone)]
+pub struct JobEvent {
+    pub event_type: JobEventType
+}
+
+#[derive(Deserialize,Debug,Serialize,Clone)]
 pub struct ExternalQueueJobResponse {
     pub job_id: Option<String>
 }
 
-#[derive(Deserialize,Debug,Serialize)]
+#[derive(Deserialize,Debug,Serialize,Clone)]
 pub struct Message {
     pub message_type: MessageType, // Handles how message should be parsed
     pub analytics: Option<Analytics>, // Analytics sent by each worker
@@ -80,7 +108,8 @@ pub struct Message {
     pub request_id: String, // Unique string provided by client to identify this request
     pub worker_id: Option<usize>, // ID Unique to each worker
     pub direct_worker_communication: Option<DirectWorkerCommunication>,
-    pub external_queue_job_response: Option<ExternalQueueJobResponse>
+    pub external_queue_job_response: Option<ExternalQueueJobResponse>,
+    pub job_event: Option<JobEvent>
 }
 
 pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {

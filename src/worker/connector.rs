@@ -14,7 +14,7 @@ use tokio::sync::broadcast::Sender;
 
 use crate::config::Config;
 
-use crate::utils::generic_connector::{DirectWorkerCommunication, ExternalQueueJobResponse, Message, MessageType, send_message_generic};
+use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, ExternalQueueJobResponse, Message, MessageType, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::queue_processor::{LeaveAction, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
@@ -41,23 +41,20 @@ fn parse_message_callback(parsed_message: Message, producer: &mut Producer, conf
         // Parseable
         MessageType::DirectWorkerCommunication => {
             // TODO
-            let dwc = parsed_message.direct_worker_communication.unwrap();
-            ipc.sender.send(ProcessorIPCData {
-                action: ProcessorIncomingAction::LeaveChannel,
-                job_id: dwc.job_id,
-                songbird: None,
-                leave_action: Some(LeaveAction {
-                    guild_id: dwc.leave_channel_guild_id.unwrap().parse().unwrap()
-                }),
-            }).expect("Sending DWC Failed");
-            println!("Sent leave channel IPC")
-            // com_line.send(ProcessorIncomingIPC {
-            //     songbird: None,
-            //     action: ProcessorIncomingAction::LeaveChannel,
-            //     leave_action: Some(LeaveAction {
-            //         guild_id: parsed_message.direct_worker_communication.unwrap().leave_channel_guild_id.unwrap()
-            //     })
-            // }).expect("Failed to send internal IPC");
+            match parsed_message.direct_worker_communication.unwrap().action_type {
+                DWCActionType::LeaveChannel => {
+                    let dwc = parsed_message.direct_worker_communication.unwrap();
+                    ipc.sender.send(ProcessorIPCData {
+                        action: ProcessorIncomingAction::LeaveChannel,
+                        job_id: dwc.job_id,
+                        songbird: None,
+                        leave_action: Some(LeaveAction {
+                            guild_id: dwc.leave_channel_guild_id.unwrap().parse().unwrap()
+                        }),
+                    }).expect("Sending DWC Failed");
+                }
+                _ => {}
+            }
         },
         MessageType::InternalWorkerQueueJob => {
             let proc_config = config.clone();
@@ -67,22 +64,24 @@ fn parse_message_callback(parsed_message: Message, producer: &mut Producer, conf
             // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
             // let sender = ipc.sender;
             let sender = ipc.sender.clone();
-            let handler = thread::spawn(move || {
+            let job_id = parsed_message.queue_job_internal.clone().unwrap().job_id;
+            let request_id = parsed_message.request_id.clone();
+            thread::spawn(move || {
                 rt.block_on(process_job(parsed_message, &proc_config, sender));
             });
-            // let job_id = parsed_message.queue_job_internal.unwrap().job_id;
-            // send_message(&Message {
-            //     message_type: MessageType::ExternalQueueJobResponse,
-            //     analytics: None,
-            //     queue_job_request: None,
-            //     queue_job_internal: None,
-            //     request_id: parsed_message.request_id.clone(),
-            //     worker_id: None,
-            //     direct_worker_communication: None,
-            //     external_queue_job_response: Some(ExternalQueueJobResponse {
-            //         job_id: Some(parsed_message.queue_job_internal.unwrap().job_id)
-            //     })
-            // }, "communication", producer);
+            send_message(&Message {
+                message_type: MessageType::ExternalQueueJobResponse,
+                analytics: None,
+                queue_job_request: None,
+                queue_job_internal: None,
+                request_id: request_id,
+                worker_id: None,
+                direct_worker_communication: None,
+                external_queue_job_response: Some(ExternalQueueJobResponse {
+                    job_id: Some(job_id)
+                }),
+                job_event: None,
+            }, "communication", producer);
         }
     }
 }

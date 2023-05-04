@@ -9,13 +9,11 @@ use crate::scheduler::connector::{send_message};
 use crate::utils::generic_connector::{AssetType, Message, MessageType};
 // Handles distribution across worker nodes via round robin or maybe another method?
 
-#[derive(Deserialize,Debug,Serialize)]
+#[derive(Deserialize,Debug,Serialize,Clone)]
 pub struct Job {
     pub guild_id: String,
     pub voice_channel_id: String,
-    pub job_id: String,
-    pub asset_url: String,
-    pub asset_type: AssetType
+    pub job_id: String
 }
 
 static ROUND_ROBIN: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
@@ -35,13 +33,12 @@ pub fn distribute_job(message : Message,producer: &mut Producer,_config: &Config
                     guild_id: request.guild_id,
                     voice_channel_id: request.voice_channel_id,
                     job_id: job_id,
-                    asset_url: request.asset_url,
-                    asset_type: request.asset_type,
                 }),
                 request_id: message.request_id,
                 worker_id: Some(*guard),
                 direct_worker_communication: None,
                 external_queue_job_response: None,
+                job_event: None,
             };
 
             send_message(internal_message,"communication",producer);
