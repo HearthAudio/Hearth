@@ -13,6 +13,7 @@ use serde_derive::Serialize;
 
 use crate::config::Config;
 use crate::scheduler::distributor::Job;
+use crate::worker::songbird_handler::SongbirdIPC;
 
 use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
@@ -121,12 +122,12 @@ pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
                         process::exit(1);
                     }
                     Ok(toffsets) => {
-                        info!("Topic offsets:");
+                        debug!("Topic offsets:");
                         for (topic, mut offs) in toffsets {
                             offs.sort_by_key(|x| x.partition);
-                            info!("{}", topic);
+                            debug!("{}", topic);
                             for off in offs {
-                                info!("\t{}: {:?}", off.partition, off.offset);
+                                debug!("\t{}: {:?}", off.partition, off.offset);
                             }
                         }
                     }
@@ -152,7 +153,7 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback: fn(Message, &mut Producer, &Config),id: &str) {
+pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback: fn(Message, &mut Producer, &Config,songbird_ipc: &SongbirdIPC),id: &str,songbird_ipc: &SongbirdIPC) {
 
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))
@@ -172,7 +173,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback:
                 let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(&m.value);
                 match parsed_message {
                     Ok(message) => {
-                        callback(message,&mut producer, config);
+                        callback(message,&mut producer, config,songbird_ipc);
                     },
                     Err(e) => error!("{} - Failed to parse message",e),
                 }
