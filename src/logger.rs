@@ -1,6 +1,7 @@
 use std::time::SystemTime;
 
 use fern::colors::{Color, ColoredLevelConfig};
+use log::info;
 
 
 pub fn setup_logger() -> Result<(), fern::InitError> {
@@ -39,5 +40,6 @@ pub fn setup_logger() -> Result<(), fern::InitError> {
         .chain(std::io::stdout())
         .chain(fern::log_file("output.log")?)
         .apply()?;
+    info!("------------------------------------------ NEW INSTANCE STARTED ------------------------------------------");
     Ok(())
 }

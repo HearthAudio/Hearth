@@ -1,7 +1,9 @@
 // Internal connector
 
 use std::process;
+use std::thread::JoinHandle;
 use std::time::Duration;
+use hashbrown::HashMap;
 
 use kafka;
 use kafka::consumer::Consumer;
@@ -13,7 +15,7 @@ use serde_derive::Serialize;
 
 use crate::config::Config;
 use crate::scheduler::distributor::Job;
-use crate::worker::songbird_handler::SongbirdIPC;
+use crate::worker::queue_processor::ProcessorIPC;
 
 use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
@@ -27,8 +29,10 @@ pub enum MessageType {
     InternalWorkerQueueJob,
     // External
     ExternalQueueJob,
+    ExternalQueueJobResponse,
     // Other
     DirectWorkerCommunication,
+
 
 }
 
@@ -57,6 +61,17 @@ pub struct JobRequest {
 }
 
 #[derive(Deserialize,Debug,Serialize)]
+pub struct DirectWorkerCommunication {
+    pub job_id: String,
+    pub leave_channel_guild_id: Option<String>
+}
+
+#[derive(Deserialize,Debug,Serialize)]
+pub struct ExternalQueueJobResponse {
+    pub job_id: Option<String>
+}
+
+#[derive(Deserialize,Debug,Serialize)]
 pub struct Message {
     pub message_type: MessageType, // Handles how message should be parsed
     pub analytics: Option<Analytics>, // Analytics sent by each worker
@@ -64,6 +79,8 @@ pub struct Message {
     pub queue_job_internal: Option<Job>,
     pub request_id: String, // Unique string provided by client to identify this request
     pub worker_id: Option<usize>, // ID Unique to each worker
+    pub direct_worker_communication: Option<DirectWorkerCommunication>,
+    pub external_queue_job_response: Option<ExternalQueueJobResponse>
 }
 
 pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
@@ -153,7 +170,7 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback: fn(Message, &mut Producer, &Config,songbird_ipc: &SongbirdIPC),id: &str,songbird_ipc: &SongbirdIPC) {
+pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &mut Producer, &Config, &mut ProcessorIPC), id: &str, ipc: &mut ProcessorIPC) {
 
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))
@@ -173,7 +190,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>,config: &Config,callback:
                 let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(&m.value);
                 match parsed_message {
                     Ok(message) => {
-                        callback(message,&mut producer, config,songbird_ipc);
+                        callback(message,&mut producer, config,ipc);
                     },
                     Err(e) => error!("{} - Failed to parse message",e),
                 }

@@ -1,7 +1,6 @@
 use std::env;
 use std::sync::Arc;
 use std::time::Duration;
-use flume::{Receiver, Sender};
 use futures::channel::mpsc::{UnboundedReceiver, UnboundedSender};
 use log::info;
 use songbird::{SerenityInit, Songbird};
@@ -16,7 +15,9 @@ use serenity::{
 use serenity::client::bridge::gateway::ShardMessenger;
 use serenity::gateway::InterMessage;
 use songbird::id::{ChannelId, GuildId};
+use tokio::time::sleep;
 use crate::config::Config;
+use crate::worker::queue_processor::{LeaveAction, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 struct Handler;
 
@@ -33,16 +34,8 @@ pub struct SongbirdRequestData {
     pub channel_id: u64
 }
 
-#[derive(Clone)]
-pub struct SongbirdIPC {
-    pub tx_songbird_request: Sender<bool>,
-    pub rx_songbird_request: Receiver<bool>,
-    pub tx_songbird_result: Sender<Option<Arc<Songbird>>>,
-    pub rx_songbird_result: Receiver<Option<Arc<Songbird>>>
-}
 
-
-pub async fn initialize_songbird(config: &Config,ipc: &SongbirdIPC) {
+pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
 
     let intents = GatewayIntents::non_privileged()
         | GatewayIntents::MESSAGE_CONTENT;
@@ -72,12 +65,22 @@ pub async fn initialize_songbird(config: &Config,ipc: &SongbirdIPC) {
         cache:cache,
     };
 
-    while let Ok(msg) = ipc.rx_songbird_request.recv_async().await {
-        //TODO: Do we need to clone data over here?
-        let manager = songbird::get(&b_context).await
-            .expect("Songbird Voice client placed in at initialisation.").clone();
-        //TODO: Match here
-        ipc.tx_songbird_result.send(Some(manager)).expect("Failed to send songbird result");
+    while let Ok(msg) = ipc.receiver.recv().await {
+        match msg.action {
+            ProcessorIncomingAction::SongbirdInstanceRequest => {
+                //TODO: Do we need to clone data over here?
+                let manager = songbird::get(&b_context).await
+                    .expect("Songbird Voice client placed in at initialisation.").clone();
+                //TODO: Match here
+                ipc.sender.send(ProcessorIPCData {
+                    action: ProcessorIncomingAction::SongbirdIncoming,
+                    songbird: Some(manager),
+                    leave_action: None,
+                    job_id: msg.job_id
+                }).expect("Failed to send Songbird result");
+            },
+            _ => {}
+        }
     }
     tokio::signal::ctrl_c().await;
     println!("Received Ctrl-C, shutting down.");

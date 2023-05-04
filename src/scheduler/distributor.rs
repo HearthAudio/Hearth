@@ -40,6 +40,8 @@ pub fn distribute_job(message : Message,producer: &mut Producer,_config: &Config
                 }),
                 request_id: message.request_id,
                 worker_id: Some(*guard),
+                direct_worker_communication: None,
+                external_queue_job_response: None,
             };
 
             send_message(internal_message,"communication",producer);

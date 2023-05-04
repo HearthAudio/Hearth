@@ -785,7 +785,6 @@ name = "lantern"
 version = "0.1.0"
 dependencies = [
  "fern",
- "flume",
  "futures",
  "hashbrown 0.13.2",
  "humantime",

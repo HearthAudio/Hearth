@@ -1,12 +1,16 @@
 use std::sync::Arc;
-use flume::{Receiver, Sender};
+use std::thread::JoinHandle;
+use hashbrown::HashMap;
 use crate::config::*;
 use crate::deco::print_intro;
 use crate::logger::setup_logger;
 use crate::scheduler::*;
 use crate::worker::*;
-use crate::worker::songbird_handler::{initialize_songbird, SongbirdIPC, SongbirdRequestData};
+use crate::worker::songbird_handler::{initialize_songbird, SongbirdRequestData};
 use songbird::Songbird;
+use tokio::sync::broadcast;
+use tokio::sync::broadcast::{Receiver, Sender};
+use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 
 mod config;
 
@@ -21,11 +25,11 @@ mod utils;
 mod deco;
 
 // This is a bit of a hack to get around annoying type issues
-async fn initialize_scheduler_internal(config: Config,songbird_ipc: &SongbirdIPC) {
+async fn initialize_scheduler_internal(config: Config,songbird_ipc: &mut ProcessorIPC) {
     initialize_scheduler(config,songbird_ipc).await;
 }
 
-async fn initialize_worker_internal(config: Config,songbird_ipc: &SongbirdIPC) {
+async fn initialize_worker_internal(config: Config, songbird_ipc: &mut ProcessorIPC) {
     initialize_worker(config,songbird_ipc).await;
 }
 
@@ -40,31 +44,39 @@ async fn main() {
     let scheduler_config = worker_config.clone();
     let songbird_config = worker_config.clone();
     // Setup Flume Songbird IPC
-    let (tx_songbird_request, rx_songbird_request) : (Sender<bool>,Receiver<bool>) = flume::bounded(2);
-    let (tx_songbird_result, rx_songbird_result) : (Sender<Option<Arc<Songbird>>>,Receiver<Option<Arc<Songbird>>>) = flume::bounded(2);
-    let songbird_ipc = SongbirdIPC {
-        tx_songbird_request,
-        rx_songbird_request,
-        tx_songbird_result,
-        rx_songbird_result
+    let (tx_processor, rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
+    let songbird_rx = tx_processor.subscribe();
+    let scheduler_rx = tx_processor.subscribe();
+    let worker_rx = tx_processor.subscribe();
+    let songbird_tx = tx_processor.clone();
+    let scheduler_tx  = tx_processor.clone();
+    let mut worker_ipc = ProcessorIPC {
+        sender: tx_processor,
+        receiver: worker_rx,
     };
-    let songbird_ipc_worker = songbird_ipc.clone();
-    let songbird_ipc_scheduler = songbird_ipc.clone();
+    let mut songbird_ipc = ProcessorIPC {
+        sender: songbird_tx,
+        receiver: songbird_rx,
+    };
+    let mut scheduler_ipc = ProcessorIPC {
+        sender: scheduler_tx,
+        receiver: scheduler_rx,
+    };
     // Depending on roles initialize worker and or scheduler on separate threads
     let mut futures = vec![];
     if worker_config.roles.worker {
         let worker = tokio::spawn(async move {
-            return initialize_worker_internal(worker_config,&songbird_ipc_worker).await;
+            return initialize_worker_internal(worker_config, &mut worker_ipc).await;
         });
         let songbird = tokio::spawn(async move {
-            return initialize_songbird(&songbird_config,&songbird_ipc).await;
+            return initialize_songbird(&songbird_config, &mut songbird_ipc).await;
         });
         futures.push(worker);
         futures.push(songbird);
     }
     if scheduler_config.roles.scheduler {
         let scheduler = tokio::spawn(async move {
-            return initialize_scheduler_internal(scheduler_config,&songbird_ipc_scheduler).await;
+            return initialize_scheduler_internal(scheduler_config, &mut scheduler_ipc).await;
         });
         futures.push(scheduler);
     }

@@ -6,14 +6,14 @@
 use log::info;
 use crate::config::Config;
 use crate::scheduler::connector::initialize_api;
-use crate::worker::songbird_handler::SongbirdIPC;
+use crate::worker::queue_processor::ProcessorIPC;
 
 mod connector;
 pub(crate) mod distributor;
 
 
-pub async fn initialize_scheduler(config: Config,songbird_ipc: &SongbirdIPC)  {
+pub async fn initialize_scheduler(config: Config,ipc: &mut ProcessorIPC)  {
     info!("Scheduler INIT");
     // Init server
-    initialize_api(&config,songbird_ipc);
+    initialize_api(&config,ipc);
 }
