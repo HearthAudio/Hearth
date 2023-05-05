@@ -1,8 +1,10 @@
+use std::future::Future;
 use std::sync::Arc;
 use std::thread;
 use std::thread::JoinHandle;
 use std::time::Instant;
 use futures::executor;
+use futures::future::BoxFuture;
 use hashbrown::HashMap;
 
 use kafka::producer::Producer;
@@ -10,6 +12,7 @@ use log::{info};
 use openssl::version::dir;
 use songbird::Songbird;
 use tokio::runtime;
+use tokio::runtime::Builder;
 use tokio::sync::broadcast::Sender;
 
 use crate::config::Config;
@@ -17,6 +20,7 @@ use crate::config::Config;
 use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, ExternalQueueJobResponse, Message, MessageType, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
+use crate::worker::direct_worker_communication::parse_dwc_message;
 use crate::worker::queue_processor::{LeaveAction, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 // use crate::worker::queue_processor::process_job;
 
@@ -40,33 +44,25 @@ fn parse_message_callback(parsed_message: Message, producer: &mut Producer, conf
         MessageType::ExternalQueueJobResponse => {} // We don't need to parse this as the worker
         // Parseable
         MessageType::DirectWorkerCommunication => {
-            // TODO
-            match parsed_message.direct_worker_communication.unwrap().action_type {
-                DWCActionType::LeaveChannel => {
-                    let dwc = parsed_message.direct_worker_communication.unwrap();
-                    ipc.sender.send(ProcessorIPCData {
-                        action: ProcessorIncomingAction::LeaveChannel,
-                        job_id: dwc.job_id,
-                        songbird: None,
-                        leave_action: Some(LeaveAction {
-                            guild_id: dwc.leave_channel_guild_id.unwrap().parse().unwrap()
-                        }),
-                    }).expect("Sending DWC Failed");
-                }
-                _ => {}
-            }
+            let dwc = parsed_message.direct_worker_communication.unwrap();
+            let rt = runtime::Handle::current();
+            // executor::block_on(parse_dwc_message(dwc,ipc));
+            parse_dwc_message(dwc,ipc);
         },
         MessageType::InternalWorkerQueueJob => {
             let proc_config = config.clone();
             info!("{:?}",parsed_message);
             //TODO: This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
-            let rt = runtime::Handle::current();
             // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
             // let sender = ipc.sender;
             let sender = ipc.sender.clone();
             let job_id = parsed_message.queue_job_internal.clone().unwrap().job_id;
             let request_id = parsed_message.request_id.clone();
             thread::spawn(move || {
+                let rt = Builder::new_current_thread()
+                    .enable_all()
+                    .build()
+                    .unwrap();
                 rt.block_on(process_job(parsed_message, &proc_config, sender));
             });
             send_message(&Message {
@@ -88,7 +84,7 @@ fn parse_message_callback(parsed_message: Message, producer: &mut Producer, conf
 
 
 pub fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mut ProcessorIPC) {
-    initialize_consume_generic(brokers,config,parse_message_callback,"WORKER",ipc);
+    initialize_consume_generic(brokers, config, parse_message_callback, "WORKER", ipc);
 }
 
 pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {

@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-songbird = { version = "0.3.2", features = ["twilight-native","gateway","zlib-stock"] }
+#songbird = { version = "0.3.2", features = ["twilight-native","gateway","zlib-stock"] }
 toml = "0.7.3"
 serde_derive = "1.0.160"
 serde = "1.0.160"
@@ -22,4 +22,11 @@ hashbrown = "0.13.2"
 futures = "0.3.28"
 fern = { version = "0.6.2", features = ["colored"] }
 reqwest = "0.11.17"
+songbird = { path = "../finch" }
+async_fn_traits = "0.1.1"
 serenity = { version = "0.11.5", default-features = false, features = ["builder","cache","client","gateway","http","model","utils","rustls_backend"] }
+bytes = "1.4.0"
+symphonia = "0.5.2"
+symphonia-core = "0.5.2"
+lofty = "0.12.1"
+enum-map = "2.5.0"

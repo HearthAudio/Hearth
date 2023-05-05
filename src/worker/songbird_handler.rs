@@ -17,7 +17,7 @@ use serenity::gateway::InterMessage;
 use songbird::id::{ChannelId, GuildId};
 use tokio::time::sleep;
 use crate::config::Config;
-use crate::worker::queue_processor::{LeaveAction, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
+use crate::worker::queue_processor::{Infrastructure, LeaveAction, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 struct Handler;
 
@@ -46,34 +46,23 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
         .await
         .expect("Err creating client");
 
-    //TODO: This is a bit of a hack create a forked version of songbird that just takes in data
-    // This works because only data is used because Songbird actually only needs data but still takes the full context
-    let (tx,rx) : (UnboundedSender<InterMessage>,UnboundedReceiver<InterMessage>) = futures::channel::mpsc::unbounded();
-    let http = client.cache_and_http.http.clone();
-    let cache =  client.cache_and_http.cache.clone();
-    let data = client.data.clone();
+    let client_data = client.data.clone();
     tokio::spawn(async move {
         let _ = client.start().await.map_err(|why| println!("Client ended: {:?}", why));
     });
     info!("Songbird INIT");
 
-    let b_context = Context {
-        data: data,
-        shard: ShardMessenger::new(tx),
-        shard_id: 0,
-        http: http,
-        cache:cache,
-    };
+
 
     while let Ok(msg) = ipc.receiver.recv().await {
         match msg.action {
-            ProcessorIncomingAction::SongbirdInstanceRequest => {
+            ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest) => {
                 //TODO: Do we need to clone data over here?
-                let manager = songbird::get(&b_context).await
+                let manager = songbird::get(client_data.read().await)
                     .expect("Songbird Voice client placed in at initialisation.").clone();
                 //TODO: Match here
                 ipc.sender.send(ProcessorIPCData {
-                    action: ProcessorIncomingAction::SongbirdIncoming,
+                    action: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming),
                     songbird: Some(manager),
                     leave_action: None,
                     job_id: msg.job_id

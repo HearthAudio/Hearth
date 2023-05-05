@@ -1,8 +1,12 @@
 // Internal connector
 
+use std::future::Future;
 use std::process;
+use std::process::Output;
 use std::thread::JoinHandle;
 use std::time::Duration;
+use async_fn_traits::{AsyncFn0, AsyncFn4, AsyncFnOnce1, AsyncFnOnce4};
+use futures::future::BoxFuture;
 use hashbrown::HashMap;
 
 use kafka;
@@ -200,7 +204,6 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 
 
 pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &mut Producer, &Config, &mut ProcessorIPC), id: &str, ipc: &mut ProcessorIPC) {
-
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))
         .create()

@@ -1,6 +1,5 @@
 use std::sync::Arc;
 use std::thread::JoinHandle;
-use hashbrown::HashMap;
 use crate::config::*;
 use crate::deco::print_intro;
 use crate::logger::setup_logger;
@@ -36,6 +35,7 @@ async fn initialize_worker_internal(config: Config, songbird_ipc: &mut Processor
 
 #[tokio::main]
 async fn main() {
+    // let source = uri_stream("").await;
     print_intro();
     // Setup logger
     setup_logger().expect("Logger Setup Failed - A bit ironic no?");
