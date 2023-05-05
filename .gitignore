@@ -3,3 +3,4 @@ output.log
 ca.pem
 service.cert
 service.key
+output.log
