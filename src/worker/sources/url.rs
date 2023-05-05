@@ -1,17 +1,12 @@
-use std::collections::HashMap;
+
 use std::io::{Cursor, Read};
-use std::time::Duration;
+
 use bytes::Buf;
-use enum_map::enum_map;
+
 use lofty::{AudioFile, ParseOptions};
 use lofty::iff::wav;
-use lofty::iff::wav::WavFormat;
-use songbird::input::{Codec, Container, Input, Metadata, Reader};
-use symphonia_core::audio::Channels;
-use symphonia_core::formats::FormatOptions;
-use symphonia_core::io::{MediaSource, MediaSourceStream, ReadOnlySource};
-use symphonia_core::meta::{MetadataOptions, Tag};
-use symphonia_core::probe::Hint;
+use songbird::input::{Container, Input, Metadata, Reader};
+use symphonia_core::io::{ReadOnlySource};
 use crate::worker::sources::helpers::lofty_wac_codec_to_songbird_codec;
 
 /// Basic URL Player that downloads files from URLs into memory and plays them

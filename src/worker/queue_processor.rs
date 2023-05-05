@@ -1,17 +1,17 @@
-use std::fs;
-use std::fs::File;
+
+
 use std::sync::Arc;
-use std::time::Instant;
-use log::info;
-use nanoid::nanoid;
-use reqwest::Client;
+
+
+
+
 use serenity::model::id::{ChannelId, GuildId};
 use songbird::Songbird;
 use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
 use crate::utils::generic_connector::{DWCActionType, Message};
-use crate::worker::songbird_handler::{SongbirdRequestData};
-use bytes::{Buf, Bytes};
+
+
 use crate::worker::sources::url::create_url_input;
 
 
@@ -47,7 +47,7 @@ pub struct ProcessorIPC {
 }
 
 
-pub async fn process_job(message: Message, config: &Config, sender: Sender<ProcessorIPCData>) {
+pub async fn process_job(message: Message, _config: &Config, sender: Sender<ProcessorIPCData>) {
     let queue_job = message.queue_job_internal.unwrap();
     let job_id = queue_job.job_id;
     sender.send(ProcessorIPCData {

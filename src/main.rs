@@ -1,12 +1,12 @@
-use std::sync::Arc;
-use std::thread::JoinHandle;
+
+
 use crate::config::*;
 use crate::deco::print_intro;
 use crate::logger::setup_logger;
 use crate::scheduler::*;
 use crate::worker::*;
-use crate::worker::songbird_handler::{initialize_songbird, SongbirdRequestData};
-use songbird::Songbird;
+use crate::worker::songbird_handler::{initialize_songbird};
+
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::{Receiver, Sender};
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
@@ -44,7 +44,7 @@ async fn main() {
     let scheduler_config = worker_config.clone();
     let songbird_config = worker_config.clone();
     // Setup Flume Songbird IPC
-    let (tx_processor, rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
+    let (tx_processor, _rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
     let songbird_rx = tx_processor.subscribe();
     let scheduler_rx = tx_processor.subscribe();
     let worker_rx = tx_processor.subscribe();

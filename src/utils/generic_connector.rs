@@ -2,12 +2,12 @@
 
 use std::future::Future;
 use std::process;
-use std::process::Output;
-use std::thread::JoinHandle;
+
+
 use std::time::Duration;
-use async_fn_traits::{AsyncFn0, AsyncFn4, AsyncFnOnce1, AsyncFnOnce4};
-use futures::future::BoxFuture;
-use hashbrown::HashMap;
+
+
+
 
 use kafka;
 use kafka::consumer::Consumer;

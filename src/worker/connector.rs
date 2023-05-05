@@ -1,27 +1,27 @@
-use std::future::Future;
-use std::sync::Arc;
+
+
 use std::thread;
-use std::thread::JoinHandle;
-use std::time::Instant;
-use futures::executor;
-use futures::future::BoxFuture;
-use hashbrown::HashMap;
+
+
+
+
+
 
 use kafka::producer::Producer;
 use log::{info};
-use openssl::version::dir;
-use songbird::Songbird;
+
+
 use tokio::runtime;
 use tokio::runtime::Builder;
-use tokio::sync::broadcast::Sender;
+
 
 use crate::config::Config;
 
-use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, ExternalQueueJobResponse, Message, MessageType, send_message_generic};
+use crate::utils::generic_connector::{ExternalQueueJobResponse, Message, MessageType, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::direct_worker_communication::parse_dwc_message;
-use crate::worker::queue_processor::{LeaveAction, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
+use crate::worker::queue_processor::{process_job, ProcessorIPC};
 // use crate::worker::queue_processor::process_job;
 
 pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
@@ -35,7 +35,7 @@ async fn test() {
     }
 }
 
-fn parse_message_callback(parsed_message: Message, producer: &mut Producer, config: &Config, mut ipc: &mut ProcessorIPC) {
+fn parse_message_callback(parsed_message: Message, producer: &mut Producer, config: &Config, ipc: &mut ProcessorIPC) {
     //TODO: Check if this message is for us
     //TODO: Also worker ping pong stuff
     match parsed_message.message_type {
@@ -45,7 +45,7 @@ fn parse_message_callback(parsed_message: Message, producer: &mut Producer, conf
         // Parseable
         MessageType::DirectWorkerCommunication => {
             let dwc = parsed_message.direct_worker_communication.unwrap();
-            let rt = runtime::Handle::current();
+            let _rt = runtime::Handle::current();
             // executor::block_on(parse_dwc_message(dwc,ipc));
             parse_dwc_message(dwc,ipc);
         },

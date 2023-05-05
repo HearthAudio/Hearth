@@ -1,7 +1,7 @@
 // Main handler for worker role
 
-use std::thread::JoinHandle;
-use hashbrown::HashMap;
+
+
 use log::info;
 use crate::config::Config;
 use crate::worker::connector::initialize_api;

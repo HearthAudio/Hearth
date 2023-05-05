@@ -1,23 +1,22 @@
-use std::env;
-use std::sync::Arc;
-use std::time::Duration;
-use futures::channel::mpsc::{UnboundedReceiver, UnboundedSender};
+
+
+
+
 use log::info;
-use songbird::{SerenityInit, Songbird};
+use songbird::{SerenityInit};
 use serenity::client::Context;
 use serenity::{
     async_trait,
     client::{Client, EventHandler},
-    model::{channel::Message, gateway::Ready},
+    model::{gateway::Ready},
     prelude::GatewayIntents,
-    Result as SerenityResult,
 };
-use serenity::client::bridge::gateway::ShardMessenger;
-use serenity::gateway::InterMessage;
-use songbird::id::{ChannelId, GuildId};
-use tokio::time::sleep;
+
+
+
+
 use crate::config::Config;
-use crate::worker::queue_processor::{Infrastructure, LeaveAction, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
+use crate::worker::queue_processor::{Infrastructure, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 struct Handler;
 

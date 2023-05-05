@@ -6,7 +6,7 @@ use serde::{Serialize,Deserialize};
 use nanoid::nanoid;
 use crate::config::Config;
 use crate::scheduler::connector::{send_message};
-use crate::utils::generic_connector::{AssetType, Message, MessageType};
+use crate::utils::generic_connector::{Message, MessageType};
 // Handles distribution across worker nodes via round robin or maybe another method?
 
 #[derive(Deserialize,Debug,Serialize,Clone)]
