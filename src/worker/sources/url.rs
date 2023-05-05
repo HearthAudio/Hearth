@@ -17,6 +17,7 @@ use crate::worker::sources::helpers::lofty_wac_codec_to_songbird_codec;
 /// Basic URL Player that downloads files from URLs into memory and plays them
 /// TODO: Optimize by only loading chunks into memory at a time by chunking downloads
 /// TODO: This may require some lower level work inside of Songbird/Finch
+/// TODO: This currently only supports .WAV files add support for .OGG, .MP3, .FLAC, and .AIFF
 pub async fn create_url_input(url: &str) -> Input {
 
     let resp = reqwest::get(url).await.unwrap();
