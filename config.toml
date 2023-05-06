@@ -1,8 +1,0 @@
-[roles]
-scheduler = true
-worker = true
-
-[config]
-discord_bot_id = 1103007551165046854
-discord_bot_token = "MTEwMzAwNzU1MTE2NTA0Njg1NA.GZ4vVM.Avhr24w0y6MbuvuJHRdT-LOTvgjQ6w0Mx4Ml5s"
-# You don't have to add the internal worker inside of the scheduler (if configured) here

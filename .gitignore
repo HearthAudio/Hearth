@@ -4,3 +4,4 @@ ca.pem
 service.cert
 service.key
 output.log
+config.toml
