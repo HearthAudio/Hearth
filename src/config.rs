@@ -1,9 +1,8 @@
 use std::fs;
-
 use log::error;
 // Loads config file
 use serde_derive::Deserialize;
-use toml;
+
 
 //TODO: Load config into global constant on load
 

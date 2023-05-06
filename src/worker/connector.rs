@@ -20,19 +20,11 @@ use crate::config::Config;
 use crate::utils::generic_connector::{ExternalQueueJobResponse, Message, MessageType, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
-use crate::worker::direct_worker_communication::parse_dwc_message;
-use crate::worker::queue_processor::{process_job, ProcessorIPC};
-// use crate::worker::queue_processor::process_job;
+use crate::worker::queue_processor::{process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
     let broker = "kafka-185690f4-maxall4-aea3.aivencloud.com:23552".to_owned();
     initialize_worker_consume(vec![broker],config,ipc);
-}
-
-async fn test() {
-    loop {
-        println!("HELLO WORLD!")
-    }
 }
 
 fn parse_message_callback(parsed_message: Message, producer: &mut Producer, config: &Config, ipc: &mut ProcessorIPC) {
@@ -45,9 +37,11 @@ fn parse_message_callback(parsed_message: Message, producer: &mut Producer, conf
         // Parseable
         MessageType::DirectWorkerCommunication => {
             let dwc = parsed_message.direct_worker_communication.unwrap();
-            let _rt = runtime::Handle::current();
-            // executor::block_on(parse_dwc_message(dwc,ipc));
-            parse_dwc_message(dwc,ipc);
+            ipc.sender.send(ProcessorIPCData {
+                action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
+                songbird: None,
+                dwc: Some(dwc)
+            }).expect("Sending DWC Failed");
         },
         MessageType::InternalWorkerQueueJob => {
             let proc_config = config.clone();

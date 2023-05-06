@@ -13,7 +13,7 @@ use crate::worker::sources::helpers::lofty_wac_codec_to_songbird_codec;
 /// TODO: Optimize by only loading chunks into memory at a time by chunking downloads
 /// TODO: This may require some lower level work inside of Songbird/Finch
 /// TODO: This currently only supports .WAV files add support for .OGG, .MP3, .FLAC, and .AIFF
-pub async fn create_url_input(url: &str) -> Input {
+pub async fn url_source(url: String) -> Input {
 
     let resp = reqwest::get(url).await.unwrap();
     let mut pre : Vec<u8> = vec![];

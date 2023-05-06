@@ -27,13 +27,6 @@ impl EventHandler for Handler {
     }
 }
 
-
-pub struct SongbirdRequestData {
-    pub guild_id: u64,
-    pub channel_id: u64
-}
-
-
 pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
 
     let intents = GatewayIntents::non_privileged()
@@ -54,22 +47,21 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
 
 
     while let Ok(msg) = ipc.receiver.recv().await {
-        match msg.action {
+        match msg.action_type {
             ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest) => {
                 //TODO: Do we need to clone data over here?
                 let manager = songbird::get(client_data.read().await)
                     .expect("Songbird Voice client placed in at initialisation.").clone();
                 //TODO: Match here
                 ipc.sender.send(ProcessorIPCData {
-                    action: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming),
+                    action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming),
                     songbird: Some(manager),
-                    leave_action: None,
-                    job_id: msg.job_id
+                    dwc: None,
                 }).expect("Failed to send Songbird result");
             },
             _ => {}
         }
     }
-    tokio::signal::ctrl_c().await;
+    tokio::signal::ctrl_c().await.unwrap();
     println!("Received Ctrl-C, shutting down.");
 }

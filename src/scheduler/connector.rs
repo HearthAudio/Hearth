@@ -12,11 +12,11 @@ pub fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
     initialize_scheduler_consume(vec![broker],config,ipc);
 }
 
-fn parse_message_callback(parsed_message: Message, mut producer: &mut Producer, config: &Config, _ipc: &mut ProcessorIPC) {
+fn parse_message_callback(parsed_message: Message, producer: &mut Producer, config: &Config, _ipc: &mut ProcessorIPC) {
     match parsed_message.message_type {
         MessageType::ExternalQueueJob => {
             // Handle event listener
-            distribute_job(parsed_message, &mut producer, config);
+            distribute_job(parsed_message, producer, config);
         }
         MessageType::InternalWorkerAnalytics => {
             //TODO

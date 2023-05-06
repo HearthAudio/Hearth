@@ -1,14 +1,8 @@
 // Internal connector
 
-use std::future::Future;
+
 use std::process;
-
-
 use std::time::Duration;
-
-
-
-
 use kafka;
 use kafka::consumer::Consumer;
 use kafka::producer::{Producer, Record, RequiredAcks};
@@ -16,11 +10,9 @@ use log::{debug, error, info, warn};
 use openssl;
 use serde::Deserialize;
 use serde_derive::Serialize;
-
 use crate::config::Config;
 use crate::scheduler::distributor::Job;
 use crate::worker::queue_processor::ProcessorIPC;
-
 use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 
@@ -82,6 +74,7 @@ pub enum DWCActionType {
 pub struct DirectWorkerCommunication {
     pub job_id: String,
     pub leave_channel_guild_id: Option<String>,
+    pub play_audio_url: Option<String>,
     pub action_type: DWCActionType
 }
 
