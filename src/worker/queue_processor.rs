@@ -74,6 +74,12 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                     let mut handler = handler_lock.lock().await;
                     let source = url_source(dwc.play_audio_url.unwrap()).await;
                     handler.play_source(source);
+                },
+                ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
+                    let handler_lock = manager.clone().unwrap().get(GuildId(1103499477962207332)).unwrap();
+                    let mut handler = handler_lock.lock().await;
+                    let source = songbird::ytdl(dwc.play_audio_url.unwrap()).await.unwrap();
+                    handler.play_source(source);
                 }
                 _ => {}
             }

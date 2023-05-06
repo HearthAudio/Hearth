@@ -62,7 +62,6 @@ pub enum DWCActionType {
     PlayDirectLink,
     PlayFromYoutube,
     PlayFromSoundcloud,
-    DestroyPlayback,
     SetPlaybackVolume,
     PausePlayback,
     ResumePlayback,
