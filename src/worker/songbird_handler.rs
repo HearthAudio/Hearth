@@ -57,6 +57,7 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
                     action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming),
                     songbird: Some(manager),
                     dwc: None,
+                    job_id: msg.job_id
                 }).expect("Failed to send Songbird result");
             },
             _ => {}

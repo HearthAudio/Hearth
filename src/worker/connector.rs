@@ -40,7 +40,8 @@ fn parse_message_callback(parsed_message: Message, producer: &mut Producer, conf
             ipc.sender.send(ProcessorIPCData {
                 action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
                 songbird: None,
-                dwc: Some(dwc)
+                job_id: dwc.job_id.clone(),
+                dwc: Some(dwc),
             }).expect("Sending DWC Failed");
         },
         MessageType::InternalWorkerQueueJob => {
