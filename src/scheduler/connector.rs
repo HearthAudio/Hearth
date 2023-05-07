@@ -4,7 +4,7 @@ use crate::utils::initialize_consume_generic;
 use kafka::producer::{Producer};
 use crate::scheduler::distributor::{distribute_job};
 use crate::config::Config;
-use crate::utils::generic_connector::{Message, MessageType, send_message_generic};
+use crate::utils::generic_connector::{initialize_client, initialize_producer, Message, MessageType, send_message_generic};
 use crate::worker::queue_processor::ProcessorIPC;
 
 pub fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
@@ -27,7 +27,8 @@ fn parse_message_callback(parsed_message: Message, producer: &mut Producer, conf
 
 
 pub fn initialize_scheduler_consume(brokers: Vec<String>,config: &Config,ipc: &mut ProcessorIPC) {
-    initialize_consume_generic(brokers,config,parse_message_callback,"SCHEDULER",ipc);
+    let mut producer = initialize_producer(initialize_client(&brokers));
+    initialize_consume_generic(brokers,config,parse_message_callback,"SCHEDULER",ipc,&mut producer);
 }
 
 pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {

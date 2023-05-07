@@ -58,7 +58,7 @@ pub struct ProcessorIPC {
 }
 
 
-pub async fn process_job(message: Message, _config: &Config, producer: &mut Producer, sender: Sender<ProcessorIPCData>,report_error: fn(ErrorReport)) {
+pub async fn process_job(message: Message, _config: &Config, sender: Sender<ProcessorIPCData>,report_error: fn(ErrorReport)) {
     let queue_job = message.queue_job_internal.unwrap();
     let job_id = queue_job.job_id;
     sender.send(ProcessorIPCData {

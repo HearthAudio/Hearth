@@ -1,5 +1,4 @@
-
-
+use std::sync::Mutex;
 use std::thread;
 
 
@@ -9,6 +8,7 @@ use std::thread;
 
 use kafka::producer::Producer;
 use log::{error, info};
+use once_cell::sync::{Lazy, OnceCell};
 
 
 use tokio::runtime;
@@ -17,10 +17,12 @@ use tokio::runtime::Builder;
 
 use crate::config::Config;
 use crate::worker::queue_processor::{ErrorReport, Infrastructure};
-use crate::utils::generic_connector::{ExternalQueueJobResponse, Message, MessageType, send_message_generic};
+use crate::utils::generic_connector::{ExternalQueueJobResponse, initialize_client, initialize_producer, Message, MessageType, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::queue_processor::{process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
+
+static PRODUCER: OnceCell<Mutex<Producer>> = OnceCell::new();
 
 pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
     let broker = config.config.kafka_uri.to_owned();
@@ -29,19 +31,19 @@ pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
 
 fn report_error(error: ErrorReport) {
     error!("{}",error.error);
-    //TODO: Report to client
-    // send_message(&Message {
-    //     message_type: MessageType::ErrorReport,
-    //     analytics: None,
-    //     queue_job_request: None,
-    //     queue_job_internal: None,
-    //     request_id: error.request_id.clone(),
-    //     worker_id: None,
-    //     direct_worker_communication: None,
-    //     external_queue_job_response: None,
-    //     job_event: None,
-    //     error_report: Some(error),
-    // },"communication",producer);
+    let mut p = PRODUCER.get().unwrap().lock().unwrap();
+    send_message(&Message {
+        message_type: MessageType::ErrorReport,
+        analytics: None,
+        queue_job_request: None,
+        queue_job_internal: None,
+        request_id: error.request_id.clone(),
+        worker_id: None,
+        direct_worker_communication: None,
+        external_queue_job_response: None,
+        job_event: None,
+        error_report: Some(error),
+    },"communication",&mut p);
 }
 
 fn parse_message_callback(parsed_message: Message, mut producer: &mut Producer, config: &Config, ipc: &mut ProcessorIPC) {
@@ -78,7 +80,7 @@ fn parse_message_callback(parsed_message: Message, mut producer: &mut Producer, 
                     .enable_all()
                     .build()
                     .unwrap();
-                rt.block_on(process_job(parsed_message, &proc_config, &mut producer, sender,report_error));
+                rt.block_on(process_job(parsed_message, &proc_config, sender,report_error));
             });
             send_message(&Message {
                 message_type: MessageType::ExternalQueueJobResponse,
@@ -101,7 +103,10 @@ fn parse_message_callback(parsed_message: Message, mut producer: &mut Producer, 
 
 
 pub fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mut ProcessorIPC) {
-    initialize_consume_generic(brokers, config, parse_message_callback, "WORKER", ipc);
+    let mut producer : Producer = initialize_producer(initialize_client(&brokers));
+    let mut x = PRODUCER.get().unwrap().lock().unwrap();
+    *x = producer;
+    initialize_consume_generic(brokers, config, parse_message_callback, "WORKER", ipc,&mut *x);
 }
 
 pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {

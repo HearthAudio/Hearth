@@ -8,6 +8,7 @@
 - [ ] Reduce Clones https://thenewwazoo.github.io/clone.html
 - [ ] Fix random intermittent failed to fill full buffer errors
 - [ ] Return Errors to client instead of just reporting internally
+- [ ] Remove ID form generic kafka definition
 # TODO General (Post-Launch)
 - [ ] Dashboard
 - [ ] Add SoundCloud support. See `soundcloud` crate
