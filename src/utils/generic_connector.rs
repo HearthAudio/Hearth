@@ -12,7 +12,7 @@ use serde::Deserialize;
 use serde_derive::Serialize;
 use crate::config::Config;
 use crate::scheduler::distributor::Job;
-use crate::worker::queue_processor::ProcessorIPC;
+use crate::worker::queue_processor::{ErrorReport, ProcessorIncomingAction, ProcessorIPC};
 use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 
@@ -28,6 +28,7 @@ pub enum MessageType {
     ExternalQueueJobResponse,
     // Other
     DirectWorkerCommunication,
+    ErrorReport
 
 
 }
@@ -74,7 +75,8 @@ pub struct DirectWorkerCommunication {
     pub job_id: String,
     pub leave_channel_guild_id: Option<String>,
     pub play_audio_url: Option<String>,
-    pub action_type: DWCActionType
+    pub action_type: DWCActionType,
+    pub request_id: String
 }
 
 #[derive(Deserialize,Debug,Serialize,Clone)]
@@ -105,7 +107,8 @@ pub struct Message {
     pub worker_id: Option<usize>, // ID Unique to each worker
     pub direct_worker_communication: Option<DirectWorkerCommunication>,
     pub external_queue_job_response: Option<ExternalQueueJobResponse>,
-    pub job_event: Option<JobEvent>
+    pub job_event: Option<JobEvent>,
+    pub error_report: Option<ErrorReport>
 }
 
 pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {

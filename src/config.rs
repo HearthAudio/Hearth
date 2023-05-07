@@ -4,12 +4,12 @@ use log::error;
 use serde_derive::Deserialize;
 
 
-//TODO: Load config into global constant on load
 
 #[derive(Deserialize,Clone)]
 pub struct InternalConfig {
     pub discord_bot_id: u64,
     pub discord_bot_token: String,
+    pub kafka_uri: String
 }
 
 #[derive(Deserialize,Clone)]

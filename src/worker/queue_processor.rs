@@ -1,4 +1,6 @@
 use std::sync::Arc;
+use kafka::producer::Producer;
+use log::error;
 use serenity::model::id::{ChannelId, GuildId};
 use songbird::Songbird;
 use songbird::tracks::TrackHandle;
@@ -6,12 +8,15 @@ use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
 use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, Message};
 use crate::worker::sources::url::url_source;
+use serde::Deserialize;
+use serde::Serialize;
 
 
 #[derive(Clone,Debug)]
 pub enum Infrastructure {
     SongbirdIncoming,
-    SongbirdInstanceRequest
+    SongbirdInstanceRequest,
+    ErrorReport
 }
 
 #[derive(Clone,Debug)]
@@ -30,11 +35,19 @@ pub struct PlayAudioAction {
     pub url: String
 }
 
+#[derive(Deserialize,Debug,Serialize,Clone)]
+pub struct ErrorReport {
+    pub error: String,
+    pub request_id: String,
+    pub job_id: String
+}
+
 #[derive(Clone,Debug)]
 pub struct ProcessorIPCData {
     pub action_type: ProcessorIncomingAction,
     pub songbird: Option<Arc<Songbird>>,
     pub dwc: Option<DirectWorkerCommunication>,
+    pub error_report: Option<ErrorReport>,
     pub job_id: String,
 }
 
@@ -45,14 +58,15 @@ pub struct ProcessorIPC {
 }
 
 
-pub async fn process_job(message: Message, _config: &Config, sender: Sender<ProcessorIPCData>) {
+pub async fn process_job(message: Message, _config: &Config, producer: &mut Producer, sender: Sender<ProcessorIPCData>,report_error: fn(ErrorReport, &mut Producer)) {
     let queue_job = message.queue_job_internal.unwrap();
     let job_id = queue_job.job_id;
     sender.send(ProcessorIPCData {
         action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest),
         songbird: None,
         dwc: None,
-        job_id: job_id.clone()
+        job_id: job_id.clone(),
+        error_report: None
     }).unwrap();
     let mut manager : Option<Arc<Songbird>> = None;
     let mut track : Option<TrackHandle> = None;
@@ -83,13 +97,79 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                     track = Some(internal_track);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
-                    track.as_ref().unwrap().pause().unwrap();
+                    let _track = track.as_ref();
+                    match _track {
+                        Some(t) => {
+                            let pause = t.pause();
+                            match pause {
+                                Ok(_) => {},
+                                Err(e) => {
+                                    report_error(ErrorReport {
+                                        error: format!("Failed to pause with error: {}",e),
+                                        request_id: msg.dwc.unwrap().request_id,
+                                        job_id: msg.job_id
+                                    },producer)
+                                }
+                            }
+                        },
+                        None => {
+                            report_error(ErrorReport {
+                                error: "Track not found for pause playback".to_string(),
+                                request_id: msg.dwc.unwrap().request_id,
+                                job_id: msg.job_id
+                            },producer)
+                        }
+                    }
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::ResumePlayback) => {
-                    track.as_ref().unwrap().play().unwrap();
+                    let _track = track.as_ref();
+                    match _track {
+                        Some(t) => {
+                            let play = t.play();
+                            match play {
+                                Ok(_) => {},
+                                Err(e) => {
+                                    report_error(ErrorReport {
+                                        error: format!("Failed to resume playback with error: {}",e),
+                                        request_id: msg.dwc.unwrap().request_id,
+                                        job_id: msg.job_id
+                                    },producer)
+                                }
+                            }
+                        },
+                        None => {
+                            report_error(ErrorReport {
+                                error: "Track not found for resume playback".to_string(),
+                                request_id: msg.dwc.unwrap().request_id,
+                                job_id: msg.job_id
+                            },producer)
+                        }
+                    }
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
-                    track.as_ref().unwrap().set_volume(0.5).unwrap();
+                    let _track = track.as_ref();
+                    match _track {
+                        Some(t) => {
+                            let set_vol = t.set_volume(0.5);
+                            match set_vol {
+                                Ok(_) => {},
+                                Err(e) => {
+                                    report_error(ErrorReport {
+                                        error: format!("Failed to set volume with error: {}",e),
+                                        request_id: msg.dwc.unwrap().request_id,
+                                        job_id: msg.job_id
+                                    },producer)
+                                }
+                            }
+                        },
+                        None => {
+                            report_error(ErrorReport {
+                                error: "Track not found for set volume".to_string(),
+                                request_id: msg.dwc.unwrap().request_id,
+                                job_id: msg.job_id
+                            },producer)
+                        }
+                    }
                 }
                 _ => {}
             }

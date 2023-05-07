@@ -1,8 +1,4 @@
-
-
-
-
-use log::info;
+use log::{error, info};
 use songbird::{SerenityInit};
 use serenity::client::Context;
 use serenity::{
@@ -11,10 +7,6 @@ use serenity::{
     model::{gateway::Ready},
     prelude::GatewayIntents,
 };
-
-
-
-
 use crate::config::Config;
 use crate::worker::queue_processor::{Infrastructure, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
@@ -29,8 +21,7 @@ impl EventHandler for Handler {
 
 pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
 
-    let intents = GatewayIntents::non_privileged()
-        | GatewayIntents::MESSAGE_CONTENT;
+    let intents = GatewayIntents::non_privileged();
 
     let mut client = Client::builder(&config.config.discord_bot_token, intents)
         .event_handler(Handler)
@@ -42,23 +33,30 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
     tokio::spawn(async move {
         let _ = client.start().await.map_err(|why| println!("Client ended: {:?}", why));
     });
+
     info!("Songbird INIT");
-
-
 
     while let Ok(msg) = ipc.receiver.recv().await {
         match msg.action_type {
             ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest) => {
-                //TODO: Do we need to clone data over here?
-                let manager = songbird::get(client_data.read().await)
-                    .expect("Songbird Voice client placed in at initialisation.").clone();
-                //TODO: Match here
-                ipc.sender.send(ProcessorIPCData {
-                    action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming),
-                    songbird: Some(manager),
-                    dwc: None,
-                    job_id: msg.job_id
-                }).expect("Failed to send Songbird result");
+                let manager = songbird::get(client_data.read().await);
+                match manager {
+                    Some(manager) => {
+                        let result = ipc.sender.send(ProcessorIPCData {
+                            action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming),
+                            songbird: Some(manager),
+                            dwc: None,
+                            job_id: msg.job_id.clone(),
+                            error_report: None
+                        });
+                        match result {
+                            Ok(_) => {},
+                            Err(e) => error!("Failed to send songbird instance to job: {} with error: {:?}",&msg.job_id,e)
+                        }
+                    },
+                    None => error!("Failed to get songbird instance for job: {}",&msg.job_id)
+                }
+
             },
             _ => {}
         }
