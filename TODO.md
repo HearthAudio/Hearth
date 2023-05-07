@@ -1,6 +1,6 @@
 # TODO/Tech Debt Before Launch:
 - [ ] Add all other non-implemented Commands see COMMANDS.md for list
-- [ ] Better Error Handling - To Improve reliability remove as much unwraps and excepts as possible and use matches with error handlers that try to make it work no matter what happens e.g. pulling cached values that may be out of date, but it might work, retrying requests, and other such methods. Also failover for the scheduler.
+- [ ] Scheduler failover
 - [ ] Worker Ping-Pong and Worker Interface for dynamic joins and disconnects
 - [ ] Add License warning if used on over 1000 servers
 - [ ] Move a bunch of stuff into Config
@@ -19,5 +19,7 @@
 - [ ] Possible performance improvement by using single separate channel to listen DWC communications and store in HashMap instead of broadcasting. Use tokioselect! in loop to await standard ipc and seperate channel
 # DONE
 - [x] Add YouTube support
+- [x] Report errors back to client
+- [x] Do not crash thread on queue processor if error occurs
 - [x] Replace full memory download with chunking for url player and other players
 - [x] Add warning if youtube-dl is not installed that youtube is not supported
