@@ -8,6 +8,7 @@
 - [ ] Fix random intermittent failed to fill full buffer errors
 - [ ] Return Errors to client instead of just reporting internally
 - [ ] Remove ID from generic kafka definition
+- [ ] Unit Tests
 # TODO General (Post-Launch)
 - [ ] Dashboard
 - [ ] Add SoundCloud support. See `soundcloud` crate
