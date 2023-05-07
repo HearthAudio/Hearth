@@ -73,10 +73,11 @@ pub enum DWCActionType {
 #[derive(Deserialize,Debug,Serialize,Clone)]
 pub struct DirectWorkerCommunication {
     pub job_id: String,
-    pub leave_channel_guild_id: Option<String>,
+    pub guild_id: Option<String>,
     pub play_audio_url: Option<String>,
     pub action_type: DWCActionType,
-    pub request_id: String
+    pub request_id: String,
+    pub new_volume: Option<f32>
 }
 
 #[derive(Deserialize,Debug,Serialize,Clone)]

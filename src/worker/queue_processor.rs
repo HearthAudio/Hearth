@@ -85,11 +85,11 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                 match msg.action_type {
                     ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
                         let dwc = msg.dwc.unwrap();
-                        manager.clone().unwrap().remove(GuildId(dwc.leave_channel_guild_id.unwrap().parse().unwrap())).await.unwrap();
+                        manager.clone().unwrap().remove(GuildId(dwc.guild_id.unwrap().parse().unwrap())).await.unwrap();
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
                         let dwc = msg.dwc.unwrap();
-                        let handler_lock = manager.clone().unwrap().get(GuildId(1103499477962207332)).unwrap();
+                        let handler_lock = manager.clone().unwrap().get(GuildId(dwc.guild_id.unwrap().parse().unwrap())).unwrap();
                         let mut handler = handler_lock.lock().await;
                         let source = url_source(dwc.play_audio_url.unwrap().as_str()).await;
                         match source {
@@ -105,7 +105,7 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
                         let dwc = msg.dwc.unwrap();
-                        let handler_lock = manager.clone().unwrap().get(GuildId(1103499477962207332)).unwrap();
+                        let handler_lock = manager.clone().unwrap().get(GuildId(dwc.guild_id.unwrap().parse().unwrap())).unwrap();
                         let mut handler = handler_lock.lock().await;
                         let source = songbird::ytdl(dwc.play_audio_url.unwrap()).await.unwrap();
                         let internal_track = handler.play_source(source);
@@ -162,16 +162,17 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                         }
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
+                        let dwc = msg.dwc.unwrap();
                         let _track = track.as_ref();
                         match _track {
                             Some(t) => {
-                                let set_vol = t.set_volume(0.5);
+                                let set_vol = t.set_volume(dwc.new_volume.unwrap());
                                 match set_vol {
                                     Ok(_) => {},
                                     Err(e) => {
                                         report_error(ErrorReport {
                                             error: format!("Failed to set volume with error: {}",e),
-                                            request_id: msg.dwc.unwrap().request_id,
+                                            request_id: dwc.request_id,
                                             job_id: msg.job_id
                                         })
                                     }
@@ -180,7 +181,7 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                             None => {
                                 report_error(ErrorReport {
                                     error: "Track not found for set volume".to_string(),
-                                    request_id: msg.dwc.unwrap().request_id,
+                                    request_id: dwc.request_id,
                                     job_id: msg.job_id
                                 })
                             }
