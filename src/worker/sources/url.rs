@@ -21,15 +21,6 @@ use crate::worker::queue_processor::ErrorReport;
 use crate::worker::sources::helpers::{get_extension_from_uri, lofty_wav_codec_to_songbird_codec};
 use snafu::{ResultExt, Snafu, Whatever, whatever};
 
-#[derive(Debug, Snafu)]
-enum URLStreamSourceError {
-    #[snafu(display("Invalid file format. Valid file formats are: .wav and .ogg. using .ogg is recommended as .wav will be downscaled to .ogg internally to support the discord api at the cost of extra memory and cpu cycles."))]
-    InvalidFileFormat {  },
-
-    #[snafu(display("Reqwest failed: {}",  source))]
-    ReqwestError { source: reqwest::Error },
-}
-
 
 /// Basic URL Player that downloads files from URLs into memory and plays them
 pub async fn url_source(url: &str) -> Result<Input, Whatever> {

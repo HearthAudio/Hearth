@@ -2,10 +2,12 @@
 
 
 use std::process;
+use std::sync::Mutex;
 use std::time::Duration;
 use kafka;
 use kafka::consumer::Consumer;
 use kafka::producer::{Producer, Record, RequiredAcks};
+use lazy_static::lazy_static;
 use log::{debug, error, info, warn};
 use openssl;
 use serde::Deserialize;
@@ -112,6 +114,10 @@ pub struct Message {
     pub error_report: Option<ErrorReport>
 }
 
+lazy_static! {
+    pub static ref PRODUCER: Mutex<Option<Producer>> = Mutex::new(None);
+}
+
 pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
     // ~ OpenSSL offers a variety of complex configurations. Here is an example:
     let mut builder = SslConnector::builder(SslMethod::tls()).unwrap();
@@ -199,7 +205,7 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &mut Producer, &Config, &mut ProcessorIPC), id: &str, ipc: &mut ProcessorIPC,mut producer: &mut Producer) {
+pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC), id: &str, ipc: &mut ProcessorIPC,mut producer: &PRODUCER) {
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))
         .create()
