@@ -818,6 +818,7 @@ dependencies = [
  "futures",
  "humantime",
  "kafka",
+ "lazy_static",
  "lofty",
  "log",
  "nanoid",

@@ -76,7 +76,7 @@ pub struct DirectWorkerCommunication {
     pub guild_id: Option<String>,
     pub play_audio_url: Option<String>,
     pub action_type: DWCActionType,
-    pub request_id: String,
+    pub request_id: Option<String>,
     pub new_volume: Option<f32>
 }
 

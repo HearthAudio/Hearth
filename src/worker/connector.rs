@@ -7,6 +7,7 @@ use std::thread;
 
 
 use kafka::producer::Producer;
+use lazy_static::lazy_static;
 use log::{error, info};
 use once_cell::sync::{Lazy, OnceCell};
 
@@ -22,7 +23,10 @@ use crate::utils::generic_connector::{ExternalQueueJobResponse, initialize_clien
 use crate::utils::initialize_consume_generic;
 use crate::worker::queue_processor::{process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
-static PRODUCER: OnceCell<Mutex<Producer>> = OnceCell::new();
+lazy_static! {
+    static ref PRODUCER: Mutex<Option<Producer>> = Mutex::new(None);
+}
+
 
 pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
     let broker = config.config.kafka_uri.to_owned();
@@ -31,7 +35,8 @@ pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
 
 fn report_error(error: ErrorReport) {
     error!("{}",error.error);
-    let mut p = PRODUCER.get().unwrap().lock().unwrap();
+    let mut px = PRODUCER.lock().unwrap();
+    let mut p = px.as_mut();
     send_message(&Message {
         message_type: MessageType::ErrorReport,
         analytics: None,
@@ -43,7 +48,7 @@ fn report_error(error: ErrorReport) {
         external_queue_job_response: None,
         job_event: None,
         error_report: Some(error),
-    },"communication",&mut p);
+    },"communication",&mut p.unwrap());
 }
 
 fn parse_message_callback(parsed_message: Message, mut producer: &mut Producer, config: &Config, ipc: &mut ProcessorIPC) {
@@ -52,8 +57,9 @@ fn parse_message_callback(parsed_message: Message, mut producer: &mut Producer, 
     match parsed_message.message_type {
         // Parseable
         MessageType::DirectWorkerCommunication => {
-            let dwc = parsed_message.direct_worker_communication.unwrap();
+            let mut dwc = parsed_message.direct_worker_communication.unwrap();
             let job_id = dwc.job_id.clone();
+            dwc.request_id = Some(parsed_message.request_id.clone()); // Copy standard request id to DWC request id
             let result = ipc.sender.send(ProcessorIPCData {
                 action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
                 songbird: None,
@@ -104,9 +110,12 @@ fn parse_message_callback(parsed_message: Message, mut producer: &mut Producer, 
 
 pub fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mut ProcessorIPC) {
     let mut producer : Producer = initialize_producer(initialize_client(&brokers));
-    let mut x = PRODUCER.get().unwrap().lock().unwrap();
-    *x = producer;
-    initialize_consume_generic(brokers, config, parse_message_callback, "WORKER", ipc,&mut *x);
+    *PRODUCER.lock().unwrap() = Some(producer);
+
+    let mut px = PRODUCER.lock().unwrap();
+    let mut p = px.as_mut();
+
+    initialize_consume_generic(brokers, config, parse_message_callback, "WORKER", ipc,&mut p.unwrap());
 }
 
 pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {
