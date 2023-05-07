@@ -1,7 +1,7 @@
 
 
 use crate::config::*;
-use crate::deco::print_intro;
+use crate::deco::{print_intro, print_warnings};
 use crate::logger::setup_logger;
 use crate::scheduler::*;
 use crate::worker::*;
@@ -39,6 +39,7 @@ async fn main() {
     print_intro();
     // Setup logger
     setup_logger().expect("Logger Setup Failed - A bit ironic no?");
+    print_warnings();
     // Load config
     let worker_config = init_config();
     let scheduler_config = worker_config.clone();

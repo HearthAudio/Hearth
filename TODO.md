@@ -2,7 +2,6 @@
 - [ ] Benchmark playback
 - [ ] Add all other non-implemented Commands see COMMANDS.md for list
 - [ ] Add Effects (Volume,Channel Mix)
-- [ ] Add Soundcloud support
 - [ ] Add env variable for setting config file and kafka ssl 
 - [ ] Better Error Handling - To Improve reliability remove as much unwraps and excepts as possible and use matches with error handlers that try to make it work no matter what happens e.g. pulling cached values that may be out of date, but it might work, retrying requests, and other such methods. Also failover for the scheduler.
 - [ ] Worker Ping-Pong and Worker Interface for dynamic joins and disconnects
@@ -11,6 +10,7 @@
 - [ ] Move a bunch of stuff into Config
 - [ ] Reduce Clones https://thenewwazoo.github.io/clone.html
 - [ ] Replace full memory download with chunking for url player and other players
+- [ ] Fix random intermittent failed to fill full buffer errors
 # TODO General (Post-Launch)
 - [ ] Dashboard
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)

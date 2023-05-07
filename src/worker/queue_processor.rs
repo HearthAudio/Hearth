@@ -1,12 +1,7 @@
-
-
 use std::sync::Arc;
-
-
-
-
 use serenity::model::id::{ChannelId, GuildId};
 use songbird::Songbird;
+use songbird::tracks::TrackHandle;
 use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
 use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, Message};
@@ -60,6 +55,7 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
         job_id: job_id.clone()
     }).unwrap();
     let mut manager : Option<Arc<Songbird>> = None;
+    let mut track : Option<TrackHandle> = None;
     while let Ok(msg) = sender.subscribe().recv().await {
         if job_id == msg.job_id {
             match msg.action_type {
@@ -75,7 +71,7 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                     let dwc = msg.dwc.unwrap();
                     let handler_lock = manager.clone().unwrap().get(GuildId(1103499477962207332)).unwrap();
                     let mut handler = handler_lock.lock().await;
-                    let source = url_source(dwc.play_audio_url.unwrap()).await;
+                    let source = url_source(dwc.play_audio_url.unwrap().as_str()).await;
                     handler.play_source(source);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
@@ -83,7 +79,17 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                     let handler_lock = manager.clone().unwrap().get(GuildId(1103499477962207332)).unwrap();
                     let mut handler = handler_lock.lock().await;
                     let source = songbird::ytdl(dwc.play_audio_url.unwrap()).await.unwrap();
-                    handler.play_source(source);
+                    let internal_track = handler.play_source(source);
+                    track = Some(internal_track);
+                }
+                ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
+                    track.as_ref().unwrap().pause().unwrap();
+                },
+                ProcessorIncomingAction::Actions(DWCActionType::ResumePlayback) => {
+                    track.as_ref().unwrap().play().unwrap();
+                }
+                ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
+                    track.as_ref().unwrap().set_volume(0.5).unwrap();
                 }
                 _ => {}
             }

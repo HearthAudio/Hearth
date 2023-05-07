@@ -1,21 +1,32 @@
 
-use std::io::{Cursor, Read};
+use std::io::{Cursor, Read, Seek};
+use std::thread;
+use std::time::Duration;
 
 use bytes::Buf;
 
 use lofty::{AudioFile, ParseOptions};
 use lofty::iff::wav;
+use reqwest::header::{HeaderValue, RANGE};
+use songbird::Call;
 use songbird::input::{Container, Input, Metadata, Reader};
+use songbird::input::reader::StreamFromURL;
 use symphonia_core::io::{ReadOnlySource};
+use tokio::runtime::Builder;
+use tokio::sync::MutexGuard;
+use tokio::time;
 use crate::worker::sources::helpers::lofty_wac_codec_to_songbird_codec;
 
 /// Basic URL Player that downloads files from URLs into memory and plays them
 /// TODO: Optimize by only loading chunks into memory at a time by chunking downloads
 /// TODO: This may require some lower level work inside of Songbird/Finch
 /// TODO: This currently only supports .WAV files add support for .OGG, .MP3, .FLAC, and .AIFF
-pub async fn url_source(url: String) -> Input {
-
-    let resp = reqwest::get(url).await.unwrap();
+pub async fn url_source(url: &str) -> Input {
+    let chunk_size = 2000000; // Chunk = 2MByte
+    let range = HeaderValue::from_str(&format!("bytes={}-{}", 0, &chunk_size)).expect("string provided by format!");
+    println!("RANGE: {:?}",range);
+    let client = reqwest::Client::new();
+    let resp = client.get(url).header(RANGE, range).send().await.unwrap();
     let mut pre : Vec<u8> = vec![];
 
     let bytes = resp.bytes().await.unwrap().clone();
@@ -26,14 +37,14 @@ pub async fn url_source(url: String) -> Input {
     metadata_bytes.reader().read_to_end(&mut pre).unwrap();
     let mut mock_file : Cursor<Vec<u8>> = Cursor::new(pre);
 
+    let mut mfp = mock_file.clone();
     let parsing_options = ParseOptions::new();
-    let tagged_file = wav::WavFile::read_from(&mut mock_file, parsing_options).unwrap();
+    let tagged_file = wav::WavFile::read_from(&mut mfp, parsing_options).unwrap();
     let properties = tagged_file.properties();
 
-    let src = ReadOnlySource::new(r); //TODO: Figure out how to allow seeking when using Cursor<> mock file playback does not occur even if mutated by using read_to_end playback does not occur
+    // let src = ReadOnlySource::new(r); //TODO: Fix seeking maybe see streamcatcher library
 
     let x =  Input {
-        //TODO: Proper Metadata parsing so this is less shit and is not super unreliable
         metadata: Box::new(Metadata {
             track: None,
             artist: None,
@@ -48,7 +59,7 @@ pub async fn url_source(url: String) -> Input {
             thumbnail: None,
         }),
         stereo: properties.channels() >= 2,
-        reader: Reader::Extension(Box::new(src)),
+        reader: Reader::StreamForURL(StreamFromURL::new(mock_file,url, chunk_size)),
         kind: lofty_wac_codec_to_songbird_codec(tagged_file.properties().format()),
         container: Container::Raw,
         pos: 0,
