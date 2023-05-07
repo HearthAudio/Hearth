@@ -39,6 +39,7 @@ pub fn distribute_job(message : Message,producer: &mut Producer,_config: &Config
                 direct_worker_communication: None,
                 external_queue_job_response: None,
                 job_event: None,
+                error_report: None
             };
 
             send_message(internal_message,"communication",producer);

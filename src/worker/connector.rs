@@ -27,20 +27,21 @@ pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
     initialize_worker_consume(vec![broker],config,ipc);
 }
 
-fn report_error(error: ErrorReport,producer: &mut Producer) {
+fn report_error(error: ErrorReport) {
     error!("{}",error.error);
-    send_message(&Message {
-        message_type: MessageType::ErrorReport,
-        analytics: None,
-        queue_job_request: None,
-        queue_job_internal: None,
-        request_id: error.request_id.clone(),
-        worker_id: None,
-        direct_worker_communication: None,
-        external_queue_job_response: None,
-        job_event: None,
-        error_report: Some(error),
-    },"communication",producer);
+    //TODO: Report to client
+    // send_message(&Message {
+    //     message_type: MessageType::ErrorReport,
+    //     analytics: None,
+    //     queue_job_request: None,
+    //     queue_job_internal: None,
+    //     request_id: error.request_id.clone(),
+    //     worker_id: None,
+    //     direct_worker_communication: None,
+    //     external_queue_job_response: None,
+    //     job_event: None,
+    //     error_report: Some(error),
+    // },"communication",producer);
 }
 
 fn parse_message_callback(parsed_message: Message, mut producer: &mut Producer, config: &Config, ipc: &mut ProcessorIPC) {

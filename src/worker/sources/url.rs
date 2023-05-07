@@ -1,6 +1,5 @@
-
 use std::io::{Cursor, Read, Seek};
-use std::thread;
+use std::{fmt, thread};
 use std::time::Duration;
 
 use bytes::Buf;
@@ -19,30 +18,40 @@ use tokio::runtime::Builder;
 use tokio::sync::MutexGuard;
 use tokio::time;
 use crate::worker::queue_processor::ErrorReport;
-use crate::worker::sources::helpers::lofty_wav_codec_to_songbird_codec;
+use crate::worker::sources::helpers::{get_extension_from_uri, lofty_wav_codec_to_songbird_codec};
+use snafu::{ResultExt, Snafu, Whatever, whatever};
+
+#[derive(Debug, Snafu)]
+enum URLStreamSourceError {
+    #[snafu(display("Invalid file format. Valid file formats are: .wav and .ogg. using .ogg is recommended as .wav will be downscaled to .ogg internally to support the discord api at the cost of extra memory and cpu cycles."))]
+    InvalidFileFormat {  },
+
+    #[snafu(display("Reqwest failed: {}",  source))]
+    ReqwestError { source: reqwest::Error },
+}
+
 
 /// Basic URL Player that downloads files from URLs into memory and plays them
-pub async fn url_source(url: &str,report_error: fn(ErrorReport, &mut Producer),mut producer: &mut Producer,request_id: String,job_id: String) -> Input {
+pub async fn url_source(url: &str) -> Result<Input, Whatever> {
     let chunk_size = 250000; // Chunk = 250KB
-    let range = HeaderValue::from_str(&format!("bytes={}-{}", 0, &chunk_size)).expect("string provided by format!");
-    println!("RANGE: {:?}",range);
+    let range = HeaderValue::from_str(&format!("bytes={}-{}", 0, &chunk_size)).with_whatever_context(|_| format!("Failed to generate range header"))?;
     let client = reqwest::Client::new();
-    let resp = client.get(url).header(RANGE, range).send().await.unwrap();
+    let resp = client.get(url).header(RANGE, range).send().await.with_whatever_context(|_| format!("Failed to read file from URL"))?;
     let mut pre : Vec<u8> = vec![];
 
-    let bytes = resp.bytes().await.unwrap().clone();
+    let bytes = resp.bytes().await.with_whatever_context(|_| format!("Failed to read bytes from file. Malformed?"))?.clone();
     let metadata_bytes = bytes.clone(); // This is required because for some reason read_to_end breaks the pre-buf symph
 
-    metadata_bytes.reader().read_to_end(&mut pre).unwrap();
+    metadata_bytes.reader().read_to_end(&mut pre).with_whatever_context(|_| format!("Failed to read bytes into in memory file buffer"))?;
     let mock_file : Cursor<Vec<u8>> = Cursor::new(pre);
 
-    let format = "wav"; //TODO: Generate
+    let format = get_extension_from_uri(url);
     let mut metadata: Option<Metadata> = None;
     let mut mfp = mock_file.clone();
     let mut stereo = false;
     let mut codec : Option<Codec> = None;
     let mut container = Container::Raw;
-    match format {
+    match format.as_str() {
         "ogg" => {
             let parsing_options = ParseOptions::new();
             let tagged_file = ogg::OpusFile::read_from(&mut mfp, parsing_options).unwrap();
@@ -90,13 +99,7 @@ pub async fn url_source(url: &str,report_error: fn(ErrorReport, &mut Producer),m
             // We may support this in the future it is not currently supported because songbird does
             // not support the LAME codec
         // },
-        _ => {
-            report_error(ErrorReport {
-                error: "Unsupported file format. Supported file formats are:. wav and .ogg".to_string(),
-                request_id,
-                job_id,
-            },producer)
-        }
+        _ => whatever!("Invalid file format. Valid file formats are: .wav and .ogg. using .ogg is recommended as .wav will be downscaled to .ogg internally to support the discord api at the cost of extra memory and cpu cycles.")
     }
 
     let x =  Input {
@@ -107,5 +110,5 @@ pub async fn url_source(url: &str,report_error: fn(ErrorReport, &mut Producer),m
         container: container,
         pos: 0,
     };
-    return x;
+    return Ok(x);
 }
