@@ -19,9 +19,9 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
         <h3 align="center">Client Libraries</h3>
         <div align="center">
             <img style="margin-top: 1.5rem" height="70" src="assets/java.svg"/>
-            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" src="assets/javascript.svg"/>
-            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" src="assets/rust.svg"/>
-            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" src="assets/typescript.svg"/>
+            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" style="margin-left:2rem;" src="assets/javascript.svg"/>
+            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" style="margin-left:2rem;" src="assets/rust.svg"/>
+            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" style="margin-left:2rem;" src="assets/typescript.svg"/>
         </div>
         <p align="center" >
             With our pre-built client libraries you can get started on your bot super quickly and easily. 
@@ -38,15 +38,7 @@ Ready to get started with Hearth? See the getting started guide <a src="https://
 If you want to create an Issue, PR, Or contribute in any other way I'm happy to review PRs, issues, or just chat.
 </p>
 <h3 align="center">Roadmap</h3>
-<input type="checkbox" >
-<label>Effects</label><br>
-<input type="checkbox" >
-<label>Faster YouTube downloads</label><br>
-<input type="checkbox" >
-<label>Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS</label><br>
-<input type="checkbox" >
-<label>Soundcloud Support</label><br>
-<input type="checkbox" >
+- [ ] Eggs
 <label>Dashboard Interface for Scheduler</label><br>
 <h3 align="center">Contact</h3>
 <p align="center" >
