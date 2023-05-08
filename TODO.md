@@ -2,11 +2,9 @@
 - [ ] Add all other non-implemented Commands see COMMANDS.md for list
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Move a bunch of stuff into Config
-- [ ] Unit Tests
-- [ ] Fix build warnings
+- [ ] More Unit Tests
 # Bugs to Fix:
 - [ ] Fix random intermittent failed to fill full buffer errors (Not seen for a while)
-- [ ] Fix weird playback speed bug (see issue https://github.com/serenity-rs/songbird/issues/180)
 # TODO General (Post-Launch)
 - [ ] Chunk Youtube downloads
 - [ ] Dashboard
@@ -29,3 +27,5 @@
 - [x] Add License warning if used on over 1000 servers
 - [x] Remove ID from generic kafka definition
 - [x] Fix file type parser if there are `.`s in the path other than file extension
+- [x] Fix build warnings
+- [x] Fix weird playback speed bug (see issue https://github.com/serenity-rs/songbird/issues/180)
