@@ -1,19 +1,18 @@
 use std::sync::Arc;
 use kafka::producer::Producer;
 use log::error;
-use serenity::model::id::{ChannelId, GuildId};
 use songbird::Songbird;
 use songbird::tracks::TrackHandle;
 use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
 use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, Message};
-use crate::worker::sources::url::url_source;
 use crate::actions::*;
 use serde::Deserialize;
 use serde::Serialize;
 use serenity::cache::Cache;
 use serenity::Client;
 use snafu::whatever;
+use songbird::id::{ChannelId, GuildId};
 use crate::worker::actions::channel_manager::leave_channel;
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{pause_playback, resume_playback, set_playback_volume};
@@ -74,6 +73,7 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
         job_id: job_id.clone(),
         error_report: None,
     }).unwrap();
+    let client = reqwest::Client::new(); // TEMP We should probs move this into an arc and share across jobs
     let mut manager : Option<Arc<Songbird>> = None;
     let mut track : Option<TrackHandle> = None;
     let mut ready = false;
@@ -85,6 +85,8 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                         manager = msg.songbird;
                         ready = true;
                         // Join channel
+                        //TODO Errors
+                        //TODO move into channel manager
                         manager.as_mut().unwrap().join(GuildId(queue_job.guild_id.clone().parse().unwrap()), ChannelId(queue_job.voice_channel_id.clone().parse().unwrap())).await;
                     },
                     _ => {}
@@ -96,7 +98,7 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                        leave_channel(&dwc,&mut manager).await;
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
-                        let play = play_direct_link(&dwc,&mut manager).await;
+                        let play = play_direct_link(&dwc,&mut manager,client.clone()).await;
                         match play {
                             Ok(t) => {
                                 track = Some(t);
@@ -111,7 +113,7 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                         }
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
-                        let youtube = play_from_youtube(&mut manager,&dwc).await;
+                        let youtube = play_from_youtube(&mut manager,&dwc,client.clone()).await;
                         match youtube {
                             Ok(t) => {
                                 track = Some(t);

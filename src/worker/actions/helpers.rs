@@ -1,7 +1,7 @@
 use std::sync::{Arc, Mutex};
-use serenity::model::id::GuildId;
 use snafu::{OptionExt, ResultExt, Whatever};
 use songbird::{Call, Songbird};
+use songbird::id::GuildId;
 
 pub async fn get_manager_call(guild_id: &String, manager: &mut Option<Arc<Songbird>>) -> Result<Arc<tokio::sync::Mutex<Call>>,Whatever> {
    let h = manager.as_mut()

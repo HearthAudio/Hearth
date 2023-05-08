@@ -21,8 +21,10 @@ serde_json = "1.0.96"
 futures = "0.3.28"
 fern = { version = "0.6.2", features = ["colored"] }
 reqwest = "0.11.17"
-songbird = { path = "../finch" }
-serenity = { version = "0.11.5", default-features = false, features = ["builder","cache","client","gateway","http","model","utils","rustls_backend"] }
+#songbird = { path = "../songbird", features = ["serenity","gateway","native"] }
+#serenity = { path = "../serenity-next" }
+#serenity = { version = "0.11.5", default-features = true }
+#serenity = { version = "0.11.5", default-features = false, features = ["builder","cache","client","gateway","http","model","utils","rustls_backend"] }
 bytes = "1.4.0"
 symphonia = "0.5.2"
 lofty = "0.12.1"
@@ -31,3 +33,11 @@ url = "2.3.1"
 snafu = "0.7.4"
 symphonia-core = "0.5.2"
 lazy_static = "1.4.0"
+
+[dependencies.songbird]
+path = "../songbird"
+
+[dependencies.serenity]
+features = ["client", "standard_framework", "voice", "rustls_backend"]
+git = "https://github.com/serenity-rs/serenity"
+branch = "next"
