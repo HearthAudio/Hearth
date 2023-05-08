@@ -13,6 +13,7 @@
 Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more concurrent streams and uses 18x less memory. It does not support every feature of LavaLink but it does support most of them. And we are working hard on bringing Hearth to feature parity.
 </p>
 <h3 align="center">Features</h3>
+<hr/>
 <p align="center" >
 <ul>
   <li>💨 Hearth is extremely performant and can support 60x more concurrent streams than LavaLink which means significantly less node servers potentially saving thousands of dollars.</li><br/>
@@ -22,7 +23,7 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
 <div style="display: flex;align-content: center;justify-content: center;">
     <div style="display: flex;flex-direction: column;">
         <h3 align="center">Client Libraries</h3>
-        <br/>
+        <hr/>
         <div align="center">
             <img height="70" src="assets/java.svg"/>
             <img  height="70"  src="assets/spacer.png"/>
@@ -40,22 +41,27 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
 </div>
 
 <h3 align="center">Getting Started</h3>
+<hr/>
 <p align="center" >
 Ready to get started with Hearth? See the getting started guide <a href="https://github.com/Hearth-Industries/Hearth/blob/master/GETTING_STARTED.md">here</a> to start a new project with Hearth or integrate Hearth into your pre-existing project.
 </p>
 <h3 align="center">Contributions</h3>
+<hr/>
 <p align="center" >
 If you want to create an Issue, PR, Or contribute in any other way I'm happy to review PRs, issues, or just chat.
 </p>
 <h3 align="center">Roadmap</h3>
-<ul>
-  <li>Effects</li><br/>
-  <li>Faster YouTube downloads</li><br/>
-  <li>Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS</li><br/>
-  <li >Soundcloud Support</li><br/>
-  <li >Dashboard Interface for Scheduler </li><br/>
-</ul>
+<p align="center" >
+We are planning tons of new features to make Hearth even better!
+<hr/>
+<p align="center" >
+  Effects<br/><br/>
+  Faster YouTube downloads<br/><br/>
+  Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS<br/><br/>
+  Soundcloud Support<br/><br/>
+  Dashboard Interface for Scheduler <br/><br/>
 <h3 align="center">Contact</h3>
+<hr/>
 <p align="center" >
 Want to get in touch? Just send me an email at <a href="mailto:max@hearthindustries.io">max@hearthindustries.io</a>
 </p>
