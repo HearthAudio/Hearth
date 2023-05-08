@@ -1,4 +1,4 @@
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc};
 use snafu::{OptionExt, ResultExt, Whatever};
 use songbird::{Call, Songbird};
 use songbird::id::GuildId;

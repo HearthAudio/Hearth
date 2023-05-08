@@ -15,7 +15,7 @@ use serde_derive::Serialize;
 use snafu::Whatever;
 use crate::config::Config;
 use crate::scheduler::distributor::Job;
-use crate::worker::queue_processor::{ErrorReport, ProcessorIncomingAction, ProcessorIPC};
+use crate::worker::queue_processor::{ErrorReport, ProcessorIPC};
 use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 

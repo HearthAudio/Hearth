@@ -1,16 +1,16 @@
-use std::fmt::format;
+
 use std::sync::Arc;
 use reqwest::Client;
-use serenity::model::id::GuildId;
-use snafu::{OptionExt, ResultExt, Whatever, whatever};
-use songbird::{input, Songbird};
+
+use snafu::{OptionExt, ResultExt, Whatever};
+use songbird::{Songbird};
 use songbird::tracks::TrackHandle;
 use crate::utils::generic_connector::DirectWorkerCommunication;
 use crate::worker::actions::helpers::get_manager_call;
-use crate::worker::queue_processor::ErrorReport;
+
 use snafu::Snafu;
-use songbird::input::{Compose, HttpRequest, YoutubeDl};
-use crate::worker::actions::player::PlaybackError::{MissingAudioURL, YoutubeSourceAcquisitionFailure};
+use songbird::input::{HttpRequest, YoutubeDl};
+
 
 #[derive(Debug, Snafu)]
 pub enum PlaybackError {
@@ -27,7 +27,7 @@ pub enum PlaybackError {
 }
 
 
-pub async fn play_direct_link(dwc: &DirectWorkerCommunication, mut manager: &mut Option<Arc<Songbird>>,client: Client) -> Result<TrackHandle,PlaybackError> {
+pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Option<Arc<Songbird>>,client: Client) -> Result<TrackHandle,PlaybackError> {
     let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
     let mut handler = handler_lock.lock().await;
     let source = HttpRequest::new(client,dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
@@ -35,7 +35,7 @@ pub async fn play_direct_link(dwc: &DirectWorkerCommunication, mut manager: &mut
     Ok(track)
 }
 
-pub async fn play_from_youtube(mut manager: &mut Option<Arc<Songbird>>,dwc: &DirectWorkerCommunication,client: Client) -> Result<TrackHandle,PlaybackError> {
+pub async fn play_from_youtube(manager: &mut Option<Arc<Songbird>>,dwc: &DirectWorkerCommunication,client: Client) -> Result<TrackHandle,PlaybackError> {
     let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
     let mut handler = handler_lock.lock().await;
     let source = YoutubeDl::new(client,dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);

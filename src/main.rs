@@ -77,7 +77,7 @@ async fn main() {
     }
     if scheduler_config.roles.scheduler {
         let scheduler = tokio::spawn(async move {
-            if (scheduler_config.roles.worker == true) {
+            if scheduler_config.roles.worker == true {
                 sleep(Duration::from_millis(1000)).await; // If worker is also started on same node wait a second so ping pong is accurate
             }
             return initialize_scheduler_internal(scheduler_config, &mut scheduler_ipc).await;

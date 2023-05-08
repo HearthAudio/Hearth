@@ -1,4 +1,4 @@
-use std::sync::Mutex;
+
 use std::thread;
 
 
@@ -7,18 +7,18 @@ use std::thread;
 
 
 use kafka::producer::Producer;
-use lazy_static::lazy_static;
+
 use log::{error, info};
-use once_cell::sync::{Lazy, OnceCell};
+
 use snafu::{OptionExt, Whatever};
 
 
-use tokio::runtime;
+
 use tokio::runtime::Builder;
 
 
 use crate::config::Config;
-use crate::worker::queue_processor::{ErrorReport, Infrastructure};
+use crate::worker::queue_processor::{ErrorReport};
 use crate::utils::generic_connector::{ExternalQueueJobResponse, initialize_client, initialize_producer, Message, MessageType, PRODUCER, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
@@ -34,7 +34,7 @@ fn report_error(error: ErrorReport) {
     error!("{}",error.error);
 
     let mut px = PRODUCER.lock().unwrap();
-    let mut p = px.as_mut();
+    let p = px.as_mut();
     send_message(&Message {
         message_type: MessageType::ErrorReport,
         analytics: None,
@@ -49,7 +49,7 @@ fn report_error(error: ErrorReport) {
     },"communication",&mut p.unwrap());
 }
 
-fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) -> Result<(),Whatever> {
+fn parse_message_callback(parsed_message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) -> Result<(),Whatever> {
     if matches!(parsed_message.message_type,MessageType::InternalPingPongRequest) {
         let mut px = PRODUCER.lock().unwrap();
         let p = px.as_mut();
@@ -82,7 +82,7 @@ fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, conf
                 });
                 match result {
                     Ok(_) => {},
-                    Err(e) => error!("Failed to send DWC to job: {}",&job_id),
+                    Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
                 }
             },
             MessageType::InternalWorkerQueueJob => {
@@ -127,7 +127,7 @@ fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, conf
 
 
 pub fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mut ProcessorIPC) {
-    let mut producer : Producer = initialize_producer(initialize_client(&brokers));
+    let producer : Producer = initialize_producer(initialize_client(&brokers));
     *PRODUCER.lock().unwrap() = Some(producer);
 
     initialize_consume_generic(brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback);
