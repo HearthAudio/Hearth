@@ -3,7 +3,12 @@
 <h1 align="center">
     Hearth
 </h1>
-TODO: Badges here (Release version, CI, Crate downloads)
+<p align="center">
+<img src="https://camo.githubusercontent.com/a91b4f5528c26920b6b8fa617267a7193a5bddd70a4d013dcf616c91af39fc22/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f7665726167652d38302532352d79656c6c6f77677265656e"/>
+<img src="https://camo.githubusercontent.com/8733716e2fd7444a0f383a9e5f43779a016bae35ddde4e1cc32a4f90bd9bb775/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f76657273696f6e2d312e322e332d626c7565"/>
+<img src="https://camo.githubusercontent.com/e15a935f2751eef0e60660dbf1186b2a27a3cc996b423872ec5249a70a97bfe7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f646570656e64656e636965732d6f75742532306f66253230646174652d6f72616e6765"/>
+<img src="https://camo.githubusercontent.com/107e932aa93175670d273c86cae8be4c96f156da7e13b9b8223b63fa23563fb0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f646163792d422d677265656e"
+</p>
 <p align="center">
 Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more concurrent streams and uses 18x less memory. It does not support every feature of LavaLink but it does support most of them. And we are working hard on bringing Hearth to feature parity.
 </p>
@@ -29,26 +34,28 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
         </div>
         <br/>
         <p align="center" >
-            With our pre-built client libraries you can get started on your bot super quickly and easily. 
+            With our wide selection of pre-built client libraries you can get started on your bot super quickly and easily using whatever tool you want. 
         </p>
     </div>
 </div>
 
 <h3 align="center">Getting Started</h3>
 <p align="center" >
-Ready to get started with Hearth? See the getting started guide <a src="https://github.com/Hearth-Industries/Hearth/blob/master/GETTING_STARTED.md">here</a> 
+Ready to get started with Hearth? See the getting started guide <a href="https://github.com/Hearth-Industries/Hearth/blob/master/GETTING_STARTED.md">here</a> to start a new project with Hearth or integrate Hearth into your pre-existing project.
 </p>
 <h3 align="center">Contributions</h3>
 <p align="center" >
 If you want to create an Issue, PR, Or contribute in any other way I'm happy to review PRs, issues, or just chat.
 </p>
 <h3 align="center">Roadmap</h3>
-- Effects<br/>
-- Faster YouTube downloads<br/>
-- Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS<br>
-- Soundcloud Support <br/>
-- Dashboard Interface for Scheduler <br/>
+<ul>
+  <li>Effects</li><br/>
+  <li>Faster YouTube downloads</li><br/>
+  <li>Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS</li><br/>
+  <li >Soundcloud Support</li><br/>
+  <li >Dashboard Interface for Scheduler </li><br/>
+</ul>
 <h3 align="center">Contact</h3>
 <p align="center" >
-Want to get in touch? Just send me an email at <a src="mailto:max@hearthindustries.io">max@hearthindustries.io</a>
+Want to get in touch? Just send me an email at <a href="mailto:max@hearthindustries.io">max@hearthindustries.io</a>
 </p>
