@@ -4,7 +4,6 @@
 - [ ] Move a bunch of stuff into Config
 - [ ] Fix random intermittent failed to fill full buffer errors
 - [ ] Unit Tests
-- [ ] Store Buffers in Opus Compressed format for increased concurrent stream support
 # TODO General (Post-Launch)
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
@@ -13,6 +12,7 @@
 - [ ] Swap `youtube-dl` with the `rustube` crate (May require forking `rustube` and modifying) (This has a few issues chunk throttling - age restricted downloads etc... see Issues on repo)
 - [ ] Support age restricted videos in `rustube`
 - [ ] Fuzzing
+- [ ] Exposed Track Event System
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 - [ ] Possible performance improvement by using single separate channel to listen DWC communications and store in HashMap instead of broadcasting. Use tokioselect! in loop to await standard ipc and seperate channel
 # DONE

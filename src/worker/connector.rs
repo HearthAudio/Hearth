@@ -47,7 +47,6 @@ fn report_error(error: ErrorReport) {
         job_event: None,
         error_report: Some(error),
     },"communication",&mut p.unwrap());
-    println!("Sent error report");
 }
 
 fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) -> Result<(),Whatever> {
@@ -66,13 +65,14 @@ fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, conf
             job_event: None,
             error_report: None,
         }, "communication", &mut *p.unwrap());
-    } else if parsed_message.worker_id.as_ref().with_whatever_context(|| "Invalid Worker ID")? != config.config.worker_id.as_ref().unwrap() {
+    } else if parsed_message.worker_id.is_some() && parsed_message.worker_id.as_ref().with_whatever_context(|| "Invalid Worker ID")? == config.config.worker_id.as_ref().unwrap() {
         match parsed_message.message_type {
             // Parseable
             MessageType::DirectWorkerCommunication => {
                 let mut dwc = parsed_message.direct_worker_communication.unwrap();
                 let job_id = dwc.job_id.clone();
                 dwc.request_id = Some(parsed_message.request_id.clone()); // Copy standard request id to DWC request id
+                info!("RECV DWC: {}",job_id.clone());
                 let result = ipc.sender.send(ProcessorIPCData {
                     action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
                     songbird: None,
@@ -93,6 +93,7 @@ fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, conf
                 let sender = ipc.sender.clone();
                 let job_id = parsed_message.queue_job_internal.clone().unwrap().job_id;
                 let request_id = parsed_message.request_id.clone();
+                info!("Starting new worker");
                 thread::spawn(move || {
                     let rt = Builder::new_current_thread()
                         .enable_all()
@@ -111,7 +112,8 @@ fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, conf
                     worker_id: None,
                     direct_worker_communication: None,
                     external_queue_job_response: Some(ExternalQueueJobResponse {
-                        job_id: Some(job_id)
+                        job_id: job_id,
+                        worker_id: config.config.worker_id.as_ref().unwrap().clone()
                     }),
                     job_event: None,
                     error_report: None,

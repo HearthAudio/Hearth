@@ -1,5 +1,4 @@
-
-
+use std::time::Duration;
 use crate::config::*;
 use crate::deco::{print_intro, print_warnings};
 use crate::logger::setup_logger;
@@ -9,6 +8,7 @@ use crate::worker::serenity_handler::{initialize_songbird};
 
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::{Receiver, Sender};
+use tokio::time::sleep;
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 
 mod config;
@@ -77,6 +77,9 @@ async fn main() {
     }
     if scheduler_config.roles.scheduler {
         let scheduler = tokio::spawn(async move {
+            if (scheduler_config.roles.worker == true) {
+                sleep(Duration::from_millis(1000)).await; // If worker is also started on same node wait a second so ping pong is accurate
+            }
             return initialize_scheduler_internal(scheduler_config, &mut scheduler_ipc).await;
         });
         futures.push(scheduler);

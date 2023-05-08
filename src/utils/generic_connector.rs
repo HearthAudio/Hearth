@@ -100,7 +100,8 @@ pub struct JobEvent {
 
 #[derive(Deserialize,Debug,Serialize,Clone)]
 pub struct ExternalQueueJobResponse {
-    pub job_id: Option<String>
+    pub job_id: String,
+    pub worker_id: String
 }
 
 #[derive(Deserialize,Debug,Serialize,Clone)]
