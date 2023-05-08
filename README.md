@@ -10,18 +10,22 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
 <h3 align="center">Features</h3>
 <p align="center" >
 <ul>
-  <li>💨 Hearth is extremely performant and can support 60x more concurrent streams than LavaLink which means significantly less node servers potentially saving thousands of dollars.</li>
-  <li style="margin-top: 1rem;">🔐 Heath is very secure as unlike LavaLink it does not run on an outdated Java runtime</li>
-  <li style="margin-top: 1rem;">🔧 Hearth is extremely easy to integrate into your project with our wide selection of client libraries for Javascript, Java, Typescript, and Rust. With more coming soon!</li>
+  <li>💨 Hearth is extremely performant and can support 60x more concurrent streams than LavaLink which means significantly less node servers potentially saving thousands of dollars.</li><br/>
+  <li >🔐 Heath is very secure as unlike LavaLink it does not run on an outdated Java runtime</li><br/>
+  <li >🔧 Hearth is extremely easy to integrate into your project with our wide selection of client libraries for Javascript, Java, Typescript, and Rust. With more coming soon!</li><br/>
 </ul>
 <div style="display: flex;align-content: center;justify-content: center;">
     <div style="display: flex;flex-direction: column;">
         <h3 align="center">Client Libraries</h3>
+        <br/>
         <div align="center">
-            <img style="margin-top: 1.5rem" height="70" src="assets/java.svg"/>
-            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" style="margin-left:2rem;" src="assets/javascript.svg"/>
-            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" style="margin-left:2rem;" src="assets/rust.svg"/>
-            <img style="margin-top: 1.5rem;margin-left: 2rem;" height="70" style="margin-left:2rem;" src="assets/typescript.svg"/>
+            <img height="70" src="assets/java.svg"/>
+            <img  height="70"  src="assets/spacer.png"/>
+            <img  height="70"  src="assets/javascript.svg"/>
+            <img  height="70"  src="assets/spacer.png"/>
+            <img  height="70"  src="assets/rust.svg"/>
+            <img  height="70"  src="assets/spacer.png"/>
+            <img  height="70"  src="assets/typescript.svg"/>
         </div>
         <p align="center" >
             With our pre-built client libraries you can get started on your bot super quickly and easily. 
