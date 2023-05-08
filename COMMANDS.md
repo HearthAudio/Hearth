@@ -3,10 +3,6 @@
 - [ ] LoopIndefinitely
 - [ ] LoopForXTimes
 - [ ] GetTrackMetadata
-# Extra
-- [ ] QueueTracks
-- [ ] PlayFromSoundcloud,
-# Waiting for Testing
 # DONE:
 - [x] LeaveChannel
 - [x] PlayDirectLink

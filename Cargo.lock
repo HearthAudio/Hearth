@@ -610,6 +610,36 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8a9ee70c43aaf417c914396645a0fa852624801b24ebb7ae78fe8272889ac888"
 
 [[package]]
+name = "hearth"
+version = "0.1.0"
+dependencies = [
+ "bytes",
+ "fern",
+ "futures",
+ "humantime",
+ "kafka",
+ "lazy_static",
+ "lofty",
+ "log",
+ "nanoid",
+ "once_cell",
+ "openssl",
+ "reqwest",
+ "retry",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "serenity",
+ "snafu",
+ "songbird",
+ "symphonia",
+ "symphonia-core",
+ "tokio",
+ "toml",
+ "url",
+]
+
+[[package]]
 name = "heck"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -807,36 +837,6 @@ dependencies = [
  "thiserror",
  "tracing",
  "twox-hash",
-]
-
-[[package]]
-name = "lantern"
-version = "0.1.0"
-dependencies = [
- "bytes",
- "fern",
- "futures",
- "humantime",
- "kafka",
- "lazy_static",
- "lofty",
- "log",
- "nanoid",
- "once_cell",
- "openssl",
- "reqwest",
- "retry",
- "serde",
- "serde_derive",
- "serde_json",
- "serenity",
- "snafu",
- "songbird",
- "symphonia",
- "symphonia-core",
- "tokio",
- "toml",
- "url",
 ]
 
 [[package]]

@@ -1,9 +1,11 @@
-# TODO/Tech Debt Before Launch (Feature Freeze):
+# Features and Other stuff to Implement:
 - [ ] Add all other non-implemented Commands see COMMANDS.md for list
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Move a bunch of stuff into Config
-- [ ] Fix random intermittent failed to fill full buffer errors
 - [ ] Unit Tests
+- [ ] Fix build warnings
+# Bugs to Fix:
+- [ ] Fix random intermittent failed to fill full buffer errors (Not seen for a while)
 - [ ] Fix weird playback speed bug (see issue https://github.com/serenity-rs/songbird/issues/180)
 # TODO General (Post-Launch)
 - [ ] Chunk Youtube downloads

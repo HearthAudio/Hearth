@@ -18,3 +18,33 @@ pub fn get_extension_from_uri(uri: &str) -> String {
     let parsed = uri.path().split(".").collect::<Vec<&str>>();
     return parsed[parsed.len() - 1].to_string();
 }
+
+#[test]
+fn get_extension_from_uri_test_wav_1() {
+    let res = get_extension_from_uri("https://firmware-repo-esp32.s3.us-west-1.amazonaws.com/serverless.wav");
+    assert_eq!(res, "wav".to_string());
+}
+
+#[test]
+fn get_extension_from_uri_test_wav_2() {
+    let res = get_extension_from_uri("https://firmware-repo-esp32.s3.us-west-1.amazonaws.com/PinkPanther30.wav");
+    assert_eq!(res, "wav".to_string());
+}
+
+#[test]
+fn get_extension_from_uri_test_wav_3() {
+    let res = get_extension_from_uri("https://firmware-repo-esp32.s3.us-west-1.amazonaws.com/Pink....Panther..30.wav");
+    assert_eq!(res, "wav".to_string());
+}
+
+#[test]
+fn get_extension_from_uri_test_ogg_1() {
+    let res = get_extension_from_uri("https://firmware-repo-esp32.s3.us-west-1.amazonaws.com/Pink....Panther..30.ogg");
+    assert_eq!(res, "ogg".to_string());
+}
+
+#[test]
+fn get_extension_from_uri_test_ogg_2() {
+    let res = get_extension_from_uri("https://firmware-repo-esp32.s3.us-west-1.amazonaws.com/serverless.ogg");
+    assert_eq!(res, "ogg".to_string());
+}
