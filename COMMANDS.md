@@ -7,10 +7,10 @@
 - [ ] QueueTracks
 - [ ] PlayFromSoundcloud,
 # Waiting for Testing
-- [ ] PausePlayback,
-- [ ] ResumePlayback,
-- [ ] PlayFromYoutube,
-- [ ] SetPlaybackVolume
 # DONE:
 - [x] LeaveChannel
 - [x] PlayDirectLink
+- [x] PlayFromYoutube,
+- [x] SetPlaybackVolume
+- [x] PausePlayback,
+- [x] ResumePlayback

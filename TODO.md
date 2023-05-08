@@ -4,7 +4,10 @@
 - [ ] Move a bunch of stuff into Config
 - [ ] Fix random intermittent failed to fill full buffer errors
 - [ ] Unit Tests
+- [ ] Fix weird playback speed bug
+- [ ] Fix file type parser if there are `.`s in the path other than file extension
 # TODO General (Post-Launch)
+- [ ] Chunk Youtube downloads
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
 - [ ] Find better way to handle message struct than a thousand options.

@@ -296,12 +296,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "debugless-unwrap"
-version = "0.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f400d0750c0c069e8493f2256cb4da6f604b6d2eeb69a0ca8863acde352f8400"
-
-[[package]]
 name = "derivative"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -820,7 +814,6 @@ name = "lantern"
 version = "0.1.0"
 dependencies = [
  "bytes",
- "debugless-unwrap",
  "fern",
  "futures",
  "humantime",
