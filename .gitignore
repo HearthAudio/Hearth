@@ -5,3 +5,4 @@ service.cert
 service.key
 output.log
 config.toml
+.DS_store
