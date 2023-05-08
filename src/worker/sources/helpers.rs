@@ -16,5 +16,5 @@ pub fn lofty_wav_codec_to_songbird_codec(lofty_codec: &WavFormat) -> Codec {
 pub fn get_extension_from_uri(uri: &str) -> String {
     let uri = Url::parse(uri).unwrap();
     let parsed = uri.path().split(".").collect::<Vec<&str>>();
-    return parsed[parsed.len()].to_string();
+    return parsed[parsed.len() - 1].to_string();
 }

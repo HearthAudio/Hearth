@@ -1,10 +1,8 @@
 use std::io::{Cursor, Read, Seek};
 use std::{fmt, thread};
 use std::time::Duration;
-
 use bytes::Buf;
 use kafka::producer::Producer;
-
 use lofty::{AudioFile, mpeg, ogg, ParseOptions};
 use lofty::iff::wav;
 use lofty::iff::wav::WavProperties;
@@ -24,7 +22,8 @@ use snafu::{ResultExt, Snafu, Whatever, whatever};
 
 /// Basic URL Player that downloads files from URLs into memory and plays them
 pub async fn url_source(url: &str) -> Result<Input, Whatever> {
-    let chunk_size = 250000; // Chunk = 250KB
+    // let chunk_size = 250000; // Chunk = 250KB
+    let chunk_size = 10000000;
     let range = HeaderValue::from_str(&format!("bytes={}-{}", 0, &chunk_size)).with_whatever_context(|_| format!("Failed to generate range header"))?;
     let client = reqwest::Client::new();
     let resp = client.get(url).header(RANGE, range).send().await.with_whatever_context(|_| format!("Failed to read file from URL"))?;
@@ -43,6 +42,7 @@ pub async fn url_source(url: &str) -> Result<Input, Whatever> {
     let mut codec : Option<Codec> = None;
     let mut container = Container::Raw;
     match format.as_str() {
+        //TODO: Ogg is broken see https://github.com/serenity-rs/songbird/issues/85 for fix
         "ogg" => {
             let parsing_options = ParseOptions::new();
             let tagged_file = ogg::OpusFile::read_from(&mut mfp, parsing_options).unwrap();
@@ -96,10 +96,12 @@ pub async fn url_source(url: &str) -> Result<Input, Whatever> {
     let x =  Input {
         metadata: Box::new(metadata.unwrap()),
         stereo: stereo,
-        reader: Reader::StreamForURL(StreamFromURL::new(mock_file,url, chunk_size,250000)),
+        // reader: Reader::StreamForURL(StreamFromURL::new(mock_file,url, chunk_size,250000)),
+        reader: Reader::Extension(Box::new(mock_file)),
         kind: codec.unwrap(),
         container: container,
         pos: 0,
     };
+    println!("{:?}",x);
     return Ok(x);
 }

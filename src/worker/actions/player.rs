@@ -30,6 +30,7 @@ pub async fn play_direct_link(dwc: &DirectWorkerCommunication, mut manager: &mut
     let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
     let mut handler = handler_lock.lock().await;
     let source = url_source(dwc.play_audio_url.as_ref().context(MissingAudioURLSnafu)?.as_str()).await.context(DirectSourceAcquisitionFailureSnafu)?;
+    // let source = songbird::ffmpeg("serverless.wav").await.unwrap();
     let track = handler.play_source(source);
     Ok(track)
 }

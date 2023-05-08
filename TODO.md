@@ -4,8 +4,7 @@
 - [ ] Move a bunch of stuff into Config
 - [ ] Fix random intermittent failed to fill full buffer errors
 - [ ] Unit Tests
-- [ ] Fix weird playback speed bug
-- [ ] Fix file type parser if there are `.`s in the path other than file extension
+- [ ] Fix weird playback speed bug (see issue https://github.com/serenity-rs/songbird/issues/180)
 # TODO General (Post-Launch)
 - [ ] Chunk Youtube downloads
 - [ ] Dashboard
@@ -27,3 +26,4 @@
 - [x] Return Errors to client instead of just reporting internally
 - [x] Add License warning if used on over 1000 servers
 - [x] Remove ID from generic kafka definition
+- [x] Fix file type parser if there are `.`s in the path other than file extension
