@@ -1,3 +1,4 @@
+use std::time::Duration;
 use log::{error, info};
 use serenity::client::Context;
 use serenity::{
@@ -7,6 +8,7 @@ use serenity::{
     prelude::GatewayIntents,
 };
 use songbird::{SerenityInit};
+use tokio::time::sleep;
 use crate::config::Config;
 use crate::deco::over_1000_servers_warning;
 use crate::worker::queue_processor::{Infrastructure, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
@@ -46,8 +48,11 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
     info!("Songbird INIT");
 
     while let Ok(msg) = ipc.receiver.recv().await {
+        println!("SRCV {:?}",msg);
         match msg.action_type {
             ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest) => {
+                sleep(Duration::from_millis(250)).await;
+                println!("RECV SONGBIRD REQ");
                 let manager = songbird::get(client_data.read().await).await;
                 match manager {
                     Some(manager) => {

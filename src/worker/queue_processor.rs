@@ -6,6 +6,7 @@ use crate::config::Config;
 use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, Message};
 use serde::Deserialize;
 use serde::Serialize;
+use reqwest::Client as HttpClient;
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{pause_playback, resume_playback, set_playback_volume};
@@ -65,18 +66,24 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
         job_id: job_id.clone(),
         error_report: None,
     }).unwrap();
-    let client = reqwest::Client::new(); // TEMP We should probs move this into an arc and share across jobs
+    println!("Sent Songbird REQ");
+    let client = HttpClient::new(); // TEMP We should probs move this into an arc and share across jobs
     let mut manager : Option<Arc<Songbird>> = None;
     let mut track : Option<TrackHandle> = None;
     let mut ready = false;
+    println!("Listening!");
     while let Ok(msg) = sender.subscribe().recv().await {
+        println!("QPRCV {:?}",msg);
+        println!("CURRENT JOB ID: {}",job_id);
         if job_id == &msg.job_id {
             if ready == false {
                 match msg.action_type {
                     ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming) => {
+                        println!("RECV SONGBIRD");
                         manager = msg.songbird;
                         ready = true;
                         // Join channel
+                        println!("JOIN CHANNEL PRE");
                         let join = join_channel(&queue_job,&mut manager).await;
                         match join {
                             Ok(_) => {},
