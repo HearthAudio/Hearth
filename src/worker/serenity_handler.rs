@@ -8,6 +8,7 @@ use serenity::{
     prelude::GatewayIntents,
 };
 use crate::config::Config;
+use crate::deco::over_1000_servers_warning;
 use crate::worker::queue_processor::{Infrastructure, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 struct Handler;
@@ -30,6 +31,10 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
         .expect("Err creating client");
 
     let client_data = client.data.clone();
+    let server_count = client.cache_and_http.cache.guild_count();
+    if server_count > 1000 {
+        over_1000_servers_warning();
+    }
     tokio::spawn(async move {
         let _ = client.start().await.map_err(|why| println!("Client ended: {:?}", why));
     });
@@ -47,17 +52,17 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
                             songbird: Some(manager),
                             dwc: None,
                             job_id: msg.job_id.clone(),
-                            error_report: None
+                            error_report: None,
                         });
                         match result {
                             Ok(_) => {},
-                            Err(e) => error!("Failed to send songbird instance to job: {} with error: {:?}",&msg.job_id,e)
+                            Err(e) => error!("Failed to send songbird instance to job: {}",&msg.job_id)
                         }
                     },
                     None => error!("Failed to get songbird instance for job: {}",&msg.job_id)
                 }
 
-            },
+            }
             _ => {}
         }
     }

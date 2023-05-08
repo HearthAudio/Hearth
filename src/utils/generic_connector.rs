@@ -12,6 +12,7 @@ use log::{debug, error, info, warn};
 use openssl;
 use serde::Deserialize;
 use serde_derive::Serialize;
+use snafu::Whatever;
 use crate::config::Config;
 use crate::scheduler::distributor::Job;
 use crate::worker::queue_processor::{ErrorReport, ProcessorIncomingAction, ProcessorIPC};
@@ -25,6 +26,8 @@ pub enum MessageType {
     // Internal
     InternalWorkerAnalytics,
     InternalWorkerQueueJob,
+    InternalPingPongRequest,
+    InternalPongResponse,
     // External
     ExternalQueueJob,
     ExternalQueueJobResponse,
@@ -107,7 +110,7 @@ pub struct Message {
     pub queue_job_request: Option<JobRequest>,
     pub queue_job_internal: Option<Job>,
     pub request_id: String, // Unique string provided by client to identify this request
-    pub worker_id: Option<usize>, // ID Unique to each worker
+    pub worker_id: Option<String>, // ID Unique to each worker
     pub direct_worker_communication: Option<DirectWorkerCommunication>,
     pub external_queue_job_response: Option<ExternalQueueJobResponse>,
     pub job_event: Option<JobEvent>,
@@ -205,16 +208,18 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC), id: &str, ipc: &mut ProcessorIPC,mut producer: &PRODUCER) {
+pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn()) {
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(String::from("communication"))
         .create()
         .unwrap();
 
+    initialized_callback();
+
     loop {
         let mss = consumer.poll().unwrap();
         if mss.is_empty() {
-            debug!("{} No messages available right now.",id);
+            debug!("No messages available right now.");
         }
 
         for ms in mss.iter() {
@@ -222,7 +227,11 @@ pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callbac
                 let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(&m.value);
                 match parsed_message {
                     Ok(message) => {
-                        callback(message,&mut producer, config,ipc);
+                        let parse = callback(message,&mut producer, config,ipc);
+                        match parse {
+                            Ok(_) => {},
+                            Err(e) => error!("Failed to parse message with error: {}",e)
+                        }
                     },
                     Err(e) => error!("{} - Failed to parse message",e),
                 }

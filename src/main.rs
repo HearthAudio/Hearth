@@ -5,7 +5,7 @@ use crate::deco::{print_intro, print_warnings};
 use crate::logger::setup_logger;
 use crate::scheduler::*;
 use crate::worker::*;
-use crate::worker::songbird_handler::{initialize_songbird};
+use crate::worker::serenity_handler::{initialize_songbird};
 
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::{Receiver, Sender};

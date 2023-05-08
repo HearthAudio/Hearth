@@ -10,7 +10,7 @@ use crate::worker::queue_processor::ProcessorIPC;
 pub mod connector;
 pub mod queue_processor;
 pub mod analytics_reporter;
-pub mod songbird_handler;
+pub mod serenity_handler;
 pub mod sources;
 pub mod actions;
 

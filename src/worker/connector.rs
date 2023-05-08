@@ -10,6 +10,7 @@ use kafka::producer::Producer;
 use lazy_static::lazy_static;
 use log::{error, info};
 use once_cell::sync::{Lazy, OnceCell};
+use snafu::{OptionExt, Whatever};
 
 
 use tokio::runtime;
@@ -49,62 +50,77 @@ fn report_error(error: ErrorReport) {
     println!("Sent error report");
 }
 
-fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) {
-    //TODO: Check if this message is for us
-    //TODO: But worker ping pong/interface stuff first
-    match parsed_message.message_type {
-        // Parseable
-        MessageType::DirectWorkerCommunication => {
-            let mut dwc = parsed_message.direct_worker_communication.unwrap();
-            let job_id = dwc.job_id.clone();
-            dwc.request_id = Some(parsed_message.request_id.clone()); // Copy standard request id to DWC request id
-            let result = ipc.sender.send(ProcessorIPCData {
-                action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
-                songbird: None,
-                job_id: job_id.clone(),
-                dwc: Some(dwc),
-                error_report: None
-            });
-            match result {
-                Ok(_) => {},
-                Err(e) => error!("Failed to send DWC to job: {}",&job_id),
-            }
-        },
-        MessageType::InternalWorkerQueueJob => {
-            let proc_config = config.clone();
-            info!("{:?}",parsed_message);
-            // This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
-            // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
-            // let sender = ipc.sender;
-            let sender = ipc.sender.clone();
-            let job_id = parsed_message.queue_job_internal.clone().unwrap().job_id;
-            let request_id = parsed_message.request_id.clone();
-            thread::spawn(move || {
-                let rt = Builder::new_current_thread()
-                    .enable_all()
-                    .build()
-                    .unwrap();
-                rt.block_on(process_job(parsed_message, &proc_config, sender,report_error));
-            });
-            let mut px = PRODUCER.lock().unwrap();
-            let mut p = px.as_mut();
-            send_message(&Message {
-                message_type: MessageType::ExternalQueueJobResponse,
-                analytics: None,
-                queue_job_request: None,
-                queue_job_internal: None,
-                request_id: request_id,
-                worker_id: None,
-                direct_worker_communication: None,
-                external_queue_job_response: Some(ExternalQueueJobResponse {
-                    job_id: Some(job_id)
-                }),
-                job_event: None,
-                error_report: None,
-            }, "communication", &mut *p.unwrap());
+fn parse_message_callback(parsed_message: Message, mut producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) -> Result<(),Whatever> {
+    if matches!(parsed_message.message_type,MessageType::InternalPingPongRequest) {
+        let mut px = PRODUCER.lock().unwrap();
+        let p = px.as_mut();
+        send_message(&Message {
+            message_type: MessageType::InternalPongResponse,
+            analytics: None,
+            queue_job_request: None,
+            queue_job_internal: None,
+            request_id: "".to_string(),
+            worker_id: config.config.worker_id.clone(),
+            direct_worker_communication: None,
+            external_queue_job_response: None,
+            job_event: None,
+            error_report: None,
+        }, "communication", &mut *p.unwrap());
+    } else if parsed_message.worker_id.as_ref().with_whatever_context(|| "Invalid Worker ID")? != config.config.worker_id.as_ref().unwrap() {
+        match parsed_message.message_type {
+            // Parseable
+            MessageType::DirectWorkerCommunication => {
+                let mut dwc = parsed_message.direct_worker_communication.unwrap();
+                let job_id = dwc.job_id.clone();
+                dwc.request_id = Some(parsed_message.request_id.clone()); // Copy standard request id to DWC request id
+                let result = ipc.sender.send(ProcessorIPCData {
+                    action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
+                    songbird: None,
+                    job_id: job_id.clone(),
+                    dwc: Some(dwc),
+                    error_report: None
+                });
+                match result {
+                    Ok(_) => {},
+                    Err(e) => error!("Failed to send DWC to job: {}",&job_id),
+                }
+            },
+            MessageType::InternalWorkerQueueJob => {
+                let proc_config = config.clone();
+                // This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
+                // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
+                // let sender = ipc.sender;
+                let sender = ipc.sender.clone();
+                let job_id = parsed_message.queue_job_internal.clone().unwrap().job_id;
+                let request_id = parsed_message.request_id.clone();
+                thread::spawn(move || {
+                    let rt = Builder::new_current_thread()
+                        .enable_all()
+                        .build()
+                        .unwrap();
+                    rt.block_on(process_job(parsed_message, &proc_config, sender,report_error));
+                });
+                let mut px = PRODUCER.lock().unwrap();
+                let p = px.as_mut();
+                send_message(&Message {
+                    message_type: MessageType::ExternalQueueJobResponse,
+                    analytics: None,
+                    queue_job_request: None,
+                    queue_job_internal: None,
+                    request_id: request_id,
+                    worker_id: None,
+                    direct_worker_communication: None,
+                    external_queue_job_response: Some(ExternalQueueJobResponse {
+                        job_id: Some(job_id)
+                    }),
+                    job_event: None,
+                    error_report: None,
+                }, "communication", &mut *p.unwrap());
+            },
+            _ => {}
         }
-        _ => {}
     }
+    Ok(())
 }
 
 
@@ -112,8 +128,10 @@ pub fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mu
     let mut producer : Producer = initialize_producer(initialize_client(&brokers));
     *PRODUCER.lock().unwrap() = Some(producer);
 
-    initialize_consume_generic(brokers, config, parse_message_callback, "WORKER", ipc,&PRODUCER);
+    initialize_consume_generic(brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback);
 }
+
+fn initialized_callback() {}
 
 pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {
     send_message_generic(message,topic,producer);

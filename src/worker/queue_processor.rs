@@ -11,17 +11,18 @@ use crate::worker::sources::url::url_source;
 use crate::actions::*;
 use serde::Deserialize;
 use serde::Serialize;
+use serenity::cache::Cache;
+use serenity::Client;
 use snafu::whatever;
 use crate::worker::actions::channel_manager::leave_channel;
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{pause_playback, resume_playback, set_playback_volume};
 
-
 #[derive(Clone,Debug)]
 pub enum Infrastructure {
     SongbirdIncoming,
     SongbirdInstanceRequest,
-    ErrorReport
+    ErrorReport,
 }
 
 #[derive(Clone,Debug)]
@@ -71,7 +72,7 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
         songbird: None,
         dwc: None,
         job_id: job_id.clone(),
-        error_report: None
+        error_report: None,
     }).unwrap();
     let mut manager : Option<Arc<Songbird>> = None;
     let mut track : Option<TrackHandle> = None;
