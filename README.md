@@ -38,8 +38,11 @@ Ready to get started with Hearth? See the getting started guide <a src="https://
 If you want to create an Issue, PR, Or contribute in any other way I'm happy to review PRs, issues, or just chat.
 </p>
 <h3 align="center">Roadmap</h3>
-- [ ] Eggs
-<label>Dashboard Interface for Scheduler</label><br>
+- Effects<br/>
+- Faster YouTube downloads<br/>
+- Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS<br>
+- Soundcloud Support <br/>
+- Dashboard Interface for Scheduler <br/>
 <h3 align="center">Contact</h3>
 <p align="center" >
 Want to get in touch? Just send me an email at <a src="mailto:max@hearthindustries.io">max@hearthindustries.io</a>
