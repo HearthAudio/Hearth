@@ -27,6 +27,7 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
             <img  height="70"  src="assets/spacer.png"/>
             <img  height="70"  src="assets/typescript.svg"/>
         </div>
+        <br/>
         <p align="center" >
             With our pre-built client libraries you can get started on your bot super quickly and easily. 
         </p>
