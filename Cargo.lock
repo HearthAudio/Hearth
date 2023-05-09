@@ -1961,6 +1961,7 @@ dependencies = [
 [[package]]
 name = "songbird"
 version = "0.3.2"
+source = "git+https://github.com/Hearth-Industries/songbird-next-fork.git#e7c2c356896ac3c3b8ad692bed71c14a712c222c"
 dependencies = [
  "async-trait",
  "audiopus",

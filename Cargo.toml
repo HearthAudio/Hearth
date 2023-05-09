@@ -31,7 +31,7 @@ symphonia-core = "0.5.2"
 lazy_static = "1.4.0"
 
 [dependencies.songbird]
-path = "../songbird-next"
+git = "https://github.com/Hearth-Industries/songbird-next-fork.git"
 
 [dependencies.serenity]
 features = ["client", "standard_framework", "voice", "native_tls_backend","builder","cache","gateway","http","model","utils"]
