@@ -1,13 +1,12 @@
-# TODO: NOT FINAL LICENSE
-# Lantern Software License Agreement
+# Hearth Software License Agreement
 
 Version 1.0
 
-Copyright © 2023 Bryght, LLC <https://lantern.com/imprint.html>
+Copyright © 2023 Bryght, LLC <https://hearthindustries.io/imprint.html>
 
 Bryght, LLC (**Bryght**, **us**, **we** or **our**) grants a license to the
 software (**Licensed Software**), as specified herein, subject to the Terms and
-Conditions of this Lantern Software License Agreement (**Agreement**).
+Conditions of this Hearth Software License Agreement (**Agreement**).
 
 By using the Licensed Software, **you** agree to be bound by this Agreement.
 **If you do not agree, do not use the Licensed Software.** If you are accessing
@@ -23,11 +22,11 @@ Each Party to this Agreement may be referred to herein individually as a
 
 The Licensed Software includes
 
-1. Lantern executable that provides scalable audio streaming to the Discord API
+1. Hearth executable that provides scalable audio streaming to the Discord API
 
-2. API Documentation and Reference Documentation for Lantern
+2. API Documentation and Reference Documentation for Hearth
 
-3. Source code of Lantern.
+3. Source code of Hearth.
 
 ## Discord Server
 A Discord Server or Discord Guild constitutes a digital space made up of different types of channels which may
@@ -63,17 +62,17 @@ A Discord Bot is an autonomous unit that interacts with the Discord platform to 
        copyright notices and licenses, will be listed and made available to
        you.
 
-3. If your Bot has more than 1000 Discord Servers you need to contact Bryght, LLC within 14 Days of passing
-1000 Discord servers additionally a custom agreement explicitly permitting usage above 1000 users must be signed and agreed to by both parties
-within 30 days of passing 1000 Discord servers. Or you will be in violation of this contract. 
+3. If your Bot has more than 2500 Discord Servers you need to contact Bryght, LLC within 16 Days of passing
+2500 Discord servers additionally a custom agreement explicitly permitting usage above 2500 users must be signed and agreed to by both parties
+within 30 days of passing 2500 Discord servers. Or you will be in violation of this contract. 
 
 4. Clause 6 only applies if you have not made a custom agreement with Bryght, LLC to provide warranty.
-5. Permission is hereby granted, free of charge, to any person or company obtaining a copy of this Software for use with Discord Bots that have less than or equal to 1000 Discord Servers. To deal in the Software with restriction, with the rights to use, copy, modify, merge, and publish, excluding the ability to sublicense, sell, or otherwise distribute the Software in any manner, and all other actions not explicitly permitted.
+5. Permission is hereby granted, free of charge, to any person or company obtaining a copy of this Software for use with Discord Bots that have less than or equal to 2500 Discord Servers. To deal in the Software with restriction, with the rights to use, copy, modify, merge, and publish, excluding the ability to sublicense, sell, or otherwise distribute the Software in any manner, and all other actions not explicitly permitted.
 6. THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 7. The Parties also agree to all the following conditions:
    1. You may not remove or alter any copyright, trademark, or other proprietary rights notice contained in any portion of the Licensed Software,
    2. Your Products may not compete with the Licensed Software,
-8. If you materially breach this Agreement, we will provide a 90 (ninety) days written notice to you during which any such breach(es) may be cured, failing which we will terminate the agreement. You undertake to pay a contractual penalty for each case of negligent breach of this Agreement of up to USD 5000 (five thousand thousand US dollars) exact size is determined by Bryght, LLC depending on the size of the breach(es), which shall not be subject to a judicial right of reduction. We shall in any case be free to assert any further damage/loss or other claims. The amount of contractual penalty shall be offset against claims for damages, if any. Additionally, for every 30 days you are in violation of this contract past the written notice date you will owe an additional 15% of your monthly revenue to Bryght, LLC in damages for violation of the contract.
+8. If you materially breach this Agreement, we will provide a 90 (ninety) days written notice to you during which any such breach(es) may be cured, failing which we will terminate the agreement. You undertake to pay a contractual penalty for each case of negligent breach of this Agreement of up to USD 2000 (five thousand thousand US dollars) exact size is determined by Bryght, LLC depending on the size of the breach(es), which shall not be subject to a judicial right of reduction. We shall in any case be free to assert any further damage/loss or other claims. The amount of contractual penalty shall be offset against claims for damages, if any. Additionally, for every 30 days you are in violation of this contract past the written notice date you will owe an additional 15% of your monthly revenue to Bryght, LLC in damages for violation of the contract.
 9. Both Parties shall comply with all applicable laws and regulations relating to the Licensed Software in the countries in which the Parties use or modify the Licensed Software.
 10. All notices and communications between the Parties shall be in writing and shall be deemed given when received. For avoidance of doubt, email is considered a written form of communication.
 11. This Agreement shall be construed, interpreted, and governed by the laws of the State of Delaware in the United States of America.

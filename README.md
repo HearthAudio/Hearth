@@ -60,6 +60,11 @@ We are planning tons of new features to make Hearth even better!
   Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS<br/><br/>
   Soundcloud Support<br/><br/>
   Dashboard Interface for Scheduler <br/><br/>
+<h3 align="center">Licensing</h3>
+<hr/>
+<p align="center" >
+Hearth is free to use for any bot's that service under 2500 servers past that you must contact us to acquire an enterprise license. See our <a href="https://github.com/Hearth-Industries/Hearth/blob/master/LICENSE.md">license</a> for more details.
+</p>
 <h3 align="center">Contact</h3>
 <hr/>
 <p align="center" >
