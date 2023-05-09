@@ -51,6 +51,7 @@ Ready to get started with Hearth? See the getting started guide <a href="https:/
 If you want to create an Issue, PR, Or contribute in any other way I'm happy to review PRs, issues, or just chat.
 </p>
 <h3 align="center">Roadmap</h3>
+<hr/>
 <p align="center" >
 We are planning tons of new features to make Hearth even better!
 <hr/>
