@@ -21,10 +21,6 @@ serde_json = "1.0.96"
 futures = "0.3.28"
 fern = { version = "0.6.2", features = ["colored"] }
 reqwest = "0.11.17"
-#songbird = { path = "../songbird", features = ["serenity","gateway","native"] }
-#serenity = { path = "../serenity-next" }
-#serenity = { version = "0.11.5", default-features = true }
-#serenity = { version = "0.11.5", default-features = false, features = ["builder","cache","client","gateway","http","model","utils","rustls_backend"] }
 bytes = "1.4.0"
 symphonia = { version = "0.5.2", features = ['pcm','mp3','wav','isomp4','aac','alac'] }
 lofty = "0.12.1"

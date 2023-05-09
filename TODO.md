@@ -1,10 +1,12 @@
 # Features and Other stuff to Implement:
-- [ ] Add all other non-implemented Commands see COMMANDS.md for list
+- [ ] SeekToPosition,
+- [ ] LoopIndefinitely
+- [ ] LoopForXTimes
+- [ ] GetTrackMetadata
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Move a bunch of stuff into Config
 - [ ] More Unit Tests
 # Bugs to Fix:
-- [ ] Fix random intermittent failed to fill full buffer errors (Not seen for a while)
 # TODO General (Post-Launch)
 - [ ] Chunk Youtube downloads
 - [ ] Dashboard
@@ -29,3 +31,9 @@
 - [x] Fix file type parser if there are `.`s in the path other than file extension
 - [x] Fix build warnings
 - [x] Fix weird playback speed bug (see issue https://github.com/serenity-rs/songbird/issues/180)
+- [x] LeaveChannel
+- [x] PlayDirectLink
+- [x] PlayFromYoutube,
+- [x] SetPlaybackVolume
+- [x] PausePlayback,
+- [x] ResumePlayback

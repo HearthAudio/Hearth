@@ -28,15 +28,10 @@ pub enum PlaybackError {
 
 
 pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Option<Arc<Songbird>>,client: Client) -> Result<TrackHandle,PlaybackError> {
-    println!("Playing Direct Link");
     let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
-    println!("Acquired Manager Lock Instance");
     let mut handler = handler_lock.lock().await;
-    println!("Locked");
     let source = HttpRequest::new(client,dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
-    println!("Source Initialized");
     let track = handler.play_input(source.into());
-    println!("Started playback!");
     Ok(track)
 }
 

@@ -1,5 +1,6 @@
 use std::num::ParseIntError;
 use std::sync::Arc;
+use log::error;
 use snafu::{OptionExt, ResultExt};
 use songbird::id::GuildId;
 use songbird::id::ChannelId;
@@ -39,7 +40,7 @@ impl VoiceEventHandler for TrackErrorNotifier {
     async fn act(&self, ctx: &EventContext<'_>) -> Option<Event> {
         if let EventContext::Track(track_list) = ctx {
             for (state, handle) in *track_list {
-                println!(
+                error!(
                     "Track {:?} encountered an error: {:?}",
                     handle.uuid(),
                     state.playing
@@ -52,16 +53,12 @@ impl VoiceEventHandler for TrackErrorNotifier {
 }
 
 pub async fn join_channel(queue_job: &Job, manager: &mut Option<Arc<Songbird>>) -> Result<(),ChannelControlError> {
-    println!("REG");
     let gid = queue_job.guild_id.clone().parse().context(GuildIDParsingFailedSnafu)?;
     let vcid = queue_job.voice_channel_id.clone().parse().context(ChannelIDParsingFailedSnafu)?;
-    println!("Joining channel! GID: {} VCID: {}",gid,vcid);
-    // manager.as_mut().context(ManagerAcquisitionFailedSnafu)?.join(GuildId(gid), ChannelId(vcid)).await.unwrap();
     if let Ok(handler_lock) = manager.as_mut().context(ManagerAcquisitionFailedSnafu)?.join(GuildId(gid), ChannelId(vcid)).await {
         // Attach an event handler to see notifications of all track errors.
         let mut handler = handler_lock.lock().await;
         handler.add_global_event(TrackEvent::Error.into(), TrackErrorNotifier);
     }
-    println!("Joined channel!");
     Ok(())
 }

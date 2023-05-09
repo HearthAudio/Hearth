@@ -66,24 +66,18 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
         job_id: job_id.clone(),
         error_report: None,
     }).unwrap();
-    println!("Sent Songbird REQ");
     let client = HttpClient::new(); // TEMP We should probs move this into an arc and share across jobs
     let mut manager : Option<Arc<Songbird>> = None;
     let mut track : Option<TrackHandle> = None;
     let mut ready = false;
-    println!("Listening!");
     while let Ok(msg) = sender.subscribe().recv().await {
-        println!("QPRCV {:?}",msg);
-        println!("CURRENT JOB ID: {}",job_id);
         if job_id == &msg.job_id {
             if ready == false {
                 match msg.action_type {
                     ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming) => {
-                        println!("RECV SONGBIRD");
                         manager = msg.songbird;
                         ready = true;
                         // Join channel
-                        println!("JOIN CHANNEL PRE");
                         let join = join_channel(&queue_job,&mut manager).await;
                         match join {
                             Ok(_) => {},

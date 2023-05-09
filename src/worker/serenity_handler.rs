@@ -1,5 +1,5 @@
 use std::time::Duration;
-use log::{error, info};
+use log::{error, info, warn};
 use serenity::client::Context;
 use serenity::{
     async_trait,
@@ -48,11 +48,9 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
     info!("Songbird INIT");
 
     while let Ok(msg) = ipc.receiver.recv().await {
-        println!("SRCV {:?}",msg);
         match msg.action_type {
             ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest) => {
                 sleep(Duration::from_millis(250)).await;
-                println!("RECV SONGBIRD REQ");
                 let manager = songbird::get(client_data.read().await).await;
                 match manager {
                     Some(manager) => {
@@ -76,5 +74,5 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
         }
     }
     tokio::signal::ctrl_c().await.unwrap();
-    println!("Received Ctrl-C, shutting down.");
+    warn!("Received Ctrl-C, shutting down.");
 }
