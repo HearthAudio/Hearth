@@ -45,6 +45,10 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
 <p align="center" >
 Ready to get started with Hearth? See the getting started guide <a href="https://github.com/Hearth-Industries/Hearth/blob/master/GETTING_STARTED.md">here</a> to start a new project with Hearth or integrate Hearth into your pre-existing project.
 </p>
+<h3 align="center">Compatability</h3>
+<hr/>
+<p align="center" >
+Note: Hearth does not support usage on Apple Silicon as resampling with Rubato does not seem to be supported on Apple Silicon thus Hearth will fail silently if used on Apple Silicon. We recommend running Hearth in production on Ubuntu Linux.
 <h3 align="center">Contributions</h3>
 <hr/>
 <p align="center" >

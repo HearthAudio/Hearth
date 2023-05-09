@@ -6,6 +6,7 @@
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Move a bunch of stuff into Config
 - [ ] More Unit Tests
+- [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 # Bugs to Fix:
 # TODO General (Post-Launch)
 - [ ] Chunk Youtube downloads
