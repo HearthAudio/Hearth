@@ -3,6 +3,8 @@
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Move a bunch of stuff into Config
 - [ ] More Unit Tests
+- [ ] Error Reports for message parse fails
+- [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 # Waiting for testing:
 # TODO General (Post-Launch)
