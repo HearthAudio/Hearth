@@ -1,28 +1,11 @@
 schemaVersion: 2.2.0
-metadata:
-  name: 'My custom dev env configuration'
 attributes:
   space:
-    # regular, large, xlarge
-    instanceType: large
-    # a default IDE for the project
+    instanceType: regular
     editor:
-      # (Required) IDE type: Idea, WebStorm, PyCharm,
-      # RubyMine, CLion, Fleet, GoLand, PhpStorm
       type: CLion
-      version: '2023.1.1'
-      # Space uses JetBrains Toolbox App to install IDEs to a dev environment.
-      # updateChannel defines IDE version release stage: Release, EAP
-      updateChannel: EAP
-    # a warm-up snapshot
-    warmup:
-      # create a snapshot every Sunday (only for main branch)
-      startOn:
-        - type: schedule
-          cron: '0 0 0 ? * SUN *'
 components:
-  - name: dev-container
-    # Dev environment container config
+  - name: rust-container
     container:
-      # use image from a Space Packages registry
-      image: https://hub.docker.com/_/rust
+      # image from Docker Hub
+      image: rust:latest
