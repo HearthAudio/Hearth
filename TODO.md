@@ -4,12 +4,12 @@
 - [ ] Move a bunch of stuff into Config
 - [ ] More Unit Tests
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
-- [ ] Macro for error report in queue processor
 # Waiting for testing:
 - [ ] SeekToPosition
 - [ ] LoopIndefinitely
 - [ ] LoopForXTimes
 - [ ] ForceStopLoop
+- [ ] Macro for error report in queue processor
 # TODO General (Post-Launch)
 - [ ] Chunk Youtube downloads
 - [ ] Dashboard

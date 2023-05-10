@@ -3,6 +3,7 @@ use songbird::Songbird;
 use songbird::tracks::TrackHandle;
 use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
+use crate::error_report;
 use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, Message};
 use serde::Deserialize;
 use serde::Serialize;
@@ -98,117 +99,31 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                 let dwc = msg.dwc.unwrap();
                 match msg.action_type {
                     ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
-                       let leave = leave_channel(&dwc,&mut manager).await;
-                        match leave {
-                            Ok(_) => {},
-                            Err(e) => {
-                                report_error(ErrorReport {
-                                    error: e.to_string(),
-                                    request_id: dwc.request_id.unwrap(),
-                                    job_id: dwc.job_id.clone()
-                                })
-                            }
-                        }
+                       error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
-                        let loop_x = loop_x_times(&track, dwc.loop_times).await;
-                        match loop_x {
-                            Ok(_) => {},
-                            Err(e) => {
-                                report_error(ErrorReport {
-                                    error: e.to_string(),
-                                    request_id: dwc.request_id.unwrap(),
-                                    job_id: dwc.job_id.clone()
-                                })
-                            }
-                        }
+                        error_report!(loop_x_times(&track, dwc.loop_times).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::SeekToPosition) => {
-                        let seek_pos = seek_to_position(&track, dwc.seek_position).await;
-                        match seek_pos {
-                            Ok(_) => {},
-                            Err(e) => {
-                                report_error(ErrorReport {
-                                    error: e.to_string(),
-                                    request_id: dwc.request_id.unwrap(),
-                                    job_id: dwc.job_id.clone()
-                                })
-                            }
-                        }
+                        error_report!(seek_to_position(&track, dwc.seek_position).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::LoopForever) => {
-                        let loop_forever = loop_indefinetly(&track).await;
-                        match loop_forever {
-                            Ok(_) => {},
-                            Err(e) => {
-                                report_error(ErrorReport {
-                                    error: e.to_string(),
-                                    request_id: dwc.request_id.unwrap(),
-                                    job_id: dwc.job_id.clone()
-                                })
-                            }
-                        }
+                        error_report!(loop_indefinetly(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
-                        let play = play_direct_link(&dwc,&mut manager,client.clone()).await;
-                        match play {
-                            Ok(t) => {
-                                track = Some(t);
-                            },
-                            Err(e) => {
-                                report_error(ErrorReport {
-                                    error: e.to_string(),
-                                    request_id: dwc.request_id.unwrap(),
-                                    job_id: dwc.job_id.clone()
-                                })
-                            }
-                        }
+                        error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
-                        let youtube = play_from_youtube(&mut manager,&dwc,client.clone()).await;
-                        match youtube {
-                            Ok(t) => {
-                                track = Some(t);
-                            },
-                            Err(e) => report_error(ErrorReport {
-                                error: e.to_string(),
-                                request_id: dwc.request_id.unwrap(),
-                                job_id: dwc.job_id.clone()
-                            })
-                        }
+                        error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
-                        let pause = pause_playback(&track).await;
-                        match pause {
-                            Ok(_) => {},
-                            Err(e) => report_error(ErrorReport {
-                                error: e.to_string(),
-                                request_id: dwc.request_id.unwrap(),
-                                job_id: msg.job_id
-                            })
-                        }
+                        error_report!(pause_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::ResumePlayback) => {
-                        let play = resume_playback(&track).await;
-                        match play {
-                            Ok(_) => {},
-                            Err(e) => report_error(ErrorReport {
-                                error: e.to_string(),
-                                request_id: dwc.request_id.unwrap(),
-                                job_id: msg.job_id
-                            })
-                        }
+                        error_report!(resume_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
-                        let vol = set_playback_volume(&track,dwc.new_volume).await;
-                        match vol {
-                            Ok(_) => {},
-                            Err(e) => report_error(ErrorReport {
-                                error: e.to_string(),
-                                request_id: dwc.request_id.unwrap(),
-                                job_id: msg.job_id
-                            })
-                        }
+                        error_report!(set_playback_volume(&track,dwc.new_volume).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     }
                     _ => {}
                 }

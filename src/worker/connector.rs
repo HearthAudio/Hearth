@@ -30,7 +30,7 @@ pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
     initialize_worker_consume(vec![broker],config,ipc);
 }
 
-fn report_error(error: ErrorReport) {
+pub fn report_error(error: ErrorReport) {
     error!("{}",error.error);
 
     let mut px = PRODUCER.lock().unwrap();

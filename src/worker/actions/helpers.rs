@@ -11,20 +11,23 @@ pub async fn get_manager_call(guild_id: &String, manager: &mut Option<Arc<Songbi
     return Ok(h);
 }
 
+#[macro_export]
 macro_rules! error_report {
-    ( $( $x:expr ),* ) => {
+    ($x: expr,$rid: expr,$job_id: expr) => {
         {
-            let x = $x
-            match x {
+            use crate::connector::report_error;
+            // let val = $x;
+
+            match $x {
                 Ok(_) => {},
                 Err(e) => {
                     report_error(ErrorReport {
                         error: e.to_string(),
-                        request_id: dwc.request_id.unwrap(),
-                        job_id: dwc.job_id.clone()
+                        request_id: $rid,
+                        job_id: $job_id
                     })
                 }
             }
         }
-    };
+    } 
 }
