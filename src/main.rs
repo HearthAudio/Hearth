@@ -1,4 +1,5 @@
 use std::time::Duration;
+use log::error;
 use crate::config::*;
 use crate::deco::{print_intro, print_warnings};
 use crate::logger::setup_logger;
@@ -9,6 +10,7 @@ use crate::worker::serenity_handler::{initialize_songbird};
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::{Receiver, Sender};
 use tokio::time::sleep;
+use crate::platform::check_platform_supported;
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 
 mod config;
@@ -22,6 +24,7 @@ mod logger;
 mod utils;
 
 mod deco;
+mod platform;
 
 // This is a bit of a hack to get around annoying type issues
 async fn initialize_scheduler_internal(config: Config,songbird_ipc: &mut ProcessorIPC) {
@@ -40,6 +43,11 @@ async fn main() {
     // Setup logger
     setup_logger().expect("Logger Setup Failed - A bit ironic no?");
     print_warnings();
+    let platform_check = check_platform_supported();
+    match platform_check {
+        Ok(_) => {},
+        Err(e) => error!("Failed to get system OS with error: {}", e)
+    }
     // Load config
     let worker_config = init_config();
     let scheduler_config = worker_config.clone();

@@ -16,9 +16,8 @@ fn is_program_in_path(program: &str) -> bool {
 }
 
 pub fn print_warnings() {
-    println!("{}",is_program_in_path("youtube-dl"));
-    if is_program_in_path("youtube-dl") == false {
-        warn!("youtube-dl is not installed! This Lantern instance will not be able to play tracks from YouTube until it is installed!")
+    if is_program_in_path("yt-dlp") == false {
+        warn!("yt-dlp is not installed! This Lantern instance will not be able to play tracks from YouTube until it is installed!")
     }
 }
 
