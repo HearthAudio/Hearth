@@ -46,7 +46,7 @@ async fn main() {
     let platform_check = check_platform_supported();
     match platform_check {
         Ok(res) => {
-            if (res == true) {
+            if res == true {
                 warn!("Hearth may or may not work when running on MacOS. But it will probably not work");
             }
         },

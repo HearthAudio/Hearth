@@ -5,12 +5,7 @@
 - [ ] More Unit Tests
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 # Waiting for testing:
-- [ ] SeekToPosition
-- [ ] LoopIndefinitely
-- [ ] LoopForXTimes
-- [ ] ForceStopLoop
 # TODO General (Post-Launch)
-- [x] Macro for error report in queue processor
 - [ ] Chunk Youtube downloads
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
@@ -23,6 +18,11 @@
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 - [ ] Possible performance improvement by using single separate channel to listen DWC communications and store in HashMap instead of broadcasting. Use tokioselect! in loop to await standard ipc and seperate channel
 # DONE
+- [x] ForceStopLoop
+- [x] LoopForXTimes
+- [x] LoopIndefinitely
+- [x] Macro for error report in queue processor
+- [x] SeekToPosition
 - [x] Add YouTube support
 - [x] Do not crash thread on queue processor if error occurs
 - [x] Replace full memory download with chunking for url player and other players
