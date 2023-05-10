@@ -81,17 +81,9 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                         manager = msg.songbird;
                         ready = true;
                         // Join channel
-                        let join = join_channel(&queue_job,&mut manager).await;
-                        match join {
-                            Ok(_) => {},
-                            Err(e) => {
-                                report_error(ErrorReport {
-                                    error: e.to_string(),
-                                    request_id: message.request_id.clone(),
-                                    job_id: queue_job.job_id.clone()
-                                })
-                            }
-                        }
+                        let job_id = queue_job.job_id.clone();
+                        let join = join_channel(&queue_job,message.request_id.clone(),&mut manager,report_error).await;
+                        error_report!(join,msg.dwc.unwrap().request_id.unwrap(),job_id);
                     },
                     _ => {}
                 }
