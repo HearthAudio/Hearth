@@ -65,6 +65,8 @@ pub struct JobRequest {
 pub enum DWCActionType {
     LeaveChannel,
     SeekToPosition,
+    LoopXTimes,
+    LoopForever,
     PlayDirectLink,
     PlayFromYoutube,
     PlayFromSoundcloud,
@@ -82,7 +84,9 @@ pub struct DirectWorkerCommunication {
     pub play_audio_url: Option<String>,
     pub action_type: DWCActionType,
     pub request_id: Option<String>,
-    pub new_volume: Option<f32>
+    pub new_volume: Option<f32>,
+    pub seek_position: Option<u64>,
+    pub loop_times: Option<usize>
 }
 
 #[derive(Deserialize,Debug,Serialize,Clone)]

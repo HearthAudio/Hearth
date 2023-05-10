@@ -11,6 +11,8 @@ use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{pause_playback, resume_playback, set_playback_volume};
 
+use super::actions::track_manager::{loop_indefinetly, loop_x_times, seek_to_position};
+
 #[derive(Clone,Debug)]
 pub enum Infrastructure {
     SongbirdIncoming,
@@ -107,7 +109,46 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                                 })
                             }
                         }
+                    },
+                    ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
+                        let loop_x = loop_x_times(&track, dwc.loop_times).await;
+                        match loop_x {
+                            Ok(_) => {},
+                            Err(e) => {
+                                report_error(ErrorReport {
+                                    error: e.to_string(),
+                                    request_id: dwc.request_id.unwrap(),
+                                    job_id: dwc.job_id.clone()
+                                })
+                            }
+                        }
+                    },
+                    ProcessorIncomingAction::Actions(DWCActionType::SeekToPosition) => {
+                        let seek_pos = seek_to_position(&track, dwc.seek_position).await;
+                        match seek_pos {
+                            Ok(_) => {},
+                            Err(e) => {
+                                report_error(ErrorReport {
+                                    error: e.to_string(),
+                                    request_id: dwc.request_id.unwrap(),
+                                    job_id: dwc.job_id.clone()
+                                })
+                            }
+                        }
                     }
+                    ProcessorIncomingAction::Actions(DWCActionType::LoopForever) => {
+                        let loop_forever = loop_indefinetly(&track).await;
+                        match loop_forever {
+                            Ok(_) => {},
+                            Err(e) => {
+                                report_error(ErrorReport {
+                                    error: e.to_string(),
+                                    request_id: dwc.request_id.unwrap(),
+                                    job_id: dwc.job_id.clone()
+                                })
+                            }
+                        }
+                    },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
                         let play = play_direct_link(&dwc,&mut manager,client.clone()).await;
                         match play {

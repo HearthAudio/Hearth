@@ -10,3 +10,21 @@ pub async fn get_manager_call(guild_id: &String, manager: &mut Option<Arc<Songbi
        .with_whatever_context(|| "Failed to retrieve manager Call")?;
     return Ok(h);
 }
+
+macro_rules! error_report {
+    ( $( $x:expr ),* ) => {
+        {
+            let x = $x
+            match x {
+                Ok(_) => {},
+                Err(e) => {
+                    report_error(ErrorReport {
+                        error: e.to_string(),
+                        request_id: dwc.request_id.unwrap(),
+                        job_id: dwc.job_id.clone()
+                    })
+                }
+            }
+        }
+    };
+}
