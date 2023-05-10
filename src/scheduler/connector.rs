@@ -1,5 +1,4 @@
-
-
+use hearth_interconnect::messages::{Message, MessageType};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 
@@ -8,7 +7,7 @@ use snafu::Whatever;
 
 use crate::scheduler::distributor::{distribute_job, WORKERS};
 use crate::config::Config;
-use crate::utils::generic_connector::{initialize_client, initialize_producer, Message, MessageType, PRODUCER, send_message_generic};
+use crate::utils::generic_connector::{initialize_client, initialize_producer, PRODUCER, send_message_generic};
 use crate::worker::queue_processor::ProcessorIPC;
 
 pub fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {

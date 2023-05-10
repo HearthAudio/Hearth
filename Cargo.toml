@@ -38,3 +38,6 @@ git = "https://github.com/Hearth-Industries/songbird-next-fork.git"
 features = ["client", "standard_framework", "voice", "native_tls_backend","builder","cache","gateway","http","model","utils"]
 git = "https://github.com/serenity-rs/serenity"
 branch = "next"
+
+[dependencies.hearth-interconnect]
+git = "https://github.com/Hearth-Industries/hearth-interconnect.git"

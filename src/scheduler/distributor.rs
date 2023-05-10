@@ -1,4 +1,6 @@
 use std::sync::Mutex;
+use hearth_interconnect::messages::{Message, MessageType};
+use hearth_interconnect::worker_communication::Job;
 use kafka::producer::Producer;
 use log::error;
 use once_cell::sync::Lazy;
@@ -6,15 +8,8 @@ use serde::{Serialize,Deserialize};
 use nanoid::nanoid;
 use crate::config::Config;
 use crate::scheduler::connector::{send_message};
-use crate::utils::generic_connector::{Message, MessageType};
 // Handles distribution across worker nodes via round robin or maybe another method?
 
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub struct Job {
-    pub guild_id: String,
-    pub voice_channel_id: String,
-    pub job_id: String
-}
 
 static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
 pub static WORKERS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(vec![]));

@@ -698,6 +698,7 @@ dependencies = [
  "bytes",
  "fern",
  "futures",
+ "hearth-interconnect",
  "humantime",
  "kafka",
  "lazy_static",
@@ -720,6 +721,16 @@ dependencies = [
  "tokio",
  "toml",
  "url",
+]
+
+[[package]]
+name = "hearth-interconnect"
+version = "0.1.0"
+source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#7d491efcdadeaf2bf5bb6d1c83b849a69f544b3e"
+dependencies = [
+ "serde",
+ "serde_derive",
+ "serde_json",
 ]
 
 [[package]]

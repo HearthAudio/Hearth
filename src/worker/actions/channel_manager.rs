@@ -1,17 +1,16 @@
 use std::num::ParseIntError;
 use std::sync::Arc;
+use hearth_interconnect::errors::ErrorReport;
+use hearth_interconnect::worker_communication::{DirectWorkerCommunication, Job};
 use log::error;
 use snafu::{OptionExt, ResultExt};
 use songbird::id::GuildId;
 use songbird::id::ChannelId;
 use songbird::{Event, EventContext, Songbird};
 use songbird::events::{EventHandler as VoiceEventHandler,TrackEvent};
-use crate::scheduler::distributor::Job;
-use crate::utils::generic_connector::DirectWorkerCommunication;
 use snafu::Snafu;
 use songbird::error::JoinError;
 use serenity::async_trait;
-use crate::worker::queue_processor::ErrorReport;
 
 #[derive(Debug, Snafu)]
 pub enum ChannelControlError {

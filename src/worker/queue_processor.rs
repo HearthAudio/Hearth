@@ -4,7 +4,9 @@ use songbird::tracks::TrackHandle;
 use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
 use crate::error_report;
-use crate::utils::generic_connector::{DirectWorkerCommunication, DWCActionType, Message};
+use hearth_interconnect::errors::ErrorReport;
+use hearth_interconnect::messages::Message;
+use hearth_interconnect::worker_communication::{DirectWorkerCommunication, DWCActionType};
 use serde::Deserialize;
 use serde::Serialize;
 use reqwest::Client as HttpClient;
@@ -24,23 +26,6 @@ pub enum Infrastructure {
 pub enum ProcessorIncomingAction {
     Infrastructure(Infrastructure),
     Actions(DWCActionType)
-}
-
-#[derive(Clone,Debug)]
-pub struct LeaveAction {
-    pub guild_id: u64
-}
-
-#[derive(Clone,Debug)]
-pub struct PlayAudioAction {
-    pub url: String
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub struct ErrorReport {
-    pub error: String,
-    pub request_id: String,
-    pub job_id: String
 }
 
 #[derive(Clone,Debug)]

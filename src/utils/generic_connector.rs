@@ -4,6 +4,7 @@
 use std::process;
 use std::sync::Mutex;
 use std::time::Duration;
+use hearth_interconnect::messages::Message;
 use kafka;
 use kafka::consumer::Consumer;
 use kafka::producer::{Producer, Record, RequiredAcks};
@@ -14,114 +15,9 @@ use serde::Deserialize;
 use serde_derive::Serialize;
 use snafu::Whatever;
 use crate::config::Config;
-use crate::scheduler::distributor::Job;
-use crate::worker::queue_processor::{ErrorReport, ProcessorIPC};
+use crate::worker::queue_processor::{ProcessorIPC};
 use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
-
-// All other job communication is passed directly to worker instead of running through scheduler
-#[derive(Deserialize,Debug,Serialize,Clone)]
-#[serde(tag = "type")]
-pub enum MessageType {
-    // Internal
-    InternalWorkerAnalytics,
-    InternalWorkerQueueJob,
-    InternalPingPongRequest,
-    InternalPongResponse,
-    // External
-    ExternalQueueJob,
-    ExternalQueueJobResponse,
-    // Other
-    DirectWorkerCommunication,
-    ErrorReport
-
-
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-#[serde(tag = "type")]
-pub enum AssetType {
-    DirectAssetLink,
-    YoutubeLink,
-    SoundcloudLink
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub struct Analytics {
-    cpu_usage: u8,
-    memory_usage: u8,
-    jobs_running: u32,
-    disk_usage: u8
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub struct JobRequest {
-    pub guild_id: String,
-    pub voice_channel_id: String,
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-#[serde(tag = "type")]
-pub enum DWCActionType {
-    LeaveChannel,
-    SeekToPosition,
-    LoopXTimes,
-    ForceStopLoop,
-    LoopForever,
-    PlayDirectLink,
-    PlayFromYoutube,
-    PlayFromSoundcloud,
-    SetPlaybackVolume,
-    PausePlayback,
-    ResumePlayback,
-    GetTrackCompleteTimestamp,
-    QueueTracks
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub struct DirectWorkerCommunication {
-    pub job_id: String,
-    pub guild_id: Option<String>,
-    pub play_audio_url: Option<String>,
-    pub action_type: DWCActionType,
-    pub request_id: Option<String>,
-    pub new_volume: Option<f32>,
-    pub seek_position: Option<u64>,
-    pub loop_times: Option<usize>
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub enum JobEventType {
-    ChannelLeave,
-    ChannelMove,
-    AudioEnd,
-    AudioStart,
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub struct JobEvent {
-    pub event_type: JobEventType
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub struct ExternalQueueJobResponse {
-    pub job_id: String,
-    pub worker_id: String
-}
-
-#[derive(Deserialize,Debug,Serialize,Clone)]
-pub struct Message {
-    pub message_type: MessageType, // Handles how message should be parsed
-    pub analytics: Option<Analytics>, // Analytics sent by each worker
-    pub queue_job_request: Option<JobRequest>,
-    pub queue_job_internal: Option<Job>,
-    pub request_id: String, // Unique string provided by client to identify this request
-    pub worker_id: Option<String>, // ID Unique to each worker
-    pub direct_worker_communication: Option<DirectWorkerCommunication>,
-    pub external_queue_job_response: Option<ExternalQueueJobResponse>,
-    pub job_event: Option<JobEvent>,
-    pub error_report: Option<ErrorReport>
-}
 
 lazy_static! {
     pub static ref PRODUCER: Mutex<Option<Producer>> = Mutex::new(None);

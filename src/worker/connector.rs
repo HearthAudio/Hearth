@@ -1,9 +1,7 @@
 
 use std::thread;
-
-
-
-
+use hearth_interconnect::errors::ErrorReport;
+use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, MessageType};
 
 
 use kafka::producer::Producer;
@@ -18,8 +16,7 @@ use tokio::runtime::Builder;
 
 
 use crate::config::Config;
-use crate::worker::queue_processor::{ErrorReport};
-use crate::utils::generic_connector::{ExternalQueueJobResponse, initialize_client, initialize_producer, Message, MessageType, PRODUCER, send_message_generic};
+use crate::utils::generic_connector::{ initialize_client, initialize_producer, PRODUCER, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::queue_processor::{process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};

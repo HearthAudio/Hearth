@@ -1,11 +1,11 @@
 
 use std::sync::Arc;
+use hearth_interconnect::worker_communication::DirectWorkerCommunication;
 use reqwest::Client;
 
 use snafu::{OptionExt, ResultExt, Whatever};
 use songbird::{Songbird};
 use songbird::tracks::TrackHandle;
-use crate::utils::generic_connector::DirectWorkerCommunication;
 use crate::worker::actions::helpers::get_manager_call;
 
 use snafu::Snafu;
