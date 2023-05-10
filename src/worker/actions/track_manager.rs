@@ -28,13 +28,13 @@ pub async fn loop_x_times(track: &Option<TrackHandle>,times: Option<usize>) -> R
     Ok(())
 }
 
-pub async fn loop_indefinetly(track: &Option<TrackHandle>) -> Result<(),Whatever> {
+pub async fn loop_indefinitely(track: &Option<TrackHandle>) -> Result<(),Whatever> {
     let t = track.as_ref().with_whatever_context(|| format!("Track not found"))?;
     let _ = t.enable_loop();
     Ok(())
 }
 
-pub async fn force_stop_loop(track: &Option<TrackHandle>,position: Duration) -> Result<(),Whatever> {
+pub async fn force_stop_loop(track: &Option<TrackHandle>) -> Result<(),Whatever> {
     let t = track.as_ref().with_whatever_context(|| format!("Track not found"))?;
     let _ = t.disable_loop();
     Ok(())

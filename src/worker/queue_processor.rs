@@ -10,9 +10,9 @@ use serde::Serialize;
 use reqwest::Client as HttpClient;
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
-use crate::worker::actions::track_manager::{pause_playback, resume_playback, set_playback_volume};
+use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
 
-use super::actions::track_manager::{loop_indefinetly, loop_x_times, seek_to_position};
+use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_position};
 
 #[derive(Clone,Debug)]
 pub enum Infrastructure {
@@ -104,11 +104,14 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                     ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
                         error_report!(loop_x_times(&track, dwc.loop_times).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     },
+                    ProcessorIncomingAction::Actions(DWCActionType::ForceStopLoop) => {
+                        error_report!(force_stop_loop(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                    },
                     ProcessorIncomingAction::Actions(DWCActionType::SeekToPosition) => {
                         error_report!(seek_to_position(&track, dwc.seek_position).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::LoopForever) => {
-                        error_report!(loop_indefinetly(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        error_report!(loop_indefinitely(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
                         error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone());

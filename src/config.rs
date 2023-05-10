@@ -50,7 +50,6 @@ pub fn init_config() -> Config {
 
     if config.config.worker_id.is_none() {
         config.config.worker_id = Some(nanoid!());
-        //TODO: After doing this modify config file to include worker id
         let new_config = toml::ser::to_string(&config);
         match new_config {
             Ok(mut new_val_config) => {

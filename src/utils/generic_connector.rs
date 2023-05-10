@@ -66,6 +66,7 @@ pub enum DWCActionType {
     LeaveChannel,
     SeekToPosition,
     LoopXTimes,
+    ForceStopLoop,
     LoopForever,
     PlayDirectLink,
     PlayFromYoutube,

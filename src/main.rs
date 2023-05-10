@@ -1,5 +1,5 @@
 use std::time::Duration;
-use log::error;
+use log::{error, warn};
 use crate::config::*;
 use crate::deco::{print_intro, print_warnings};
 use crate::logger::setup_logger;
@@ -45,7 +45,11 @@ async fn main() {
     print_warnings();
     let platform_check = check_platform_supported();
     match platform_check {
-        Ok(_) => {},
+        Ok(res) => {
+            if (res == true) {
+                warn!("Hearth may or may not work when running on MacOS. But it will probably not work");
+            }
+        },
         Err(e) => error!("Failed to get system OS with error: {}", e)
     }
     // Load config
