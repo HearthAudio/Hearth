@@ -9,8 +9,8 @@
 - [ ] LoopIndefinitely
 - [ ] LoopForXTimes
 - [ ] ForceStopLoop
-- [ ] Macro for error report in queue processor
 # TODO General (Post-Launch)
+- [x] Macro for error report in queue processor
 - [ ] Chunk Youtube downloads
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects

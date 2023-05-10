@@ -16,18 +16,19 @@ macro_rules! error_report {
     ($x: expr,$rid: expr,$job_id: expr) => {
         {
             use crate::connector::report_error;
-            // let val = $x;
-
             match $x {
-                Ok(_) => {},
+                Ok(t) => {
+                    Some(t)
+                },
                 Err(e) => {
                     report_error(ErrorReport {
                         error: e.to_string(),
                         request_id: $rid,
                         job_id: $job_id
-                    })
+                    });
+                    None
                 }
             }
         }
-    } 
+    }
 }
