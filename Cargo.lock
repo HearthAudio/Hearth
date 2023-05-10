@@ -1011,9 +1011,9 @@ dependencies = [
 
 [[package]]
 name = "lofty"
-version = "0.12.1"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd1b8e18439c8fabf316e0a87e9cdca9667e90bcf5a080946a264fd60bbed5e8"
+checksum = "0cb2b21027aa98f860de475b3ee8b10f36df689121b5752efeb7a64bec1f4d45"
 dependencies = [
  "base64 0.21.0",
  "byteorder",
@@ -1027,13 +1027,13 @@ dependencies = [
 
 [[package]]
 name = "lofty_attr"
-version = "0.6.0"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "336dfabb2fdfd932cebfcaa5d0fc57abac0d49f6ae9ddaa7c47a51bf9f74f966"
+checksum = "9482ad911db377f8362c658aff576aac289c84cf5c25ca058e2c49d9bc3301dc"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.109",
+ "syn 2.0.15",
 ]
 
 [[package]]
