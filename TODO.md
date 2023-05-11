@@ -1,22 +1,21 @@
 # Features and Other stuff to Implement:
 - [ ] GetTrackMetadata
 - [ ] Scheduler fail over with dead marking if fail rate is high
-- [ ] Move a bunch of stuff into Config
-- [ ] Client library "Charcoal" for Rust, with bindings to Typescript and Java
+- [ ] Move kafka topic into config
+- [ ] Rust Bindings -> Typescript/JS
 - [ ] Error Reports for message parse fails
 - [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
+- [ ] Client Library
 # Waiting for testing:
 # TODO General (Post-Launch)
 - [ ] Unit Tests
-- [ ] Chunk Youtube downloads
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
 - [ ] Find better way to handle message struct than a thousand options.
 - [ ] Add SoundCloud support. See `soundcloud` crate
 - [ ] Swap `youtube-dl` with the `rustube` crate (May require forking `rustube` and modifying) (This has a few issues chunk throttling - age restricted downloads etc... see Issues on repo)
-- [ ] Support age restricted videos in `rustube`
-- [ ] Fuzzing
+- [ ] Kafka Fuzzing
 - [ ] Exposed Track Event System
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 - [ ] Possible performance improvement by using single separate channel to listen DWC communications and store in HashMap instead of broadcasting. Use tokioselect! in loop to await standard ipc and seperate channel
