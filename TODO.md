@@ -6,10 +6,11 @@
 - [ ] Error Reports for message parse fails
 - [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
-- [ ] Client Library
 # Waiting for testing:
+- [ ] Client Library
 # TODO General (Post-Launch)
 - [ ] Unit Tests
+- [ ] Replace current horrible message interface with typed sub enums
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
 - [ ] Find better way to handle message struct than a thousand options.

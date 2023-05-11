@@ -110,7 +110,7 @@ fn parse_message_callback(parsed_message: Message, _producer: &PRODUCER, config:
                     direct_worker_communication: None,
                     external_queue_job_response: Some(ExternalQueueJobResponse {
                         job_id: job_id,
-                        worker_id: config.config.worker_id.as_ref().unwrap().clone()
+                        worker_id: config.config.worker_id.as_ref().unwrap().clone(),
                     }),
                     job_event: None,
                     error_report: None,

@@ -1,8 +1,8 @@
 /target
 output.log
-ca.pem
-service.cert
-service.key
+../charcoal/examples/ca.pem
+../charcoal/examples/service.cert
+../charcoal/examples/service.key
 output.log
 config.toml
 .DS_store
