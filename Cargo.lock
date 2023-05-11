@@ -726,7 +726,7 @@ dependencies = [
 [[package]]
 name = "hearth-interconnect"
 version = "0.1.0"
-source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#a1aa577fbc57633a63705266b1525be0efb8c388"
+source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#586ab23eb15b46a5d8f9a7fcf8f96f27c7b1193f"
 dependencies = [
  "serde",
  "serde_derive",
