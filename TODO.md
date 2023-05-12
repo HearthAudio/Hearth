@@ -8,8 +8,8 @@
 - [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 - [ ] Set Badges
+- [ ] Test Full Command Set for client library
 # Waiting for testing:
-- [ ] Client Library
 # TODO General (Post-Launch)
 - [ ] Unit Tests
 - [ ] Dashboard
@@ -22,6 +22,7 @@
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 - [ ] Possible performance improvement by using single separate channel to listen DWC communications and store in HashMap instead of broadcasting. Use tokioselect! in loop to await standard ipc and seperate channel
 # DONE
+- [x] Client Library
 - [x] Move kafka topic into config
 - [x] ForceStopLoop
 - [x] LoopForXTimes

@@ -21,18 +21,18 @@ pub fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
 }
 
 fn parse_message_callback(parsed_message: Message, _: &PRODUCER, config: &Config, _: &mut ProcessorIPC) -> Result<(),Whatever> {
-    match parsed_message.message_type {
-        MessageType::ExternalQueueJob => {
+    match parsed_message {
+        Message::ExternalQueueJob(j) => {
             // Handle event listener
             let mut px = PRODUCER.lock().unwrap();
             let p = px.as_mut();
 
             distribute_job(parsed_message, &mut *p.unwrap(), config);
         }
-        MessageType::InternalWorkerAnalytics => {
+        Message::InternalWorkerAnalytics(a) => {
             //TODO
         },
-        MessageType::InternalPongResponse => {
+        Message::InternalPongResponse => {
             WORKERS.lock().unwrap().push(parsed_message.worker_id.unwrap());
         }
         _ => {}
