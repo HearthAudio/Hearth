@@ -1,5 +1,5 @@
 use std::sync::Mutex;
-use hearth_interconnect::messages::{JobRequest, Message, MessageType};
+use hearth_interconnect::messages::{JobRequest, Message};
 use hearth_interconnect::worker_communication::Job;
 use kafka::producer::Producer;
 use log::error;

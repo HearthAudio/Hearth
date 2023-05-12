@@ -83,11 +83,12 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
             let mut px = PRODUCER.lock().unwrap();
             let p = px.as_mut();
             send_message(&Message::InternalPongResponse(PingPongResponse {
-                worker_id: config.config.worker_id.unwrap()
+                worker_id: config.config.worker_id.clone().unwrap()
             }),config.config.kafka_topic.as_str(), &mut *p.unwrap());
         }
         Message::InternalWorkerQueueJob(job) => {
             let proc_config = config.clone();
+            let job_id = job.job_id.clone();
             // This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
             // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
             // let sender = ipc.sender;
@@ -104,7 +105,7 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
             let p = px.as_mut();
 
             send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
-                job_id: job.job_id.clone(),
+                job_id: job_id,
                 worker_id: config.config.worker_id.as_ref().unwrap().clone(),
             }),config.config.kafka_topic.as_str(), &mut *p.unwrap());
         }

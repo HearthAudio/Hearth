@@ -1,4 +1,4 @@
-use hearth_interconnect::messages::{Message, MessageType};
+use hearth_interconnect::messages::{Message};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 
@@ -49,18 +49,7 @@ pub fn initialize_scheduler_consume(brokers: Vec<String>,config: &Config,ipc: &m
 fn initialized_callback(config: &Config) {
     let mut px = PRODUCER.lock().unwrap();
     let p = px.as_mut();
-    send_message(&Message {
-        message_type: MessageType::InternalPingPongRequest,
-        analytics: None,
-        queue_job_request: None,
-        queue_job_internal: None,
-        request_id: "".to_string(),
-        worker_id: None,
-        direct_worker_communication: None,
-        external_queue_job_response: None,
-        job_event: None,
-        error_report: None,
-    },config.config.kafka_topic.as_str(),&mut *p.unwrap());
+    send_message(&Message::InternalPingPongRequest,config.config.kafka_topic.as_str(),&mut *p.unwrap())
 }
 
 pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {
