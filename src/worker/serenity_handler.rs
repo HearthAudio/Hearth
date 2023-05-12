@@ -38,7 +38,7 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
 
     let client_data = client.data.clone();
     let server_count = client.cache.guild_count();
-    if server_count > 2500 {
+    if server_count > 5000 {
         over_servers_warning();
     }
     tokio::spawn(async move {

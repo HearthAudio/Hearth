@@ -62,12 +62,12 @@ A Discord Bot is an autonomous unit that interacts with the Discord platform to 
        copyright notices and licenses, will be listed and made available to
        you.
 
-3. If your Bot has more than 2500 Discord Servers you need to contact Bryght, LLC within 16 Days of passing
-2500 Discord servers additionally a custom agreement explicitly permitting usage above 2500 users must be signed and agreed to by both parties
-within 30 days of passing 2500 Discord servers. Or you will be in violation of this contract. 
+3. If your Bot has more than 5000 Discord Servers you need to contact Bryght, LLC within 16 Days of passing
+5000 Discord servers additionally a custom agreement explicitly permitting usage above 5000 users must be signed and agreed to by both parties
+within 30 days of passing 5000 Discord servers. Or you will be in violation of this contract. 
 
 4. Clause 6 only applies if you have not made a custom agreement with Bryght, LLC to provide warranty.
-5. Permission is hereby granted, free of charge, to any person or company obtaining a copy of this Software for use with Discord Bots that have less than or equal to 2500 Discord Servers. To deal in the Software with restriction, with the rights to use, copy, modify, merge, and publish, excluding the ability to sublicense, sell, or otherwise distribute the Software in any manner, and all other actions not explicitly permitted.
+5. Permission is hereby granted, free of charge, to any person or company obtaining a copy of this Software for use with Discord Bots that have less than or equal to 5000 Discord Servers. To deal in the Software with restriction, with the rights to use, copy, modify, merge, and publish, excluding the ability to sublicense, sell, or otherwise distribute the Software in any manner, and all other actions not explicitly permitted.
 6. THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 7. The Parties also agree to all the following conditions:
    1. You may not remove or alter any copyright, trademark, or other proprietary rights notice contained in any portion of the Licensed Software,

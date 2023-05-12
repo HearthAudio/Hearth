@@ -22,7 +22,7 @@ pub fn print_warnings() {
 }
 
 pub fn over_servers_warning() {
-    warn!("Guild count is over 2500. Hearth is only free up to 2500 discord servers. You must contact Hearth Industries within 14 Days of passing 2500 servers. For more details see the license in the github repo: LICENSE.md. If you have already acquired a paid license no further action is needed.")
+    warn!("Guild count is over 5000. Hearth is only free up to 5000 discord servers. You must contact Hearth Industries within 14 Days of passing 5000 servers. For more details see the license in the github repo: LICENSE.md. If you have already acquired a paid license no further action is needed.")
 }
 
 pub fn print_intro() {
