@@ -1,8 +1,7 @@
 # Features and Other stuff to Implement:
 - [ ] GetTrackMetadata
 - [ ] Scheduler fail over with dead marking if fail rate is high
-- [ ] Move kafka topic into config
-- [ ] Rust Bindings -> Typescript/JS
+- [ ] Rust Bindings -> Typescript/JS for Client Library
 - [ ] Error Reports for message parse fails
 - [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
@@ -21,6 +20,7 @@
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 - [ ] Possible performance improvement by using single separate channel to listen DWC communications and store in HashMap instead of broadcasting. Use tokioselect! in loop to await standard ipc and seperate channel
 # DONE
+- [x] Move kafka topic into config
 - [x] ForceStopLoop
 - [x] LoopForXTimes
 - [x] LoopIndefinitely

@@ -110,13 +110,13 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn()) {
+pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config)) {
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
-        .with_topic(String::from("communication"))
+        .with_topic(config.config.kafka_topic.clone())
         .create()
         .unwrap();
 
-    initialized_callback();
+    initialized_callback(&config);
 
     loop {
         let mss = consumer.poll().unwrap();

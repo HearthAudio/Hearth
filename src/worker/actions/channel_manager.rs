@@ -11,6 +11,7 @@ use songbird::events::{EventHandler as VoiceEventHandler,TrackEvent};
 use snafu::Snafu;
 use songbird::error::JoinError;
 use serenity::async_trait;
+use crate::config::Config;
 
 #[derive(Debug, Snafu)]
 pub enum ChannelControlError {
@@ -34,9 +35,10 @@ pub async fn leave_channel(dwc: &DirectWorkerCommunication, manager: &mut Option
 }
 
 struct TrackErrorNotifier {
-    error_reporter: fn(ErrorReport),
+    error_reporter: fn(ErrorReport,&Config),
     request_id: String,
-    job_id: String
+    job_id: String,
+    config: Config
 }
 
 #[async_trait]
@@ -48,7 +50,7 @@ impl VoiceEventHandler for TrackErrorNotifier {
                     error: format!( "Track {:?} encountered an error: {:?}", handle.uuid(), state.playing),
                     request_id: self.request_id.clone(),
                     job_id: self.job_id.clone(),
-                })
+                },&self.config)
             }
         }
 
@@ -56,7 +58,7 @@ impl VoiceEventHandler for TrackErrorNotifier {
     }
 }
 
-pub async fn join_channel(queue_job: &Job, request_id: String, manager: &mut Option<Arc<Songbird>>,error_reporter: fn(ErrorReport)) -> Result<(),ChannelControlError> {
+pub async fn join_channel(queue_job: &Job, request_id: String, manager: &mut Option<Arc<Songbird>>, error_reporter: fn(ErrorReport, &Config), config: Config) -> Result<(),ChannelControlError> {
     let gid = queue_job.guild_id.clone().parse().context(GuildIDParsingFailedSnafu)?;
     let vcid = queue_job.voice_channel_id.clone().parse().context(ChannelIDParsingFailedSnafu)?;
     if let Ok(handler_lock) = manager.as_mut().context(ManagerAcquisitionFailedSnafu)?.join(GuildId(gid), ChannelId(vcid)).await {
@@ -65,7 +67,8 @@ pub async fn join_channel(queue_job: &Job, request_id: String, manager: &mut Opt
         handler.add_global_event(TrackEvent::Error.into(), TrackErrorNotifier {
             error_reporter: error_reporter,
             job_id: queue_job.job_id.clone(),
-            request_id: request_id
+            request_id: request_id,
+            config: config
         });
     }
     Ok(())
