@@ -44,7 +44,7 @@ pub struct ProcessorIPC {
 }
 
 
-pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCData>,report_error: fn(ErrorReport,&Config),request_id: String) {
+pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCData>,report_error: fn(ErrorReport,&Config)) {
     let job_id = &job.job_id;
     sender.send(ProcessorIPCData {
         action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest),
@@ -66,7 +66,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
                         ready = true;
                         // Join channel
                         let job_id = job.job_id.clone();
-                        let join = join_channel(&job,request_id.clone(),&mut manager,report_error,config.clone()).await;
+                        let join = join_channel(&job,job.request_id.clone(),&mut manager,report_error,config.clone()).await;
                         let _ = error_report!(join,msg.dwc.unwrap().request_id.unwrap(),job_id,config);
                     },
                     _ => {}

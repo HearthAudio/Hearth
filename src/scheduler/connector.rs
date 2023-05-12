@@ -27,13 +27,13 @@ fn parse_message_callback(parsed_message: Message, _: &PRODUCER, config: &Config
             let mut px = PRODUCER.lock().unwrap();
             let p = px.as_mut();
 
-            distribute_job(parsed_message, &mut *p.unwrap(), config);
+            distribute_job(j, &mut *p.unwrap(), config);
         }
         Message::InternalWorkerAnalytics(a) => {
             //TODO
         },
-        Message::InternalPongResponse => {
-            WORKERS.lock().unwrap().push(parsed_message.worker_id.unwrap());
+        Message::InternalPongResponse(r) => {
+            WORKERS.lock().unwrap().push(r.worker_id);
         }
         _ => {}
     }
