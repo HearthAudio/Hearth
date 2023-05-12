@@ -3,13 +3,15 @@
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Rust Bindings -> Typescript/JS for Client Library
 - [ ] Error Reports for message parse fails
+- [ ] Replace current horrible message interface with typed sub enums
+- [ ] Add warning to set kafka latency settings
 - [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
+- [ ] Set Badges
 # Waiting for testing:
 - [ ] Client Library
 # TODO General (Post-Launch)
 - [ ] Unit Tests
-- [ ] Replace current horrible message interface with typed sub enums
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
 - [ ] Find better way to handle message struct than a thousand options.
