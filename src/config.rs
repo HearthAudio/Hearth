@@ -13,6 +13,7 @@ pub struct InternalConfig {
     pub discord_bot_id: u64,
     pub discord_bot_token: String,
     pub kafka_uri: String,
+    pub kafka_topic: String,
     pub worker_id: Option<String>
 }
 

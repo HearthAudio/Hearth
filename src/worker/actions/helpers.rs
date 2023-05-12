@@ -13,7 +13,7 @@ pub async fn get_manager_call(guild_id: &String, manager: &mut Option<Arc<Songbi
 
 #[macro_export]
 macro_rules! error_report {
-    ($x: expr,$rid: expr,$job_id: expr) => {
+    ($x: expr,$rid: expr,$job_id: expr,$config: expr) => {
         {
             use crate::connector::report_error;
             match $x {
@@ -25,7 +25,7 @@ macro_rules! error_report {
                         error: e.to_string(),
                         request_id: $rid,
                         job_id: $job_id
-                    });
+                    },$config);
                     None
                 }
             }

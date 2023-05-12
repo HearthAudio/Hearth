@@ -46,7 +46,7 @@ pub fn initialize_scheduler_consume(brokers: Vec<String>,config: &Config,ipc: &m
     initialize_consume_generic(brokers, config, parse_message_callback,  ipc,&PRODUCER,initialized_callback);
 }
 
-fn initialized_callback() {
+fn initialized_callback(config: &Config) {
     let mut px = PRODUCER.lock().unwrap();
     let p = px.as_mut();
     send_message(&Message {
@@ -60,7 +60,7 @@ fn initialized_callback() {
         external_queue_job_response: None,
         job_event: None,
         error_report: None,
-    },"communication",&mut *p.unwrap());
+    },config.config.kafka_topic.as_str(),&mut *p.unwrap());
 }
 
 pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {

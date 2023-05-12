@@ -44,7 +44,7 @@ pub struct ProcessorIPC {
 }
 
 
-pub async fn process_job(message: Message, _config: &Config, sender: Sender<ProcessorIPCData>,report_error: fn(ErrorReport)) {
+pub async fn process_job(message: Message, config: &Config, sender: Sender<ProcessorIPCData>,report_error: fn(ErrorReport,&Config)) {
     let queue_job = message.queue_job_internal.unwrap();
     let job_id = &queue_job.job_id;
     sender.send(ProcessorIPCData {
@@ -67,8 +67,8 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                         ready = true;
                         // Join channel
                         let job_id = queue_job.job_id.clone();
-                        let join = join_channel(&queue_job,message.request_id.clone(),&mut manager,report_error).await;
-                        let _ = error_report!(join,msg.dwc.unwrap().request_id.unwrap(),job_id);
+                        let join = join_channel(&queue_job,message.request_id.clone(),&mut manager,report_error,config.clone()).await;
+                        let _ = error_report!(join,msg.dwc.unwrap().request_id.unwrap(),job_id,config);
                     },
                     _ => {}
                 }
@@ -76,34 +76,34 @@ pub async fn process_job(message: Message, _config: &Config, sender: Sender<Proc
                 let dwc = msg.dwc.unwrap();
                 match msg.action_type {
                     ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
-                        let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
-                        let _ = error_report!(loop_x_times(&track, dwc.loop_times).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        let _ = error_report!(loop_x_times(&track, dwc.loop_times).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::ForceStopLoop) => {
-                        let _ = error_report!(force_stop_loop(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        let _ = error_report!(force_stop_loop(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::SeekToPosition) => {
-                        let _ = error_report!(seek_to_position(&track, dwc.seek_position).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        let _ = error_report!(seek_to_position(&track, dwc.seek_position).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::LoopForever) => {
-                        let _ = error_report!(loop_indefinitely(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        let _ = error_report!(loop_indefinitely(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
-                        track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
-                        track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
-                        let _ = error_report!(pause_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        let _ = error_report!(pause_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::ResumePlayback) => {
-                        let _ = error_report!(resume_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        let _ = error_report!(resume_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
-                        let _ = error_report!(set_playback_volume(&track,dwc.new_volume).await,dwc.request_id.unwrap(),dwc.job_id.clone());
+                        let _ = error_report!(set_playback_volume(&track,dwc.new_volume).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     }
                     _ => {}
                 }

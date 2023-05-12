@@ -27,7 +27,7 @@ pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
     initialize_worker_consume(vec![broker],config,ipc);
 }
 
-pub fn report_error(error: ErrorReport) {
+pub fn report_error(error: ErrorReport,config: &Config) {
     error!("{}",error.error);
 
     let mut px = PRODUCER.lock().unwrap();
@@ -43,7 +43,7 @@ pub fn report_error(error: ErrorReport) {
         external_queue_job_response: None,
         job_event: None,
         error_report: Some(error),
-    },"communication",&mut p.unwrap());
+    },config.config.kafka_topic.as_str(),&mut p.unwrap());
 }
 
 fn parse_message_callback(parsed_message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) -> Result<(),Whatever> {
@@ -61,7 +61,7 @@ fn parse_message_callback(parsed_message: Message, _producer: &PRODUCER, config:
             external_queue_job_response: None,
             job_event: None,
             error_report: None,
-        }, "communication", &mut *p.unwrap());
+        }, config.config.kafka_topic.as_str(), &mut *p.unwrap());
     } else if parsed_message.worker_id.is_some() && parsed_message.worker_id.as_ref().with_whatever_context(|| "Invalid Worker ID")? == config.config.worker_id.as_ref().unwrap() {
         match parsed_message.message_type {
             // Parseable
@@ -69,7 +69,6 @@ fn parse_message_callback(parsed_message: Message, _producer: &PRODUCER, config:
                 let mut dwc = parsed_message.direct_worker_communication.unwrap();
                 let job_id = dwc.job_id.clone();
                 dwc.request_id = Some(parsed_message.request_id.clone()); // Copy standard request id to DWC request id
-                info!("RECV DWC: {}",job_id.clone());
                 let result = ipc.sender.send(ProcessorIPCData {
                     action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
                     songbird: None,
@@ -114,7 +113,7 @@ fn parse_message_callback(parsed_message: Message, _producer: &PRODUCER, config:
                     }),
                     job_event: None,
                     error_report: None,
-                }, "communication", &mut *p.unwrap());
+                }, config.config.kafka_topic.as_str(), &mut *p.unwrap());
             },
             _ => {}
         }
@@ -130,7 +129,7 @@ pub fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mu
     initialize_consume_generic(brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback);
 }
 
-fn initialized_callback() {}
+fn initialized_callback(_: &Config) {}
 
 pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {
     send_message_generic(message,topic,producer);
