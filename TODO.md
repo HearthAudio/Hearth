@@ -1,14 +1,13 @@
 # Features and Other stuff to Implement:
 - [ ] GetTrackMetadata
-- [ ] Scheduler fail over with dead marking if fail rate is high
+- [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
+- [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Error Reports for message parse fails
-- [ ] Replace current horrible message interface with typed sub enums
-- [ ] Add warning to set kafka latency settings
+- [ ] Add warning to set kafka latency settings to README
 - [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 - [ ] Set Badges
-- [ ] Test Full Command Set for client library
 # Waiting for testing:
 # TODO General (Post-Launch)
 - [ ] Unit Tests
@@ -22,6 +21,7 @@
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 - [ ] Possible performance improvement by using single separate channel to listen DWC communications and store in HashMap instead of broadcasting. Use tokioselect! in loop to await standard ipc and seperate channel
 # DONE
+- [x] Replace current horrible message interface with typed sub enums
 - [x] Client Library
 - [x] Move kafka topic into config
 - [x] ForceStopLoop
