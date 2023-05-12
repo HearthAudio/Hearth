@@ -17,7 +17,7 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
 <p align="center" >
 <ul>
   <li>💨 Hearth is extremely performant and can support 60x more concurrent streams than LavaLink which means significantly less node servers potentially saving thousands of dollars.</li><br/>
-  <li >🔐 Heath is very secure as unlike LavaLink it does not run on an outdated Java runtime</li><br/>
+  <li >🔐 Heath is very secure due to it's memory safe nature.</li><br/>
   <li >🔧 Hearth is extremely easy to integrate into your project with our wide selection of client libraries for Javascript, Java, Typescript, and Rust. With more coming soon!</li><br/>
 </ul>
 <div style="display: flex;align-content: center;justify-content: center;">
@@ -25,7 +25,11 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
         <h3 align="center">Client Libraries</h3>
         <hr/>
         <div align="center">
+            <h4>Coming Soon:</h4>
             <img height="70" src="assets/java.svg"/>
+            <img  height="70"  src="assets/spacer.png"/>
+            <img height="70" src="assets/python.png"/>
+            <h4>Available Now:</h4>
             <img  height="70"  src="assets/spacer.png"/>
             <img  height="70"  src="assets/javascript.svg"/>
             <img  height="70"  src="assets/spacer.png"/>
