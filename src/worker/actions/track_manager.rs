@@ -18,7 +18,8 @@ pub async fn resume_playback(track: &Option<TrackHandle>) -> Result<(),Whatever>
 
 fn get_metadata_action(view: View) -> Option<Action> {
     //TODO: MATCH
-    let meta = view.meta.unwrap().format.current().unwrap();
+    let m = view.meta.unwrap();
+    let meta = m.format.current().unwrap();
     let metadata = meta.tags();
     println!("{:?}",metadata);
     // let result = MetadataResult {
