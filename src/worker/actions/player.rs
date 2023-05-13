@@ -37,7 +37,7 @@ pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Opt
     let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
     let mut handler = handler_lock.lock().await;
     let mut source = HttpRequest::new(client, dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
-    let metadata = source.aux_metadata().await.context(FailedToExtractMetadataSnafu)?;
+    let metadata = source.aux_metadata().await.unwrap()?;
     println!("{:?}",metadata);
     let track_handle = handler.play_input(source.into());
     Ok(PlaybackResult {
