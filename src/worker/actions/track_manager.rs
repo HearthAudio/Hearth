@@ -16,25 +16,9 @@ pub async fn resume_playback(track: &Option<TrackHandle>) -> Result<(),Whatever>
     Ok(())
 }
 
-fn get_metadata_action(view: View) -> Option<Action> {
-    //TODO: MATCH
-    let m = view.meta.unwrap();
-    let meta = m.format.current().unwrap();
-    let metadata = meta.tags();
-    println!("{:?}",metadata);
-    // let result = MetadataResult {
-    //     duration_milliseconds: 0,
-    //     file_type: "".to_string(),
-    //     artist: "".to_string(),
-    //     name: "".to_string(),
-    //     sample_rate: 0,
-    // };
-    None
-}
-
-pub async fn get_metadata(track: &Option<TrackHandle>) -> Result<(),Whatever> {
+pub async fn send_metadata(track: &Option<TrackHandle>) -> Result<(),Whatever> {
     let t = track.as_ref().with_whatever_context(|| format!("Track not found"))?;
-    t.action(get_metadata_action).unwrap();
+    // t.action(get_metadata_action).unwrap();
     Ok(())
 }
 

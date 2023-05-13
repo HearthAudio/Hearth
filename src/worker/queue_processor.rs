@@ -10,9 +10,10 @@ use hearth_interconnect::worker_communication::{DirectWorkerCommunication, DWCAc
 use serde::Deserialize;
 use serde::Serialize;
 use reqwest::Client as HttpClient;
+use songbird::input::AuxMetadata;
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
-use crate::worker::actions::player::{play_direct_link, play_from_youtube};
-use crate::worker::actions::track_manager::{force_stop_loop, get_metadata, pause_playback, resume_playback, set_playback_volume};
+use crate::worker::actions::player::{play_direct_link, play_from_youtube, PlaybackResult};
+use crate::worker::actions::track_manager::{force_stop_loop, send_metadata, pause_playback, resume_playback, set_playback_volume};
 
 use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_position};
 
@@ -56,6 +57,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
     let client = HttpClient::new(); // TEMP We should probs move this into an arc and share across jobs
     let mut manager : Option<Arc<Songbird>> = None;
     let mut track : Option<TrackHandle> = None;
+    let mut metadata : Option<AuxMetadata> = None;
     let mut ready = false;
     while let Ok(msg) = sender.subscribe().recv().await {
         if job_id == &msg.job_id {
@@ -87,10 +89,14 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
                         let _ = error_report!(loop_indefinitely(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
-                        track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                        let res = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
-                        track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                        let res = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                        if let Some(r) = res {
+                            track = Some(r.track_handle);
+                            metadata = Some(r.metadata);
+                        }
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
                         let _ = error_report!(pause_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
@@ -102,7 +108,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
                         let _ = error_report!(set_playback_volume(&track,dwc.new_volume).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::GetMetaData) => {
-                        let _ = error_report!(get_metadata(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                        let _ = error_report!(send_metadata(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     }
                     _ => {}
                 }
