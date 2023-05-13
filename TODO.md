@@ -2,7 +2,7 @@
 - [ ] GetTrackMetadata
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
-- [ ] Scheduler fail over with dead marking if fail rate is high
+- [ ] Kill Jobs after 8 hours to prevent zombie processes. Allow time configuration in config file
 - [ ] Error Reports for message parse fails
 - [ ] Add warning to set kafka latency settings to README
 - [ ] Test with multiple workers. And with single scheduler and multi-work
@@ -10,6 +10,7 @@
 - [ ] Set Badges
 # Waiting for testing:
 # TODO General (Post-Launch)
+- [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Unit Tests
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
