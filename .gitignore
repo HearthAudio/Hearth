@@ -6,3 +6,6 @@ output.log
 output.log
 config.toml
 .DS_store
+service.key
+service.cert
+ca.pem
