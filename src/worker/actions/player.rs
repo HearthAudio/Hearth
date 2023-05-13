@@ -9,7 +9,7 @@ use songbird::tracks::TrackHandle;
 use crate::worker::actions::helpers::get_manager_call;
 
 use snafu::Snafu;
-use songbird::input::{HttpRequest, YoutubeDl};
+use songbird::input::{HttpRequest, Input, MetadataError, YoutubeDl};
 
 
 #[derive(Debug, Snafu)]
@@ -24,6 +24,8 @@ pub enum PlaybackError {
     FailedToGetHandlerLock { source: Whatever },
     #[snafu(display("Missing Audio URL"))]
     MissingAudioURL { },
+    #[snafu(display("Failed to extract metadata"))]
+    FailedToExtractMetadata { source: MetadataError },
 }
 
 

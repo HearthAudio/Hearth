@@ -1,7 +1,8 @@
 use std::time::Duration;
+use hearth_interconnect::messages::MetadataResult;
 
 use snafu::{OptionExt, ResultExt, Whatever};
-use songbird::tracks::TrackHandle;
+use songbird::tracks::{Action, TrackHandle, View};
 
 pub async fn pause_playback(track: &Option<TrackHandle>) -> Result<(),Whatever> {
     let t = track.as_ref().with_whatever_context(|| format!("Track not found"))?;
@@ -12,6 +13,27 @@ pub async fn pause_playback(track: &Option<TrackHandle>) -> Result<(),Whatever> 
 pub async fn resume_playback(track: &Option<TrackHandle>) -> Result<(),Whatever> {
     let t = track.as_ref().with_whatever_context(|| format!("Track not found"))?;
     let _ = t.play().with_whatever_context(|e| format!("Failed to play track with error: {}",e))?;
+    Ok(())
+}
+
+fn get_metadata_action(view: View) -> Option<Action> {
+    //TODO: MATCH
+    let meta = view.meta.unwrap().probe.get().unwrap();
+    let metadata = meta.current().unwrap().tags();
+    println!("{:?}",metadata);
+    // let result = MetadataResult {
+    //     duration_milliseconds: 0,
+    //     file_type: "".to_string(),
+    //     artist: "".to_string(),
+    //     name: "".to_string(),
+    //     sample_rate: 0,
+    // };
+    None
+}
+
+pub async fn get_metadata(track: &Option<TrackHandle>) -> Result<(),Whatever> {
+    let t = track.as_ref().with_whatever_context(|| format!("Track not found"))?;
+    t.action(get_metadata_action).unwrap();
     Ok(())
 }
 

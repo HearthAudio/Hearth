@@ -12,7 +12,7 @@ use serde::Serialize;
 use reqwest::Client as HttpClient;
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
-use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
+use crate::worker::actions::track_manager::{force_stop_loop, get_metadata, pause_playback, resume_playback, set_playback_volume};
 
 use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_position};
 
@@ -59,17 +59,14 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
     let mut ready = false;
     while let Ok(msg) = sender.subscribe().recv().await {
         if job_id == &msg.job_id {
-            if ready == false {
-                match msg.action_type {
-                    ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming) => {
-                        manager = msg.songbird;
-                        ready = true;
-                        // Join channel
-                        let job_id = job.job_id.clone();
-                        let join = join_channel(&job,job.request_id.clone(),&mut manager,report_error,config.clone()).await;
-                        let _ = error_report!(join,msg.dwc.unwrap().request_id.unwrap(),job_id,config);
-                    },
-                    _ => {}
+            if !ready {
+                if let ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming) = msg.action_type {
+                    manager = msg.songbird;
+                    ready = true;
+                    // Join channel
+                    let job_id = job.job_id.clone();
+                    let join = join_channel(&job,job.request_id.clone(),&mut manager,report_error,config.clone()).await;
+                    let _ = error_report!(join,msg.dwc.unwrap().request_id.unwrap(),job_id,config);
                 }
             } else {
                 let dwc = msg.dwc.unwrap();
@@ -103,6 +100,9 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
                     }
                     ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
                         let _ = error_report!(set_playback_volume(&track,dwc.new_volume).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    }
+                    ProcessorIncomingAction::Actions(DWCActionType::GetMetaData) => {
+                        let _ = error_report!(get_metadata(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     }
                     _ => {}
                 }
