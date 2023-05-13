@@ -90,6 +90,10 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
                         let res = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                        if let Some(r) = res {
+                            track = Some(r.track_handle);
+                            metadata = Some(r.metadata);
+                        }
                     },
                     ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
                         let res = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
