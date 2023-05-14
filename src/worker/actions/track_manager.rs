@@ -2,9 +2,9 @@ use std::time::Duration;
 
 
 use snafu::{OptionExt, ResultExt, Whatever};
-use songbird::input::Metadata;
-use songbird::tracks::{Action, TrackHandle, View};
-use symphonia_core::meta::Tag;
+
+use songbird::tracks::{TrackHandle};
+
 
 pub async fn pause_playback(track: &Option<TrackHandle>) -> Result<(),Whatever> {
     let t = track.as_ref().with_whatever_context(|| format!("Track not found"))?;
