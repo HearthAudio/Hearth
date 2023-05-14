@@ -14,7 +14,6 @@
 - [ ] Unit Tests
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
-- [ ] Find better way to handle message struct than a thousand options.
 - [ ] Add SoundCloud support. See `soundcloud` crate
 - [ ] Swap `youtube-dl` with the `rustube` crate (May require forking `rustube` and modifying) (This has a few issues chunk throttling - age restricted downloads etc... see Issues on repo)
 - [ ] Kafka Fuzzing
