@@ -12,7 +12,7 @@ use serde::Serialize;
 use reqwest::Client as HttpClient;
 use songbird::input::AuxMetadata;
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
-use crate::worker::actions::player::{play_direct_link, play_from_youtube, PlaybackResult};
+use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{force_stop_loop, get_metadata, pause_playback, resume_playback, set_playback_volume};
 
 use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_position};

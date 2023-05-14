@@ -18,21 +18,21 @@ pub async fn resume_playback(track: &Option<TrackHandle>) -> Result<(),Whatever>
     Ok(())
 }
 
-fn get_probed_metadata(meta: &Metadata) -> Result<&'static [Tag],Whatever> {
+fn get_probed_metadata(meta: &mut Metadata) -> Result<Vec<Tag>,Whatever> {
     let probed = meta.probe.get().with_whatever_context(|| "Failed to get probed metadata")?;
     let tags = probed.current().with_whatever_context(|| "Failed to get current metadata")?.tags();
-    Ok(tags)
+    Ok(tags.to_vec())
 }
 
-fn get_format_metadata(meta: &Metadata) -> Result<&'static [Tag],Whatever> {
+fn get_format_metadata(meta: &Metadata) -> Result<Vec<Tag>,Whatever> {
     let format = meta.format.current().with_whatever_context(|| "Failed to get format metadata")?;
     let tags = format.tags();
-    Ok(tags)
+    Ok(tags.to_vec())
 }
 
 fn get_metadata_action(view: View) -> Option<Action> {
-    let meta = view.meta.unwrap();
-    let tags = get_probed_metadata(&meta);
+    let mut meta = view.meta.unwrap();
+    let tags = get_probed_metadata(&mut meta);
     match tags {
         Ok(t) => {
             println!("{:?}",t)

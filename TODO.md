@@ -1,5 +1,6 @@
 # Features and Other stuff to Implement:
 - [ ] GetTrackMetadata
+- [ ] Add SSL stuff to config
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
 - [ ] Kill Jobs after 8 hours to prevent zombie processes. Allow time configuration in config file
