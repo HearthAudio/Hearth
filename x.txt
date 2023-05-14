@@ -1,0 +1,3494 @@
+#![feature(prelude_import)]
+#[prelude_import]
+use std::prelude::rust_2021::*;
+#[macro_use]
+extern crate std;
+use std::time::Duration;
+use log::{error, warn};
+use crate::config::*;
+use crate::deco::{print_intro, print_warnings};
+use crate::logger::setup_logger;
+use crate::scheduler::*;
+use crate::worker::*;
+use crate::worker::serenity_handler::initialize_songbird;
+
+use tokio::sync::broadcast;
+use tokio::sync::broadcast::{Receiver, Sender};
+use tokio::time::sleep;
+use crate::platform::check_platform_supported;
+use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
+
+mod config {
+
+
+
+
+
+
+    // This is a bit of a hack to get around annoying type issues
+
+
+
+    // let source = uri_stream("").await;
+    // Setup logger
+    // Load config
+    // Setup Flume Songbird IPC
+    // Depending on roles initialize worker and or scheduler on separate threads
+    // If worker is also started on same node wait a second so ping pong is accurate
+
+
+    use std::fs;
+    use std::fs::File;
+    use std::io::Write;
+    use log::error;
+    use nanoid::nanoid;
+    use serde_derive::{Deserialize, Serialize};
+    pub struct InternalConfig {
+        pub discord_bot_id: u64,
+        pub discord_bot_token: String,
+        pub kafka_uri: String,
+        pub kafka_topic: String,
+        pub worker_id: Option<String>,
+    }
+    #[doc(hidden)]
+    #[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+    const _: () =
+        {
+            #[allow(unused_extern_crates, clippy :: useless_attribute)]
+            extern crate serde as _serde;
+            #[allow(unused_macros)]
+            macro_rules! try {
+                ($__expr : expr) =>
+                {
+                    match $__expr
+                    {
+                        _serde :: __private :: Ok(__val) => __val, _serde ::
+                        __private :: Err(__err) =>
+                        { return _serde :: __private :: Err(__err) ; }
+                    }
+                }
+            }
+            #[automatically_derived]
+            impl<'de> _serde::Deserialize<'de> for InternalConfig {
+                fn deserialize<__D>(__deserializer: __D)
+                    -> _serde::__private::Result<Self, __D::Error> where
+                    __D: _serde::Deserializer<'de> {
+                    #[allow(non_camel_case_types)]
+                    #[doc(hidden)]
+                    enum __Field {
+                        __field0,
+                        __field1,
+                        __field2,
+                        __field3,
+                        __field4,
+                        __ignore,
+                    }
+                    #[doc(hidden)]
+                    struct __FieldVisitor;
+                    impl<'de> _serde::de::Visitor<'de> for __FieldVisitor {
+                        type Value = __Field;
+                        fn expecting(&self,
+                            __formatter: &mut _serde::__private::Formatter)
+                            -> _serde::__private::fmt::Result {
+                            _serde::__private::Formatter::write_str(__formatter,
+                                "field identifier")
+                        }
+                        fn visit_u64<__E>(self, __value: u64)
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                0u64 => _serde::__private::Ok(__Field::__field0),
+                                1u64 => _serde::__private::Ok(__Field::__field1),
+                                2u64 => _serde::__private::Ok(__Field::__field2),
+                                3u64 => _serde::__private::Ok(__Field::__field3),
+                                4u64 => _serde::__private::Ok(__Field::__field4),
+                                _ => _serde::__private::Ok(__Field::__ignore),
+                            }
+                        }
+                        fn visit_str<__E>(self, __value: &str)
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                "discord_bot_id" =>
+                                    _serde::__private::Ok(__Field::__field0),
+                                "discord_bot_token" =>
+                                    _serde::__private::Ok(__Field::__field1),
+                                "kafka_uri" => _serde::__private::Ok(__Field::__field2),
+                                "kafka_topic" => _serde::__private::Ok(__Field::__field3),
+                                "worker_id" => _serde::__private::Ok(__Field::__field4),
+                                _ => { _serde::__private::Ok(__Field::__ignore) }
+                            }
+                        }
+                        fn visit_bytes<__E>(self, __value: &[u8])
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                b"discord_bot_id" =>
+                                    _serde::__private::Ok(__Field::__field0),
+                                b"discord_bot_token" =>
+                                    _serde::__private::Ok(__Field::__field1),
+                                b"kafka_uri" => _serde::__private::Ok(__Field::__field2),
+                                b"kafka_topic" => _serde::__private::Ok(__Field::__field3),
+                                b"worker_id" => _serde::__private::Ok(__Field::__field4),
+                                _ => { _serde::__private::Ok(__Field::__ignore) }
+                            }
+                        }
+                    }
+                    impl<'de> _serde::Deserialize<'de> for __Field {
+                        #[inline]
+                        fn deserialize<__D>(__deserializer: __D)
+                            -> _serde::__private::Result<Self, __D::Error> where
+                            __D: _serde::Deserializer<'de> {
+                            _serde::Deserializer::deserialize_identifier(__deserializer,
+                                __FieldVisitor)
+                        }
+                    }
+                    #[doc(hidden)]
+                    struct __Visitor<'de> {
+                        marker: _serde::__private::PhantomData<InternalConfig>,
+                        lifetime: _serde::__private::PhantomData<&'de ()>,
+                    }
+                    impl<'de> _serde::de::Visitor<'de> for __Visitor<'de> {
+                        type Value = InternalConfig;
+                        fn expecting(&self,
+                            __formatter: &mut _serde::__private::Formatter)
+                            -> _serde::__private::fmt::Result {
+                            _serde::__private::Formatter::write_str(__formatter,
+                                "struct InternalConfig")
+                        }
+                        #[inline]
+                        fn visit_seq<__A>(self, mut __seq: __A)
+                            -> _serde::__private::Result<Self::Value, __A::Error> where
+                            __A: _serde::de::SeqAccess<'de> {
+                            let __field0 =
+                                match match _serde::de::SeqAccess::next_element::<u64>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(0usize,
+                                                    &"struct InternalConfig with 5 elements"));
+                                    }
+                                };
+                            let __field1 =
+                                match match _serde::de::SeqAccess::next_element::<String>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(1usize,
+                                                    &"struct InternalConfig with 5 elements"));
+                                    }
+                                };
+                            let __field2 =
+                                match match _serde::de::SeqAccess::next_element::<String>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(2usize,
+                                                    &"struct InternalConfig with 5 elements"));
+                                    }
+                                };
+                            let __field3 =
+                                match match _serde::de::SeqAccess::next_element::<String>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(3usize,
+                                                    &"struct InternalConfig with 5 elements"));
+                                    }
+                                };
+                            let __field4 =
+                                match match _serde::de::SeqAccess::next_element::<Option<String>>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(4usize,
+                                                    &"struct InternalConfig with 5 elements"));
+                                    }
+                                };
+                            _serde::__private::Ok(InternalConfig {
+                                    discord_bot_id: __field0,
+                                    discord_bot_token: __field1,
+                                    kafka_uri: __field2,
+                                    kafka_topic: __field3,
+                                    worker_id: __field4,
+                                })
+                        }
+                        #[inline]
+                        fn visit_map<__A>(self, mut __map: __A)
+                            -> _serde::__private::Result<Self::Value, __A::Error> where
+                            __A: _serde::de::MapAccess<'de> {
+                            let mut __field0: _serde::__private::Option<u64> =
+                                _serde::__private::None;
+                            let mut __field1: _serde::__private::Option<String> =
+                                _serde::__private::None;
+                            let mut __field2: _serde::__private::Option<String> =
+                                _serde::__private::None;
+                            let mut __field3: _serde::__private::Option<String> =
+                                _serde::__private::None;
+                            let mut __field4:
+                                    _serde::__private::Option<Option<String>> =
+                                _serde::__private::None;
+                            while let _serde::__private::Some(__key) =
+                                    match _serde::de::MapAccess::next_key::<__Field>(&mut __map)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                match __key {
+                                    __Field::__field0 => {
+                                        if _serde::__private::Option::is_some(&__field0) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("discord_bot_id"));
+                                            }
+                                        __field0 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<u64>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    __Field::__field1 => {
+                                        if _serde::__private::Option::is_some(&__field1) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("discord_bot_token"));
+                                            }
+                                        __field1 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<String>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    __Field::__field2 => {
+                                        if _serde::__private::Option::is_some(&__field2) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("kafka_uri"));
+                                            }
+                                        __field2 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<String>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    __Field::__field3 => {
+                                        if _serde::__private::Option::is_some(&__field3) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("kafka_topic"));
+                                            }
+                                        __field3 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<String>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    __Field::__field4 => {
+                                        if _serde::__private::Option::is_some(&__field4) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("worker_id"));
+                                            }
+                                        __field4 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<Option<String>>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    _ => {
+                                        let _ =
+                                            match _serde::de::MapAccess::next_value::<_serde::de::IgnoredAny>(&mut __map)
+                                                {
+                                                _serde::__private::Ok(__val) => __val,
+                                                _serde::__private::Err(__err) => {
+                                                    return _serde::__private::Err(__err);
+                                                }
+                                            };
+                                    }
+                                }
+                            }
+                            let __field0 =
+                                match __field0 {
+                                    _serde::__private::Some(__field0) => __field0,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("discord_bot_id")
+                                            {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            let __field1 =
+                                match __field1 {
+                                    _serde::__private::Some(__field1) => __field1,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("discord_bot_token")
+                                            {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            let __field2 =
+                                match __field2 {
+                                    _serde::__private::Some(__field2) => __field2,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("kafka_uri") {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            let __field3 =
+                                match __field3 {
+                                    _serde::__private::Some(__field3) => __field3,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("kafka_topic") {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            let __field4 =
+                                match __field4 {
+                                    _serde::__private::Some(__field4) => __field4,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("worker_id") {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            _serde::__private::Ok(InternalConfig {
+                                    discord_bot_id: __field0,
+                                    discord_bot_token: __field1,
+                                    kafka_uri: __field2,
+                                    kafka_topic: __field3,
+                                    worker_id: __field4,
+                                })
+                        }
+                    }
+                    #[doc(hidden)]
+                    const FIELDS: &'static [&'static str] =
+                        &["discord_bot_id", "discord_bot_token", "kafka_uri",
+                                    "kafka_topic", "worker_id"];
+                    _serde::Deserializer::deserialize_struct(__deserializer,
+                        "InternalConfig", FIELDS,
+                        __Visitor {
+                            marker: _serde::__private::PhantomData::<InternalConfig>,
+                            lifetime: _serde::__private::PhantomData,
+                        })
+                }
+            }
+        };
+    #[automatically_derived]
+    impl ::core::clone::Clone for InternalConfig {
+        #[inline]
+        fn clone(&self) -> InternalConfig {
+            InternalConfig {
+                discord_bot_id: ::core::clone::Clone::clone(&self.discord_bot_id),
+                discord_bot_token: ::core::clone::Clone::clone(&self.discord_bot_token),
+                kafka_uri: ::core::clone::Clone::clone(&self.kafka_uri),
+                kafka_topic: ::core::clone::Clone::clone(&self.kafka_topic),
+                worker_id: ::core::clone::Clone::clone(&self.worker_id),
+            }
+        }
+    }
+    #[doc(hidden)]
+    #[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+    const _: () =
+        {
+            #[allow(unused_extern_crates, clippy :: useless_attribute)]
+            extern crate serde as _serde;
+            #[allow(unused_macros)]
+            macro_rules! try {
+                ($__expr : expr) =>
+                {
+                    match $__expr
+                    {
+                        _serde :: __private :: Ok(__val) => __val, _serde ::
+                        __private :: Err(__err) =>
+                        { return _serde :: __private :: Err(__err) ; }
+                    }
+                }
+            }
+            #[automatically_derived]
+            impl _serde::Serialize for InternalConfig {
+                fn serialize<__S>(&self, __serializer: __S)
+                    -> _serde::__private::Result<__S::Ok, __S::Error> where
+                    __S: _serde::Serializer {
+                    let mut __serde_state =
+                        match _serde::Serializer::serialize_struct(__serializer,
+                                "InternalConfig", false as usize + 1 + 1 + 1 + 1 + 1) {
+                            _serde::__private::Ok(__val) => __val,
+                            _serde::__private::Err(__err) => {
+                                return _serde::__private::Err(__err);
+                            }
+                        };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "discord_bot_id", &self.discord_bot_id) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "discord_bot_token", &self.discord_bot_token) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "kafka_uri", &self.kafka_uri) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "kafka_topic", &self.kafka_topic) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "worker_id", &self.worker_id) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    _serde::ser::SerializeStruct::end(__serde_state)
+                }
+            }
+        };
+    pub struct Config {
+        pub roles: Roles,
+        pub config: InternalConfig,
+    }
+    #[doc(hidden)]
+    #[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+    const _: () =
+        {
+            #[allow(unused_extern_crates, clippy :: useless_attribute)]
+            extern crate serde as _serde;
+            #[allow(unused_macros)]
+            macro_rules! try {
+                ($__expr : expr) =>
+                {
+                    match $__expr
+                    {
+                        _serde :: __private :: Ok(__val) => __val, _serde ::
+                        __private :: Err(__err) =>
+                        { return _serde :: __private :: Err(__err) ; }
+                    }
+                }
+            }
+            #[automatically_derived]
+            impl<'de> _serde::Deserialize<'de> for Config {
+                fn deserialize<__D>(__deserializer: __D)
+                    -> _serde::__private::Result<Self, __D::Error> where
+                    __D: _serde::Deserializer<'de> {
+                    #[allow(non_camel_case_types)]
+                    #[doc(hidden)]
+                    enum __Field { __field0, __field1, __ignore, }
+                    #[doc(hidden)]
+                    struct __FieldVisitor;
+                    impl<'de> _serde::de::Visitor<'de> for __FieldVisitor {
+                        type Value = __Field;
+                        fn expecting(&self,
+                            __formatter: &mut _serde::__private::Formatter)
+                            -> _serde::__private::fmt::Result {
+                            _serde::__private::Formatter::write_str(__formatter,
+                                "field identifier")
+                        }
+                        fn visit_u64<__E>(self, __value: u64)
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                0u64 => _serde::__private::Ok(__Field::__field0),
+                                1u64 => _serde::__private::Ok(__Field::__field1),
+                                _ => _serde::__private::Ok(__Field::__ignore),
+                            }
+                        }
+                        fn visit_str<__E>(self, __value: &str)
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                "roles" => _serde::__private::Ok(__Field::__field0),
+                                "config" => _serde::__private::Ok(__Field::__field1),
+                                _ => { _serde::__private::Ok(__Field::__ignore) }
+                            }
+                        }
+                        fn visit_bytes<__E>(self, __value: &[u8])
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                b"roles" => _serde::__private::Ok(__Field::__field0),
+                                b"config" => _serde::__private::Ok(__Field::__field1),
+                                _ => { _serde::__private::Ok(__Field::__ignore) }
+                            }
+                        }
+                    }
+                    impl<'de> _serde::Deserialize<'de> for __Field {
+                        #[inline]
+                        fn deserialize<__D>(__deserializer: __D)
+                            -> _serde::__private::Result<Self, __D::Error> where
+                            __D: _serde::Deserializer<'de> {
+                            _serde::Deserializer::deserialize_identifier(__deserializer,
+                                __FieldVisitor)
+                        }
+                    }
+                    #[doc(hidden)]
+                    struct __Visitor<'de> {
+                        marker: _serde::__private::PhantomData<Config>,
+                        lifetime: _serde::__private::PhantomData<&'de ()>,
+                    }
+                    impl<'de> _serde::de::Visitor<'de> for __Visitor<'de> {
+                        type Value = Config;
+                        fn expecting(&self,
+                            __formatter: &mut _serde::__private::Formatter)
+                            -> _serde::__private::fmt::Result {
+                            _serde::__private::Formatter::write_str(__formatter,
+                                "struct Config")
+                        }
+                        #[inline]
+                        fn visit_seq<__A>(self, mut __seq: __A)
+                            -> _serde::__private::Result<Self::Value, __A::Error> where
+                            __A: _serde::de::SeqAccess<'de> {
+                            let __field0 =
+                                match match _serde::de::SeqAccess::next_element::<Roles>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(0usize,
+                                                    &"struct Config with 2 elements"));
+                                    }
+                                };
+                            let __field1 =
+                                match match _serde::de::SeqAccess::next_element::<InternalConfig>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(1usize,
+                                                    &"struct Config with 2 elements"));
+                                    }
+                                };
+                            _serde::__private::Ok(Config {
+                                    roles: __field0,
+                                    config: __field1,
+                                })
+                        }
+                        #[inline]
+                        fn visit_map<__A>(self, mut __map: __A)
+                            -> _serde::__private::Result<Self::Value, __A::Error> where
+                            __A: _serde::de::MapAccess<'de> {
+                            let mut __field0: _serde::__private::Option<Roles> =
+                                _serde::__private::None;
+                            let mut __field1:
+                                    _serde::__private::Option<InternalConfig> =
+                                _serde::__private::None;
+                            while let _serde::__private::Some(__key) =
+                                    match _serde::de::MapAccess::next_key::<__Field>(&mut __map)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                match __key {
+                                    __Field::__field0 => {
+                                        if _serde::__private::Option::is_some(&__field0) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("roles"));
+                                            }
+                                        __field0 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<Roles>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    __Field::__field1 => {
+                                        if _serde::__private::Option::is_some(&__field1) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("config"));
+                                            }
+                                        __field1 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<InternalConfig>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    _ => {
+                                        let _ =
+                                            match _serde::de::MapAccess::next_value::<_serde::de::IgnoredAny>(&mut __map)
+                                                {
+                                                _serde::__private::Ok(__val) => __val,
+                                                _serde::__private::Err(__err) => {
+                                                    return _serde::__private::Err(__err);
+                                                }
+                                            };
+                                    }
+                                }
+                            }
+                            let __field0 =
+                                match __field0 {
+                                    _serde::__private::Some(__field0) => __field0,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("roles") {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            let __field1 =
+                                match __field1 {
+                                    _serde::__private::Some(__field1) => __field1,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("config") {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            _serde::__private::Ok(Config {
+                                    roles: __field0,
+                                    config: __field1,
+                                })
+                        }
+                    }
+                    #[doc(hidden)]
+                    const FIELDS: &'static [&'static str] =
+                        &["roles", "config"];
+                    _serde::Deserializer::deserialize_struct(__deserializer,
+                        "Config", FIELDS,
+                        __Visitor {
+                            marker: _serde::__private::PhantomData::<Config>,
+                            lifetime: _serde::__private::PhantomData,
+                        })
+                }
+            }
+        };
+    #[automatically_derived]
+    impl ::core::clone::Clone for Config {
+        #[inline]
+        fn clone(&self) -> Config {
+            Config {
+                roles: ::core::clone::Clone::clone(&self.roles),
+                config: ::core::clone::Clone::clone(&self.config),
+            }
+        }
+    }
+    #[doc(hidden)]
+    #[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+    const _: () =
+        {
+            #[allow(unused_extern_crates, clippy :: useless_attribute)]
+            extern crate serde as _serde;
+            #[allow(unused_macros)]
+            macro_rules! try {
+                ($__expr : expr) =>
+                {
+                    match $__expr
+                    {
+                        _serde :: __private :: Ok(__val) => __val, _serde ::
+                        __private :: Err(__err) =>
+                        { return _serde :: __private :: Err(__err) ; }
+                    }
+                }
+            }
+            #[automatically_derived]
+            impl _serde::Serialize for Config {
+                fn serialize<__S>(&self, __serializer: __S)
+                    -> _serde::__private::Result<__S::Ok, __S::Error> where
+                    __S: _serde::Serializer {
+                    let mut __serde_state =
+                        match _serde::Serializer::serialize_struct(__serializer,
+                                "Config", false as usize + 1 + 1) {
+                            _serde::__private::Ok(__val) => __val,
+                            _serde::__private::Err(__err) => {
+                                return _serde::__private::Err(__err);
+                            }
+                        };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "roles", &self.roles) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "config", &self.config) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    _serde::ser::SerializeStruct::end(__serde_state)
+                }
+            }
+        };
+    pub struct Roles {
+        pub worker: bool,
+        pub scheduler: bool,
+    }
+    #[doc(hidden)]
+    #[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+    const _: () =
+        {
+            #[allow(unused_extern_crates, clippy :: useless_attribute)]
+            extern crate serde as _serde;
+            #[allow(unused_macros)]
+            macro_rules! try {
+                ($__expr : expr) =>
+                {
+                    match $__expr
+                    {
+                        _serde :: __private :: Ok(__val) => __val, _serde ::
+                        __private :: Err(__err) =>
+                        { return _serde :: __private :: Err(__err) ; }
+                    }
+                }
+            }
+            #[automatically_derived]
+            impl<'de> _serde::Deserialize<'de> for Roles {
+                fn deserialize<__D>(__deserializer: __D)
+                    -> _serde::__private::Result<Self, __D::Error> where
+                    __D: _serde::Deserializer<'de> {
+                    #[allow(non_camel_case_types)]
+                    #[doc(hidden)]
+                    enum __Field { __field0, __field1, __ignore, }
+                    #[doc(hidden)]
+                    struct __FieldVisitor;
+                    impl<'de> _serde::de::Visitor<'de> for __FieldVisitor {
+                        type Value = __Field;
+                        fn expecting(&self,
+                            __formatter: &mut _serde::__private::Formatter)
+                            -> _serde::__private::fmt::Result {
+                            _serde::__private::Formatter::write_str(__formatter,
+                                "field identifier")
+                        }
+                        fn visit_u64<__E>(self, __value: u64)
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                0u64 => _serde::__private::Ok(__Field::__field0),
+                                1u64 => _serde::__private::Ok(__Field::__field1),
+                                _ => _serde::__private::Ok(__Field::__ignore),
+                            }
+                        }
+                        fn visit_str<__E>(self, __value: &str)
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                "worker" => _serde::__private::Ok(__Field::__field0),
+                                "scheduler" => _serde::__private::Ok(__Field::__field1),
+                                _ => { _serde::__private::Ok(__Field::__ignore) }
+                            }
+                        }
+                        fn visit_bytes<__E>(self, __value: &[u8])
+                            -> _serde::__private::Result<Self::Value, __E> where
+                            __E: _serde::de::Error {
+                            match __value {
+                                b"worker" => _serde::__private::Ok(__Field::__field0),
+                                b"scheduler" => _serde::__private::Ok(__Field::__field1),
+                                _ => { _serde::__private::Ok(__Field::__ignore) }
+                            }
+                        }
+                    }
+                    impl<'de> _serde::Deserialize<'de> for __Field {
+                        #[inline]
+                        fn deserialize<__D>(__deserializer: __D)
+                            -> _serde::__private::Result<Self, __D::Error> where
+                            __D: _serde::Deserializer<'de> {
+                            _serde::Deserializer::deserialize_identifier(__deserializer,
+                                __FieldVisitor)
+                        }
+                    }
+                    #[doc(hidden)]
+                    struct __Visitor<'de> {
+                        marker: _serde::__private::PhantomData<Roles>,
+                        lifetime: _serde::__private::PhantomData<&'de ()>,
+                    }
+                    impl<'de> _serde::de::Visitor<'de> for __Visitor<'de> {
+                        type Value = Roles;
+                        fn expecting(&self,
+                            __formatter: &mut _serde::__private::Formatter)
+                            -> _serde::__private::fmt::Result {
+                            _serde::__private::Formatter::write_str(__formatter,
+                                "struct Roles")
+                        }
+                        #[inline]
+                        fn visit_seq<__A>(self, mut __seq: __A)
+                            -> _serde::__private::Result<Self::Value, __A::Error> where
+                            __A: _serde::de::SeqAccess<'de> {
+                            let __field0 =
+                                match match _serde::de::SeqAccess::next_element::<bool>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(0usize,
+                                                    &"struct Roles with 2 elements"));
+                                    }
+                                };
+                            let __field1 =
+                                match match _serde::de::SeqAccess::next_element::<bool>(&mut __seq)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                    _serde::__private::Some(__value) => __value,
+                                    _serde::__private::None => {
+                                        return _serde::__private::Err(_serde::de::Error::invalid_length(1usize,
+                                                    &"struct Roles with 2 elements"));
+                                    }
+                                };
+                            _serde::__private::Ok(Roles {
+                                    worker: __field0,
+                                    scheduler: __field1,
+                                })
+                        }
+                        #[inline]
+                        fn visit_map<__A>(self, mut __map: __A)
+                            -> _serde::__private::Result<Self::Value, __A::Error> where
+                            __A: _serde::de::MapAccess<'de> {
+                            let mut __field0: _serde::__private::Option<bool> =
+                                _serde::__private::None;
+                            let mut __field1: _serde::__private::Option<bool> =
+                                _serde::__private::None;
+                            while let _serde::__private::Some(__key) =
+                                    match _serde::de::MapAccess::next_key::<__Field>(&mut __map)
+                                        {
+                                        _serde::__private::Ok(__val) => __val,
+                                        _serde::__private::Err(__err) => {
+                                            return _serde::__private::Err(__err);
+                                        }
+                                    } {
+                                match __key {
+                                    __Field::__field0 => {
+                                        if _serde::__private::Option::is_some(&__field0) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("worker"));
+                                            }
+                                        __field0 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<bool>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    __Field::__field1 => {
+                                        if _serde::__private::Option::is_some(&__field1) {
+                                                return _serde::__private::Err(<__A::Error as
+                                                                _serde::de::Error>::duplicate_field("scheduler"));
+                                            }
+                                        __field1 =
+                                            _serde::__private::Some(match _serde::de::MapAccess::next_value::<bool>(&mut __map)
+                                                    {
+                                                    _serde::__private::Ok(__val) => __val,
+                                                    _serde::__private::Err(__err) => {
+                                                        return _serde::__private::Err(__err);
+                                                    }
+                                                });
+                                    }
+                                    _ => {
+                                        let _ =
+                                            match _serde::de::MapAccess::next_value::<_serde::de::IgnoredAny>(&mut __map)
+                                                {
+                                                _serde::__private::Ok(__val) => __val,
+                                                _serde::__private::Err(__err) => {
+                                                    return _serde::__private::Err(__err);
+                                                }
+                                            };
+                                    }
+                                }
+                            }
+                            let __field0 =
+                                match __field0 {
+                                    _serde::__private::Some(__field0) => __field0,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("worker") {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            let __field1 =
+                                match __field1 {
+                                    _serde::__private::Some(__field1) => __field1,
+                                    _serde::__private::None =>
+                                        match _serde::__private::de::missing_field("scheduler") {
+                                            _serde::__private::Ok(__val) => __val,
+                                            _serde::__private::Err(__err) => {
+                                                return _serde::__private::Err(__err);
+                                            }
+                                        },
+                                };
+                            _serde::__private::Ok(Roles {
+                                    worker: __field0,
+                                    scheduler: __field1,
+                                })
+                        }
+                    }
+                    #[doc(hidden)]
+                    const FIELDS: &'static [&'static str] =
+                        &["worker", "scheduler"];
+                    _serde::Deserializer::deserialize_struct(__deserializer,
+                        "Roles", FIELDS,
+                        __Visitor {
+                            marker: _serde::__private::PhantomData::<Roles>,
+                            lifetime: _serde::__private::PhantomData,
+                        })
+                }
+            }
+        };
+    #[automatically_derived]
+    impl ::core::clone::Clone for Roles {
+        #[inline]
+        fn clone(&self) -> Roles {
+            Roles {
+                worker: ::core::clone::Clone::clone(&self.worker),
+                scheduler: ::core::clone::Clone::clone(&self.scheduler),
+            }
+        }
+    }
+    #[doc(hidden)]
+    #[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+    const _: () =
+        {
+            #[allow(unused_extern_crates, clippy :: useless_attribute)]
+            extern crate serde as _serde;
+            #[allow(unused_macros)]
+            macro_rules! try {
+                ($__expr : expr) =>
+                {
+                    match $__expr
+                    {
+                        _serde :: __private :: Ok(__val) => __val, _serde ::
+                        __private :: Err(__err) =>
+                        { return _serde :: __private :: Err(__err) ; }
+                    }
+                }
+            }
+            #[automatically_derived]
+            impl _serde::Serialize for Roles {
+                fn serialize<__S>(&self, __serializer: __S)
+                    -> _serde::__private::Result<__S::Ok, __S::Error> where
+                    __S: _serde::Serializer {
+                    let mut __serde_state =
+                        match _serde::Serializer::serialize_struct(__serializer,
+                                "Roles", false as usize + 1 + 1) {
+                            _serde::__private::Ok(__val) => __val,
+                            _serde::__private::Err(__err) => {
+                                return _serde::__private::Err(__err);
+                            }
+                        };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "worker", &self.worker) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    match _serde::ser::SerializeStruct::serialize_field(&mut __serde_state,
+                            "scheduler", &self.scheduler) {
+                        _serde::__private::Ok(__val) => __val,
+                        _serde::__private::Err(__err) => {
+                            return _serde::__private::Err(__err);
+                        }
+                    };
+                    _serde::ser::SerializeStruct::end(__serde_state)
+                }
+            }
+        };
+    pub fn init_config() -> Config {
+        let filename = "config.toml";
+        let contents =
+            match fs::read_to_string(filename) {
+                Ok(c) => c,
+                Err(error) => {
+                    {
+                        let lvl = ::log::Level::Error;
+                        if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                    lvl <= ::log::max_level() {
+                                ::log::__private_api_log(format_args!("{0}", error), lvl,
+                                    &("hearth::config", "hearth::config", "src/config.rs",
+                                            38u32), ::log::__private_api::Option::None);
+                            }
+                    };
+                    ::core::panicking::panic_fmt(format_args!("Could not read config file `{0}`",
+                            filename));
+                }
+            };
+        let mut config: Config =
+            match toml::from_str(&contents) {
+                Ok(d) => d,
+                Err(error) => {
+                    {
+                        let lvl = ::log::Level::Error;
+                        if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                    lvl <= ::log::max_level() {
+                                ::log::__private_api_log(format_args!("{0}", error), lvl,
+                                    &("hearth::config", "hearth::config", "src/config.rs",
+                                            46u32), ::log::__private_api::Option::None);
+                            }
+                    };
+                    ::core::panicking::panic_fmt(format_args!("Unable to load config data from `{0}`",
+                            filename));
+                }
+            };
+        if config.config.worker_id.is_none() {
+                config.config.worker_id =
+                    Some(::nanoid::format(::nanoid::rngs::default,
+                            &::nanoid::alphabet::SAFE, 21));
+                let new_config = toml::ser::to_string(&config);
+                match new_config {
+                    Ok(mut new_val_config) => {
+                        new_val_config =
+                            {
+                                let res =
+                                    ::alloc::fmt::format(format_args!("{0}{1}", new_val_config,
+                                            "# Worker ID has been autogenerated - DO NOT CHANGE"));
+                                res
+                            };
+                        let mut f = File::create("config.toml").unwrap();
+                        f.write_all(new_val_config.as_bytes()).unwrap();
+                    }
+                    Err(e) => {
+                        let lvl = ::log::Level::Error;
+                        if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                    lvl <= ::log::max_level() {
+                                ::log::__private_api_log(format_args!("Failed to write updated config with worker ID with error: {0}",
+                                        e), lvl,
+                                    &("hearth::config", "hearth::config", "src/config.rs",
+                                            61u32), ::log::__private_api::Option::None);
+                            }
+                    }
+                }
+            }
+        return config;
+    }
+}
+mod scheduler {
+    use log::info;
+    use crate::config::Config;
+    use crate::scheduler::connector::initialize_api;
+    use crate::worker::queue_processor::ProcessorIPC;
+    mod connector {
+        use hearth_interconnect::messages::Message;
+        use crate::utils::initialize_consume_generic;
+        use kafka::producer::Producer;
+        use snafu::Whatever;
+        use crate::scheduler::distributor::{distribute_job, WORKERS};
+        use crate::config::Config;
+        use crate::utils::generic_connector::{
+            initialize_client, initialize_producer, PRODUCER,
+            send_message_generic,
+        };
+        use crate::worker::queue_processor::ProcessorIPC;
+        pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
+            let broker = config.config.kafka_uri.to_owned();
+            let brokers =
+                <[_]>::into_vec(#[rustc_box] ::alloc::boxed::Box::new([broker]));
+            let producer: Producer =
+                initialize_producer(initialize_client(&brokers));
+            *PRODUCER.lock().unwrap() = Some(producer);
+            initialize_scheduler_consume(brokers, config, ipc);
+        }
+        fn parse_message_callback(parsed_message: Message, _: &PRODUCER,
+            config: &Config, _: &mut ProcessorIPC) -> Result<(), Whatever> {
+            match parsed_message {
+                Message::ExternalQueueJob(j) => {
+                    let mut px = PRODUCER.lock().unwrap();
+                    let p = px.as_mut();
+                    distribute_job(j, &mut *p.unwrap(), config);
+                }
+                Message::InternalWorkerAnalytics(_a) => {}
+                Message::InternalPongResponse(r) => {
+                    WORKERS.lock().unwrap().push(r.worker_id);
+                }
+                _ => {}
+            }
+            Ok(())
+        }
+        pub fn initialize_scheduler_consume(brokers: Vec<String>,
+            config: &Config, ipc: &mut ProcessorIPC) {
+            initialize_consume_generic(brokers, config,
+                parse_message_callback, ipc, &PRODUCER, initialized_callback);
+        }
+        fn initialized_callback(config: &Config) {
+            let mut px = PRODUCER.lock().unwrap();
+            let p = px.as_mut();
+            send_message(&Message::InternalPingPongRequest,
+                config.config.kafka_topic.as_str(), &mut *p.unwrap())
+        }
+        pub fn send_message(message: &Message, topic: &str,
+            producer: &mut Producer) {
+            send_message_generic(message, topic, producer);
+        }
+    }
+    pub(crate) mod distributor {
+        use std::sync::Mutex;
+        use hearth_interconnect::messages::{JobRequest, Message};
+        use hearth_interconnect::worker_communication::Job;
+        use kafka::producer::Producer;
+        use once_cell::sync::Lazy;
+        use nanoid::nanoid;
+        use crate::config::Config;
+        use crate::scheduler::connector::send_message;
+        static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> =
+            Lazy::new(|| Mutex::new(0));
+        pub static WORKERS: Lazy<Mutex<Vec<String>>> =
+            Lazy::new(|| Mutex::new(::alloc::vec::Vec::new()));
+        pub fn distribute_job(job: JobRequest, producer: &mut Producer,
+            config: &Config) {
+            let mut index_guard = ROUND_ROBIN_INDEX.lock().unwrap();
+            let workers_guard = WORKERS.lock().unwrap();
+            let job_id =
+                ::nanoid::format(::nanoid::rngs::default,
+                    &::nanoid::alphabet::SAFE, 21);
+            let internal_message =
+                &Message::InternalWorkerQueueJob(Job {
+                            guild_id: job.guild_id,
+                            voice_channel_id: job.voice_channel_id,
+                            job_id: job_id,
+                            worker_id: workers_guard[*index_guard].clone(),
+                            request_id: job.request_id,
+                        });
+            send_message(internal_message, config.config.kafka_topic.as_str(),
+                producer);
+            *index_guard += 1;
+            if *index_guard == workers_guard.len() { *index_guard = 0; }
+        }
+    }
+    pub async fn initialize_scheduler(config: Config,
+        ipc: &mut ProcessorIPC) {
+        {
+            let lvl = ::log::Level::Info;
+            if lvl <= ::log::STATIC_MAX_LEVEL && lvl <= ::log::max_level() {
+                    ::log::__private_api_log(format_args!("Scheduler INIT"),
+                        lvl,
+                        &("hearth::scheduler", "hearth::scheduler",
+                                "src/scheduler.rs", 16u32),
+                        ::log::__private_api::Option::None);
+                }
+        };
+        initialize_api(&config, ipc);
+    }
+}
+mod worker {
+    use log::info;
+    use crate::config::Config;
+    use crate::worker::connector::initialize_api;
+    use crate::worker::queue_processor::ProcessorIPC;
+    pub mod connector {
+        use std::thread;
+        use hearth_interconnect::messages::{
+            ExternalQueueJobResponse, Message, PingPongResponse,
+        };
+        use kafka::producer::Producer;
+        use log::{error, info};
+        use snafu::Whatever;
+        use tokio::runtime::Builder;
+        use crate::config::Config;
+        use crate::utils::generic_connector::{
+            initialize_client, initialize_producer, PRODUCER,
+            send_message_generic,
+        };
+        use crate::utils::initialize_consume_generic;
+        use crate::worker::errors::report_error;
+        use crate::worker::queue_processor::{
+            process_job, ProcessorIncomingAction, ProcessorIPC,
+            ProcessorIPCData,
+        };
+        pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
+            let broker = config.config.kafka_uri.to_owned();
+            initialize_worker_consume(<[_]>::into_vec(#[rustc_box] ::alloc::boxed::Box::new([broker])),
+                config, ipc);
+        }
+        fn parse_message_callback(message: Message, _producer: &PRODUCER,
+            config: &Config, ipc: &mut ProcessorIPC) -> Result<(), Whatever> {
+            match message {
+                Message::DirectWorkerCommunication(dwc) => {
+                    let job_id = dwc.job_id.clone();
+                    let result =
+                        ipc.sender.send(ProcessorIPCData {
+                                action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
+                                songbird: None,
+                                job_id: job_id.clone(),
+                                dwc: Some(dwc),
+                                error_report: None,
+                            });
+                    match result {
+                        Ok(_) => {}
+                        Err(_e) => {
+                            let lvl = ::log::Level::Error;
+                            if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                        lvl <= ::log::max_level() {
+                                    ::log::__private_api_log(format_args!("Failed to send DWC to job: {0}",
+                                            &job_id), lvl,
+                                        &("hearth::worker::connector", "hearth::worker::connector",
+                                                "src/worker/connector.rs", 47u32),
+                                        ::log::__private_api::Option::None);
+                                }
+                        }
+                    }
+                }
+                Message::InternalPingPongRequest => {
+                    let mut px = PRODUCER.lock().unwrap();
+                    let p = px.as_mut();
+                    send_message(&Message::InternalPongResponse(PingPongResponse {
+                                    worker_id: config.config.worker_id.clone().unwrap(),
+                                }), config.config.kafka_topic.as_str(), &mut *p.unwrap());
+                }
+                Message::InternalWorkerQueueJob(job) => {
+                    let proc_config = config.clone();
+                    let job_id = job.job_id.clone();
+                    let sender = ipc.sender.clone();
+                    {
+                        let lvl = ::log::Level::Info;
+                        if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                    lvl <= ::log::max_level() {
+                                ::log::__private_api_log(format_args!("Starting new worker"),
+                                    lvl,
+                                    &("hearth::worker::connector", "hearth::worker::connector",
+                                            "src/worker/connector.rs", 64u32),
+                                    ::log::__private_api::Option::None);
+                            }
+                    };
+                    thread::spawn(move ||
+                            {
+                                let rt =
+                                    Builder::new_current_thread().enable_all().build().unwrap();
+                                rt.block_on(process_job(job, &proc_config, sender,
+                                        report_error));
+                            });
+                    let mut px = PRODUCER.lock().unwrap();
+                    let p = px.as_mut();
+                    send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
+                                    job_id: job_id,
+                                    worker_id: config.config.worker_id.as_ref().unwrap().clone(),
+                                }), config.config.kafka_topic.as_str(), &mut *p.unwrap());
+                }
+                _ => {}
+            }
+            Ok(())
+        }
+        pub fn initialize_worker_consume(brokers: Vec<String>,
+            config: &Config, ipc: &mut ProcessorIPC) {
+            let producer: Producer =
+                initialize_producer(initialize_client(&brokers));
+            *PRODUCER.lock().unwrap() = Some(producer);
+            initialize_consume_generic(brokers, config,
+                parse_message_callback, ipc, &PRODUCER, initialized_callback);
+        }
+        fn initialized_callback(_: &Config) {}
+        pub fn send_message(message: &Message, topic: &str,
+            producer: &mut Producer) {
+            send_message_generic(message, topic, producer);
+        }
+    }
+    pub mod queue_processor {
+        use std::sync::Arc;
+        use songbird::Songbird;
+        use songbird::tracks::TrackHandle;
+        use tokio::sync::broadcast::{Receiver, Sender};
+        use crate::config::Config;
+        use crate::{dwc_guard, error_report};
+        use hearth_interconnect::errors::ErrorReport;
+        use hearth_interconnect::worker_communication::{
+            DirectWorkerCommunication, DWCActionType, Job,
+        };
+        use reqwest::Client as HttpClient;
+        use crate::worker::actions::channel_manager::{
+            join_channel, leave_channel,
+        };
+        use crate::worker::actions::player::{
+            play_direct_link, play_from_youtube,
+        };
+        use crate::worker::actions::track_manager::{
+            force_stop_loop, pause_playback, resume_playback,
+            set_playback_volume,
+        };
+        use super::actions::metadata::get_metadata;
+        use super::actions::track_manager::{
+            loop_indefinitely, loop_x_times, seek_to_position,
+        };
+        pub enum Infrastructure { SongbirdIncoming, SongbirdInstanceRequest, }
+        #[automatically_derived]
+        impl ::core::clone::Clone for Infrastructure {
+            #[inline]
+            fn clone(&self) -> Infrastructure {
+                match self {
+                    Infrastructure::SongbirdIncoming =>
+                        Infrastructure::SongbirdIncoming,
+                    Infrastructure::SongbirdInstanceRequest =>
+                        Infrastructure::SongbirdInstanceRequest,
+                }
+            }
+        }
+        #[automatically_derived]
+        impl ::core::fmt::Debug for Infrastructure {
+            fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                -> ::core::fmt::Result {
+                ::core::fmt::Formatter::write_str(f,
+                    match self {
+                        Infrastructure::SongbirdIncoming => "SongbirdIncoming",
+                        Infrastructure::SongbirdInstanceRequest =>
+                            "SongbirdInstanceRequest",
+                    })
+            }
+        }
+        pub enum ProcessorIncomingAction {
+            Infrastructure(Infrastructure),
+            Actions(DWCActionType),
+        }
+        #[automatically_derived]
+        impl ::core::clone::Clone for ProcessorIncomingAction {
+            #[inline]
+            fn clone(&self) -> ProcessorIncomingAction {
+                match self {
+                    ProcessorIncomingAction::Infrastructure(__self_0) =>
+                        ProcessorIncomingAction::Infrastructure(::core::clone::Clone::clone(__self_0)),
+                    ProcessorIncomingAction::Actions(__self_0) =>
+                        ProcessorIncomingAction::Actions(::core::clone::Clone::clone(__self_0)),
+                }
+            }
+        }
+        #[automatically_derived]
+        impl ::core::fmt::Debug for ProcessorIncomingAction {
+            fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                -> ::core::fmt::Result {
+                match self {
+                    ProcessorIncomingAction::Infrastructure(__self_0) =>
+                        ::core::fmt::Formatter::debug_tuple_field1_finish(f,
+                            "Infrastructure", &__self_0),
+                    ProcessorIncomingAction::Actions(__self_0) =>
+                        ::core::fmt::Formatter::debug_tuple_field1_finish(f,
+                            "Actions", &__self_0),
+                }
+            }
+        }
+        pub struct ProcessorIPCData {
+            pub action_type: ProcessorIncomingAction,
+            pub songbird: Option<Arc<Songbird>>,
+            pub dwc: Option<DirectWorkerCommunication>,
+            pub error_report: Option<ErrorReport>,
+            pub job_id: String,
+        }
+        #[automatically_derived]
+        impl ::core::clone::Clone for ProcessorIPCData {
+            #[inline]
+            fn clone(&self) -> ProcessorIPCData {
+                ProcessorIPCData {
+                    action_type: ::core::clone::Clone::clone(&self.action_type),
+                    songbird: ::core::clone::Clone::clone(&self.songbird),
+                    dwc: ::core::clone::Clone::clone(&self.dwc),
+                    error_report: ::core::clone::Clone::clone(&self.error_report),
+                    job_id: ::core::clone::Clone::clone(&self.job_id),
+                }
+            }
+        }
+        #[automatically_derived]
+        impl ::core::fmt::Debug for ProcessorIPCData {
+            fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                -> ::core::fmt::Result {
+                ::core::fmt::Formatter::debug_struct_field5_finish(f,
+                    "ProcessorIPCData", "action_type", &self.action_type,
+                    "songbird", &self.songbird, "dwc", &self.dwc,
+                    "error_report", &self.error_report, "job_id", &&self.job_id)
+            }
+        }
+        pub struct ProcessorIPC {
+            pub sender: Sender<ProcessorIPCData>,
+            pub receiver: Receiver<ProcessorIPCData>,
+        }
+        pub async fn process_job(job: Job, config: &Config,
+            sender: Sender<ProcessorIPCData>,
+            report_error: fn(ErrorReport, &Config)) {
+            let job_id = &job.job_id;
+            sender.send(ProcessorIPCData {
+                        action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest),
+                        songbird: None,
+                        dwc: None,
+                        job_id: job_id.clone(),
+                        error_report: None,
+                    }).unwrap();
+            let client = HttpClient::new();
+            let mut manager: Option<Arc<Songbird>> = None;
+            let mut track: Option<TrackHandle> = None;
+            while let Ok(msg) = sender.subscribe().recv().await {
+                if job_id == &msg.job_id {
+                        let dwc: Option<DirectWorkerCommunication> =
+                            match msg.dwc { Some(d) => Some(d), None => None, };
+                        match msg.action_type {
+                            ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming)
+                                => {
+                                manager = msg.songbird;
+                                let job_id = job.job_id.clone();
+                                let join =
+                                    join_channel(&job, job.request_id.clone(), &mut manager,
+                                            report_error, config.clone()).await;
+                                let _ =
+                                    {
+                                        use crate::errors::report_error;
+                                        match join {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: job.request_id.clone(),
+                                                        job_id: job_id,
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel)
+                                => {
+                                use crate::errors::report_error;
+                                match dwc {
+                                    Some(dwc) => {
+                                        (||
+                                                    {
+                                                        let _ =
+                                                            {
+                                                                use crate::errors::report_error;
+                                                                match leave_channel(&dwc, &mut manager).await {
+                                                                    Ok(t) => { Some(t) }
+                                                                    Err(e) => {
+                                                                        report_error(ErrorReport {
+                                                                                error: e.to_string(),
+                                                                                request_id: dwc.request_id.unwrap(),
+                                                                                job_id: dwc.job_id.clone(),
+                                                                            }, config);
+                                                                        None
+                                                                    }
+                                                                }
+                                                            };
+                                                    })();
+                                    }
+                                    None => { (/*ERROR*/); }
+                                };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes)
+                                => {
+                                use crate::errors::report_error;
+                                match dwc {
+                                    Some(dwc) => {
+                                        (||
+                                                    {
+                                                        let _ =
+                                                            {
+                                                                use crate::errors::report_error;
+                                                                match loop_x_times(&track, dwc.loop_times).await {
+                                                                    Ok(t) => { Some(t) }
+                                                                    Err(e) => {
+                                                                        report_error(ErrorReport {
+                                                                                error: e.to_string(),
+                                                                                request_id: dwc.request_id.unwrap(),
+                                                                                job_id: dwc.job_id.clone(),
+                                                                            }, config);
+                                                                        None
+                                                                    }
+                                                                }
+                                                            };
+                                                    })();
+                                    }
+                                    None => { (/*ERROR*/); }
+                                };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::ForceStopLoop)
+                                => {
+                                use crate::errors::report_error;
+                                match dwc {
+                                    Some(dwc) => {
+                                        (||
+                                                    {
+                                                        let _ =
+                                                            {
+                                                                use crate::errors::report_error;
+                                                                match force_stop_loop(&track).await {
+                                                                    Ok(t) => { Some(t) }
+                                                                    Err(e) => {
+                                                                        report_error(ErrorReport {
+                                                                                error: e.to_string(),
+                                                                                request_id: dwc.request_id.unwrap(),
+                                                                                job_id: dwc.job_id.clone(),
+                                                                            }, config);
+                                                                        None
+                                                                    }
+                                                                }
+                                                            };
+                                                    })();
+                                    }
+                                    None => { (/*ERROR*/); }
+                                };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::SeekToPosition)
+                                => {
+                                let _ =
+                                    {
+                                        use crate::errors::report_error;
+                                        match seek_to_position(&track, dwc.seek_position).await {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: dwc.request_id.unwrap(),
+                                                        job_id: dwc.job_id.clone(),
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::LoopForever)
+                                => {
+                                let _ =
+                                    {
+                                        use crate::errors::report_error;
+                                        match loop_indefinitely(&track).await {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: dwc.request_id.unwrap(),
+                                                        job_id: dwc.job_id.clone(),
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink)
+                                => {
+                                track =
+                                    {
+                                        use crate::errors::report_error;
+                                        match play_direct_link(&dwc, &mut manager,
+                                                    client.clone()).await {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: dwc.request_id.unwrap(),
+                                                        job_id: dwc.job_id.clone(),
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube)
+                                => {
+                                track =
+                                    {
+                                        use crate::errors::report_error;
+                                        match play_from_youtube(&mut manager, &dwc,
+                                                    client.clone()).await {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: dwc.request_id.unwrap(),
+                                                        job_id: dwc.job_id.clone(),
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::PausePlayback)
+                                => {
+                                let _ =
+                                    {
+                                        use crate::errors::report_error;
+                                        match pause_playback(&track).await {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: dwc.request_id.unwrap(),
+                                                        job_id: dwc.job_id.clone(),
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::ResumePlayback)
+                                => {
+                                let _ =
+                                    {
+                                        use crate::errors::report_error;
+                                        match resume_playback(&track).await {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: dwc.request_id.unwrap(),
+                                                        job_id: dwc.job_id.clone(),
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume)
+                                => {
+                                let _ =
+                                    {
+                                        use crate::errors::report_error;
+                                        match set_playback_volume(&track, dwc.new_volume).await {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: dwc.request_id.unwrap(),
+                                                        job_id: dwc.job_id.clone(),
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            ProcessorIncomingAction::Actions(DWCActionType::GetMetaData)
+                                => {
+                                let _ =
+                                    {
+                                        use crate::errors::report_error;
+                                        match get_metadata(&track).await {
+                                            Ok(t) => { Some(t) }
+                                            Err(e) => {
+                                                report_error(ErrorReport {
+                                                        error: e.to_string(),
+                                                        request_id: dwc.request_id.unwrap(),
+                                                        job_id: dwc.job_id.clone(),
+                                                    }, config);
+                                                None
+                                            }
+                                        }
+                                    };
+                            }
+                            _ => {}
+                        }
+                    }
+            }
+        }
+    }
+    pub mod analytics_reporter {}
+    pub mod serenity_handler {
+        use std::time::Duration;
+        use log::{error, info, warn};
+        use serenity::client::Context;
+        use serenity::{
+            async_trait, client::EventHandler,
+            model::gateway::Ready,
+            prelude::GatewayIntents,
+        };
+        use songbird::SerenityInit;
+        use tokio::time::sleep;
+        use crate::config::Config;
+        use crate::deco::over_servers_warning;
+        use crate::worker::queue_processor::{
+            Infrastructure, ProcessorIncomingAction, ProcessorIPC,
+            ProcessorIPCData,
+        };
+        struct Handler;
+        impl EventHandler for Handler {
+            #[allow(clippy :: async_yields_async, clippy :: let_unit_value,
+            clippy :: no_effect_underscore_binding, clippy :: shadow_same,
+            clippy :: type_complexity, clippy :: type_repetition_in_bounds,
+            clippy :: used_underscore_binding)]
+            fn ready<'life0,
+                'async_trait>(&'life0 self, __arg1: Context, ready: Ready)
+                ->
+                    ::core::pin::Pin<Box<dyn ::core::future::Future<Output =
+                    ()> + ::core::marker::Send + 'async_trait>> where
+                'life0: 'async_trait, Self: 'async_trait {
+                Box::pin(async move
+                        {
+                        let __self = self;
+                        let __arg1 = __arg1;
+                        let ready = ready;
+                        let _: () =
+                            {
+                                {
+                                    let lvl = ::log::Level::Info;
+                                    if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                                lvl <= ::log::max_level() {
+                                            ::log::__private_api_log(format_args!("{0} is connected!",
+                                                    ready.user.name), lvl,
+                                                &("hearth::worker::serenity_handler",
+                                                        "hearth::worker::serenity_handler",
+                                                        "src/worker/serenity_handler.rs", 22u32),
+                                                ::log::__private_api::Option::None);
+                                        }
+                                };
+                            };
+                    })
+            }
+        }
+        pub async fn initialize_songbird(config: &Config,
+            ipc: &mut ProcessorIPC) {
+            let intents = GatewayIntents::non_privileged();
+            let mut client =
+                serenity::Client::builder(&config.config.discord_bot_token,
+                                    intents).event_handler(Handler).register_songbird().await.unwrap();
+            let client_data = client.data.clone();
+            let server_count = client.cache.guild_count();
+            if server_count > 5000 { over_servers_warning(); }
+            tokio::spawn(async move
+                    {
+                    let _ =
+                        client.start().await.map_err(|why|
+                                {
+                                    ::std::io::_print(format_args!("Client ended: {0:?}\n",
+                                            why));
+                                });
+                });
+            {
+                let lvl = ::log::Level::Info;
+                if lvl <= ::log::STATIC_MAX_LEVEL && lvl <= ::log::max_level()
+                        {
+                        ::log::__private_api_log(format_args!("Songbird INIT"), lvl,
+                            &("hearth::worker::serenity_handler",
+                                    "hearth::worker::serenity_handler",
+                                    "src/worker/serenity_handler.rs", 48u32),
+                            ::log::__private_api::Option::None);
+                    }
+            };
+            while let Ok(msg) = ipc.receiver.recv().await {
+                match msg.action_type {
+                    ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest)
+                        => {
+                        sleep(Duration::from_millis(250)).await;
+                        let manager = songbird::get(client_data.read().await).await;
+                        match manager {
+                            Some(manager) => {
+                                let result =
+                                    ipc.sender.send(ProcessorIPCData {
+                                            action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming),
+                                            songbird: Some(manager),
+                                            dwc: None,
+                                            job_id: msg.job_id.clone(),
+                                            error_report: None,
+                                        });
+                                match result {
+                                    Ok(_) => {}
+                                    Err(_e) => {
+                                        let lvl = ::log::Level::Error;
+                                        if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                                    lvl <= ::log::max_level() {
+                                                ::log::__private_api_log(format_args!("Failed to send songbird instance to job: {0}",
+                                                        &msg.job_id), lvl,
+                                                    &("hearth::worker::serenity_handler",
+                                                            "hearth::worker::serenity_handler",
+                                                            "src/worker/serenity_handler.rs", 66u32),
+                                                    ::log::__private_api::Option::None);
+                                            }
+                                    }
+                                }
+                            }
+                            None => {
+                                let lvl = ::log::Level::Error;
+                                if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                            lvl <= ::log::max_level() {
+                                        ::log::__private_api_log(format_args!("Failed to get songbird instance for job: {0}",
+                                                &msg.job_id), lvl,
+                                            &("hearth::worker::serenity_handler",
+                                                    "hearth::worker::serenity_handler",
+                                                    "src/worker/serenity_handler.rs", 69u32),
+                                            ::log::__private_api::Option::None);
+                                    }
+                            }
+                        }
+                    }
+                    _ => {}
+                }
+            }
+            tokio::signal::ctrl_c().await.unwrap();
+            {
+                let lvl = ::log::Level::Warn;
+                if lvl <= ::log::STATIC_MAX_LEVEL && lvl <= ::log::max_level()
+                        {
+                        ::log::__private_api_log(format_args!("Received Ctrl-C, shutting down."),
+                            lvl,
+                            &("hearth::worker::serenity_handler",
+                                    "hearth::worker::serenity_handler",
+                                    "src/worker/serenity_handler.rs", 77u32),
+                            ::log::__private_api::Option::None);
+                    }
+            };
+        }
+    }
+    pub mod actions {
+        pub mod channel_manager {
+            use std::num::ParseIntError;
+            use std::sync::Arc;
+            use hearth_interconnect::errors::ErrorReport;
+            use hearth_interconnect::worker_communication::{
+                DirectWorkerCommunication, Job,
+            };
+            use snafu::{OptionExt, ResultExt};
+            use songbird::id::GuildId;
+            use songbird::id::ChannelId;
+            use songbird::{Event, EventContext, Songbird};
+            use songbird::events::{
+                EventHandler as VoiceEventHandler, TrackEvent,
+            };
+            use snafu::Snafu;
+            use songbird::error::JoinError;
+            use serenity::async_trait;
+            use crate::config::Config;
+            pub enum ChannelControlError {
+
+                #[snafu(display("Guild ID Not Found"))]
+                GuildIDNotFound {},
+
+                #[snafu(display("Guild ID Parsing Failed"))]
+                GuildIDParsingFailed {
+                    source: ParseIntError,
+                },
+
+                #[snafu(display("Channel ID Parsing Failed"))]
+                ChannelIDParsingFailed {
+                    source: ParseIntError,
+                },
+
+                #[snafu(display("Failed to acquire manager"))]
+                ManagerAcquisitionFailed {},
+
+                #[snafu(display("Failed to leave channel"))]
+                ChannelLeaveFailed {
+                    source: JoinError,
+                },
+
+                #[snafu(display("Failed to join channel"))]
+                ChannelJoinFailed {
+                    source: JoinError,
+                },
+            }
+            #[automatically_derived]
+            impl ::core::fmt::Debug for ChannelControlError {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    match self {
+                        ChannelControlError::GuildIDNotFound {} =>
+                            ::core::fmt::Formatter::write_str(f, "GuildIDNotFound"),
+                        ChannelControlError::GuildIDParsingFailed { source: __self_0
+                            } =>
+                            ::core::fmt::Formatter::debug_struct_field1_finish(f,
+                                "GuildIDParsingFailed", "source", &__self_0),
+                        ChannelControlError::ChannelIDParsingFailed {
+                            source: __self_0 } =>
+                            ::core::fmt::Formatter::debug_struct_field1_finish(f,
+                                "ChannelIDParsingFailed", "source", &__self_0),
+                        ChannelControlError::ManagerAcquisitionFailed {} =>
+                            ::core::fmt::Formatter::write_str(f,
+                                "ManagerAcquisitionFailed"),
+                        ChannelControlError::ChannelLeaveFailed { source: __self_0 }
+                            =>
+                            ::core::fmt::Formatter::debug_struct_field1_finish(f,
+                                "ChannelLeaveFailed", "source", &__self_0),
+                        ChannelControlError::ChannelJoinFailed { source: __self_0 }
+                            =>
+                            ::core::fmt::Formatter::debug_struct_field1_finish(f,
+                                "ChannelJoinFailed", "source", &__self_0),
+                    }
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `ChannelControlError::GuildIDNotFound` variant"]
+            struct GuildIDNotFoundSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for GuildIDNotFoundSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f, "GuildIDNotFoundSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for GuildIDNotFoundSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for GuildIDNotFoundSnafu {
+                #[inline]
+                fn clone(&self) -> GuildIDNotFoundSnafu { *self }
+            }
+            impl GuildIDNotFoundSnafu<> {
+                #[doc =
+                "Consume the selector and return the associated error"]
+                #[must_use]
+                #[track_caller]
+                fn build(self) -> ChannelControlError<> where  {
+                    ChannelControlError::GuildIDNotFound {}
+                }
+                #[doc =
+                "Consume the selector and return a `Result` with the associated error"]
+                #[track_caller]
+                fn fail<__T>(self)
+                    -> ::core::result::Result<__T, ChannelControlError<>> where
+                     {
+                    ::core::result::Result::Err(self.build())
+                }
+            }
+            impl ::snafu::IntoError<ChannelControlError<>> for
+                GuildIDNotFoundSnafu<> where
+                ChannelControlError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = ::snafu::NoneError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source)
+                    -> ChannelControlError<> {
+                    ;
+                    ChannelControlError::GuildIDNotFound {}
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `ChannelControlError::GuildIDParsingFailed` variant"]
+            struct GuildIDParsingFailedSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for GuildIDParsingFailedSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f,
+                        "GuildIDParsingFailedSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for GuildIDParsingFailedSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for GuildIDParsingFailedSnafu {
+                #[inline]
+                fn clone(&self) -> GuildIDParsingFailedSnafu { *self }
+            }
+            impl ::snafu::IntoError<ChannelControlError<>> for
+                GuildIDParsingFailedSnafu<> where
+                ChannelControlError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = ParseIntError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source)
+                    -> ChannelControlError<> {
+                    let error: ParseIntError = (|v| v)(error);
+                    ChannelControlError::GuildIDParsingFailed { source: error }
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `ChannelControlError::ChannelIDParsingFailed` variant"]
+            struct ChannelIDParsingFailedSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for ChannelIDParsingFailedSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f,
+                        "ChannelIDParsingFailedSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for ChannelIDParsingFailedSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for ChannelIDParsingFailedSnafu {
+                #[inline]
+                fn clone(&self) -> ChannelIDParsingFailedSnafu { *self }
+            }
+            impl ::snafu::IntoError<ChannelControlError<>> for
+                ChannelIDParsingFailedSnafu<> where
+                ChannelControlError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = ParseIntError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source)
+                    -> ChannelControlError<> {
+                    let error: ParseIntError = (|v| v)(error);
+                    ChannelControlError::ChannelIDParsingFailed {
+                        source: error,
+                    }
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `ChannelControlError::ManagerAcquisitionFailed` variant"]
+            struct ManagerAcquisitionFailedSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for ManagerAcquisitionFailedSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f,
+                        "ManagerAcquisitionFailedSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for ManagerAcquisitionFailedSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for ManagerAcquisitionFailedSnafu {
+                #[inline]
+                fn clone(&self) -> ManagerAcquisitionFailedSnafu { *self }
+            }
+            impl ManagerAcquisitionFailedSnafu<> {
+                #[doc =
+                "Consume the selector and return the associated error"]
+                #[must_use]
+                #[track_caller]
+                fn build(self) -> ChannelControlError<> where  {
+                    ChannelControlError::ManagerAcquisitionFailed {}
+                }
+                #[doc =
+                "Consume the selector and return a `Result` with the associated error"]
+                #[track_caller]
+                fn fail<__T>(self)
+                    -> ::core::result::Result<__T, ChannelControlError<>> where
+                     {
+                    ::core::result::Result::Err(self.build())
+                }
+            }
+            impl ::snafu::IntoError<ChannelControlError<>> for
+                ManagerAcquisitionFailedSnafu<> where
+                ChannelControlError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = ::snafu::NoneError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source)
+                    -> ChannelControlError<> {
+                    ;
+                    ChannelControlError::ManagerAcquisitionFailed {}
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `ChannelControlError::ChannelLeaveFailed` variant"]
+            struct ChannelLeaveFailedSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for ChannelLeaveFailedSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f,
+                        "ChannelLeaveFailedSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for ChannelLeaveFailedSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for ChannelLeaveFailedSnafu {
+                #[inline]
+                fn clone(&self) -> ChannelLeaveFailedSnafu { *self }
+            }
+            impl ::snafu::IntoError<ChannelControlError<>> for
+                ChannelLeaveFailedSnafu<> where
+                ChannelControlError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = JoinError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source)
+                    -> ChannelControlError<> {
+                    let error: JoinError = (|v| v)(error);
+                    ChannelControlError::ChannelLeaveFailed { source: error }
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `ChannelControlError::ChannelJoinFailed` variant"]
+            struct ChannelJoinFailedSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for ChannelJoinFailedSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f,
+                        "ChannelJoinFailedSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for ChannelJoinFailedSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for ChannelJoinFailedSnafu {
+                #[inline]
+                fn clone(&self) -> ChannelJoinFailedSnafu { *self }
+            }
+            impl ::snafu::IntoError<ChannelControlError<>> for
+                ChannelJoinFailedSnafu<> where
+                ChannelControlError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = JoinError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source)
+                    -> ChannelControlError<> {
+                    let error: JoinError = (|v| v)(error);
+                    ChannelControlError::ChannelJoinFailed { source: error }
+                }
+            }
+            #[allow(single_use_lifetimes)]
+            impl ::core::fmt::Display for ChannelControlError<> where  {
+                fn fmt(&self,
+                    __snafu_display_formatter: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+
+                    #[allow(unused_variables)]
+                    match *self {
+                        ChannelControlError::GuildIDNotFound {} => {
+                            __snafu_display_formatter.write_fmt(format_args!("Guild ID Not Found"))
+                        }
+                        ChannelControlError::GuildIDParsingFailed { ref source } =>
+                            {
+                            __snafu_display_formatter.write_fmt(format_args!("Guild ID Parsing Failed"))
+                        }
+                        ChannelControlError::ChannelIDParsingFailed { ref source }
+                            => {
+                            __snafu_display_formatter.write_fmt(format_args!("Channel ID Parsing Failed"))
+                        }
+                        ChannelControlError::ManagerAcquisitionFailed {} => {
+                            __snafu_display_formatter.write_fmt(format_args!("Failed to acquire manager"))
+                        }
+                        ChannelControlError::ChannelLeaveFailed { ref source } => {
+                            __snafu_display_formatter.write_fmt(format_args!("Failed to leave channel"))
+                        }
+                        ChannelControlError::ChannelJoinFailed { ref source } => {
+                            __snafu_display_formatter.write_fmt(format_args!("Failed to join channel"))
+                        }
+                    }
+                }
+            }
+            #[allow(single_use_lifetimes)]
+            impl ::snafu::Error for ChannelControlError<> where
+                Self: ::core::fmt::Debug + ::core::fmt::Display {
+                fn description(&self) -> &str {
+                    match *self {
+                        ChannelControlError::GuildIDNotFound { .. } =>
+                            "ChannelControlError :: GuildIDNotFound",
+                        ChannelControlError::GuildIDParsingFailed { .. } =>
+                            "ChannelControlError :: GuildIDParsingFailed",
+                        ChannelControlError::ChannelIDParsingFailed { .. } =>
+                            "ChannelControlError :: ChannelIDParsingFailed",
+                        ChannelControlError::ManagerAcquisitionFailed { .. } =>
+                            "ChannelControlError :: ManagerAcquisitionFailed",
+                        ChannelControlError::ChannelLeaveFailed { .. } =>
+                            "ChannelControlError :: ChannelLeaveFailed",
+                        ChannelControlError::ChannelJoinFailed { .. } =>
+                            "ChannelControlError :: ChannelJoinFailed",
+                    }
+                }
+                fn cause(&self)
+                    -> ::core::option::Option<&dyn ::snafu::Error> {
+                    use ::snafu::AsErrorSource;
+                    match *self {
+                        ChannelControlError::GuildIDNotFound { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::GuildIDParsingFailed { ref source, .. }
+                            => {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        ChannelControlError::ChannelIDParsingFailed { ref source, ..
+                            } => {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        ChannelControlError::ManagerAcquisitionFailed { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::ChannelLeaveFailed { ref source, .. }
+                            => {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        ChannelControlError::ChannelJoinFailed { ref source, .. } =>
+                            {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                    }
+                }
+                fn source(&self)
+                    -> ::core::option::Option<&(dyn ::snafu::Error + 'static)> {
+                    use ::snafu::AsErrorSource;
+                    match *self {
+                        ChannelControlError::GuildIDNotFound { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::GuildIDParsingFailed { ref source, .. }
+                            => {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        ChannelControlError::ChannelIDParsingFailed { ref source, ..
+                            } => {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        ChannelControlError::ManagerAcquisitionFailed { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::ChannelLeaveFailed { ref source, .. }
+                            => {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        ChannelControlError::ChannelJoinFailed { ref source, .. } =>
+                            {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                    }
+                }
+            }
+            #[allow(single_use_lifetimes)]
+            impl ::snafu::ErrorCompat for ChannelControlError<> where  {
+                fn backtrace(&self)
+                    -> ::core::option::Option<&::snafu::Backtrace> {
+                    match *self {
+                        ChannelControlError::GuildIDNotFound { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::GuildIDParsingFailed { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::ChannelIDParsingFailed { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::ManagerAcquisitionFailed { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::ChannelLeaveFailed { .. } => {
+                            ::core::option::Option::None
+                        }
+                        ChannelControlError::ChannelJoinFailed { .. } => {
+                            ::core::option::Option::None
+                        }
+                    }
+                }
+            }
+            pub async fn leave_channel(dwc: &DirectWorkerCommunication,
+                manager: &mut Option<Arc<Songbird>>)
+                -> Result<(), ChannelControlError> {
+                manager.as_mut().context(ManagerAcquisitionFailedSnafu)?.remove(GuildId(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?.parse().context(GuildIDParsingFailedSnafu)?)).await.context(ChannelLeaveFailedSnafu)?;
+                Ok(())
+            }
+            struct TrackErrorNotifier {
+                error_reporter: fn(ErrorReport, &Config),
+                request_id: String,
+                job_id: String,
+                config: Config,
+            }
+            impl VoiceEventHandler for TrackErrorNotifier {
+                #[allow(clippy :: async_yields_async, clippy ::
+                let_unit_value, clippy :: no_effect_underscore_binding, clippy
+                :: shadow_same, clippy :: type_complexity, clippy ::
+                type_repetition_in_bounds, clippy :: used_underscore_binding)]
+                fn act<'life0, 'life1, 'life2,
+                    'async_trait>(&'life0 self,
+                    ctx: &'life1 EventContext<'life2>)
+                    ->
+                        ::core::pin::Pin<Box<dyn ::core::future::Future<Output =
+                        Option<Event>> + ::core::marker::Send + 'async_trait>> where
+                    'life0: 'async_trait, 'life1: 'async_trait,
+                    'life2: 'async_trait, Self: 'async_trait {
+                    Box::pin(async move
+                            {
+                            if let ::core::option::Option::Some(__ret) =
+                                        ::core::option::Option::None::<Option<Event>> {
+                                    return __ret;
+                                }
+                            let __self = self;
+                            let __ret: Option<Event> =
+                                {
+                                    if let EventContext::Track(track_list) = ctx {
+                                            for (state, handle) in *track_list {
+                                                __self.error_reporter.clone()(ErrorReport {
+                                                        error: {
+                                                            let res =
+                                                                ::alloc::fmt::format(format_args!("Track {0:?} encountered an error: {1:?}",
+                                                                        handle.uuid(), state.playing));
+                                                            res
+                                                        },
+                                                        request_id: __self.request_id.clone(),
+                                                        job_id: __self.job_id.clone(),
+                                                    }, &__self.config)
+                                            }
+                                        }
+                                    None
+                                };
+
+                            #[allow(unreachable_code)]
+                            __ret
+                        })
+                }
+            }
+            pub async fn join_channel(queue_job: &Job, request_id: String,
+                manager: &mut Option<Arc<Songbird>>,
+                error_reporter: fn(ErrorReport, &Config), config: Config)
+                -> Result<(), ChannelControlError> {
+                let gid =
+                    queue_job.guild_id.clone().parse().context(GuildIDParsingFailedSnafu)?;
+                let vcid =
+                    queue_job.voice_channel_id.clone().parse().context(ChannelIDParsingFailedSnafu)?;
+                if let Ok(handler_lock) =
+                            manager.as_mut().context(ManagerAcquisitionFailedSnafu)?.join(GuildId(gid),
+                                    ChannelId(vcid)).await {
+                        let mut handler = handler_lock.lock().await;
+                        handler.add_global_event(TrackEvent::Error.into(),
+                            TrackErrorNotifier {
+                                error_reporter: error_reporter,
+                                job_id: queue_job.job_id.clone(),
+                                request_id: request_id,
+                                config: config,
+                            });
+                    }
+                Ok(())
+            }
+        }
+        pub mod player {
+            use std::sync::Arc;
+            use hearth_interconnect::worker_communication::DirectWorkerCommunication;
+            use reqwest::Client;
+            use snafu::{OptionExt, ResultExt, Whatever};
+            use songbird::Songbird;
+            use songbird::tracks::TrackHandle;
+            use crate::worker::actions::helpers::get_manager_call;
+            use snafu::Snafu;
+            use songbird::input::{HttpRequest, YoutubeDl};
+            pub enum PlaybackError {
+
+                #[snafu(display("Guild ID Not Found"))]
+                GuildIDNotFound {},
+
+                #[snafu(display("Failed to acquire DirectLink source"))]
+                DirectSourceAcquisitionFailure {
+                    source: Whatever,
+                },
+
+                #[snafu(display("Failed to acquire YouTube source"))]
+                YoutubeSourceAcquisitionFailure {},
+
+                #[snafu(display("Failed to get handler lock with Error: {source}"))]
+                FailedToGetHandlerLock {
+                    source: Whatever,
+                },
+
+                #[snafu(display("Missing Audio URL"))]
+                MissingAudioURL {},
+            }
+            #[automatically_derived]
+            impl ::core::fmt::Debug for PlaybackError {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    match self {
+                        PlaybackError::GuildIDNotFound {} =>
+                            ::core::fmt::Formatter::write_str(f, "GuildIDNotFound"),
+                        PlaybackError::DirectSourceAcquisitionFailure {
+                            source: __self_0 } =>
+                            ::core::fmt::Formatter::debug_struct_field1_finish(f,
+                                "DirectSourceAcquisitionFailure", "source", &__self_0),
+                        PlaybackError::YoutubeSourceAcquisitionFailure {} =>
+                            ::core::fmt::Formatter::write_str(f,
+                                "YoutubeSourceAcquisitionFailure"),
+                        PlaybackError::FailedToGetHandlerLock { source: __self_0 }
+                            =>
+                            ::core::fmt::Formatter::debug_struct_field1_finish(f,
+                                "FailedToGetHandlerLock", "source", &__self_0),
+                        PlaybackError::MissingAudioURL {} =>
+                            ::core::fmt::Formatter::write_str(f, "MissingAudioURL"),
+                    }
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `PlaybackError::GuildIDNotFound` variant"]
+            struct GuildIDNotFoundSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for GuildIDNotFoundSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f, "GuildIDNotFoundSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for GuildIDNotFoundSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for GuildIDNotFoundSnafu {
+                #[inline]
+                fn clone(&self) -> GuildIDNotFoundSnafu { *self }
+            }
+            impl GuildIDNotFoundSnafu<> {
+                #[doc =
+                "Consume the selector and return the associated error"]
+                #[must_use]
+                #[track_caller]
+                fn build(self) -> PlaybackError<> where  {
+                    PlaybackError::GuildIDNotFound {}
+                }
+                #[doc =
+                "Consume the selector and return a `Result` with the associated error"]
+                #[track_caller]
+                fn fail<__T>(self)
+                    -> ::core::result::Result<__T, PlaybackError<>> where  {
+                    ::core::result::Result::Err(self.build())
+                }
+            }
+            impl ::snafu::IntoError<PlaybackError<>> for
+                GuildIDNotFoundSnafu<> where PlaybackError<>: ::snafu::Error +
+                ::snafu::ErrorCompat {
+                type Source = ::snafu::NoneError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source) -> PlaybackError<> {
+                    ;
+                    PlaybackError::GuildIDNotFound {}
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `PlaybackError::DirectSourceAcquisitionFailure` variant"]
+            struct DirectSourceAcquisitionFailureSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for DirectSourceAcquisitionFailureSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f,
+                        "DirectSourceAcquisitionFailureSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for DirectSourceAcquisitionFailureSnafu
+                {
+            }
+            #[automatically_derived]
+            impl ::core::clone::Clone for DirectSourceAcquisitionFailureSnafu
+                {
+                #[inline]
+                fn clone(&self) -> DirectSourceAcquisitionFailureSnafu {
+                    *self
+                }
+            }
+            impl ::snafu::IntoError<PlaybackError<>> for
+                DirectSourceAcquisitionFailureSnafu<> where
+                PlaybackError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = Whatever;
+                #[track_caller]
+                fn into_error(self, error: Self::Source) -> PlaybackError<> {
+                    let error: Whatever = (|v| v)(error);
+                    PlaybackError::DirectSourceAcquisitionFailure {
+                        source: error,
+                    }
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `PlaybackError::YoutubeSourceAcquisitionFailure` variant"]
+            struct YoutubeSourceAcquisitionFailureSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for YoutubeSourceAcquisitionFailureSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f,
+                        "YoutubeSourceAcquisitionFailureSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for YoutubeSourceAcquisitionFailureSnafu
+                {
+            }
+            #[automatically_derived]
+            impl ::core::clone::Clone for YoutubeSourceAcquisitionFailureSnafu
+                {
+                #[inline]
+                fn clone(&self) -> YoutubeSourceAcquisitionFailureSnafu {
+                    *self
+                }
+            }
+            impl YoutubeSourceAcquisitionFailureSnafu<> {
+                #[doc =
+                "Consume the selector and return the associated error"]
+                #[must_use]
+                #[track_caller]
+                fn build(self) -> PlaybackError<> where  {
+                    PlaybackError::YoutubeSourceAcquisitionFailure {}
+                }
+                #[doc =
+                "Consume the selector and return a `Result` with the associated error"]
+                #[track_caller]
+                fn fail<__T>(self)
+                    -> ::core::result::Result<__T, PlaybackError<>> where  {
+                    ::core::result::Result::Err(self.build())
+                }
+            }
+            impl ::snafu::IntoError<PlaybackError<>> for
+                YoutubeSourceAcquisitionFailureSnafu<> where
+                PlaybackError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = ::snafu::NoneError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source) -> PlaybackError<> {
+                    ;
+                    PlaybackError::YoutubeSourceAcquisitionFailure {}
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `PlaybackError::FailedToGetHandlerLock` variant"]
+            struct FailedToGetHandlerLockSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for FailedToGetHandlerLockSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f,
+                        "FailedToGetHandlerLockSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for FailedToGetHandlerLockSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for FailedToGetHandlerLockSnafu {
+                #[inline]
+                fn clone(&self) -> FailedToGetHandlerLockSnafu { *self }
+            }
+            impl ::snafu::IntoError<PlaybackError<>> for
+                FailedToGetHandlerLockSnafu<> where
+                PlaybackError<>: ::snafu::Error + ::snafu::ErrorCompat {
+                type Source = Whatever;
+                #[track_caller]
+                fn into_error(self, error: Self::Source) -> PlaybackError<> {
+                    let error: Whatever = (|v| v)(error);
+                    PlaybackError::FailedToGetHandlerLock { source: error }
+                }
+            }
+            #[doc =
+            "SNAFU context selector for the `PlaybackError::MissingAudioURL` variant"]
+            struct MissingAudioURLSnafu;
+            #[automatically_derived]
+            impl ::core::fmt::Debug for MissingAudioURLSnafu {
+                fn fmt(&self, f: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+                    ::core::fmt::Formatter::write_str(f, "MissingAudioURLSnafu")
+                }
+            }
+            #[automatically_derived]
+            impl ::core::marker::Copy for MissingAudioURLSnafu { }
+            #[automatically_derived]
+            impl ::core::clone::Clone for MissingAudioURLSnafu {
+                #[inline]
+                fn clone(&self) -> MissingAudioURLSnafu { *self }
+            }
+            impl MissingAudioURLSnafu<> {
+                #[doc =
+                "Consume the selector and return the associated error"]
+                #[must_use]
+                #[track_caller]
+                fn build(self) -> PlaybackError<> where  {
+                    PlaybackError::MissingAudioURL {}
+                }
+                #[doc =
+                "Consume the selector and return a `Result` with the associated error"]
+                #[track_caller]
+                fn fail<__T>(self)
+                    -> ::core::result::Result<__T, PlaybackError<>> where  {
+                    ::core::result::Result::Err(self.build())
+                }
+            }
+            impl ::snafu::IntoError<PlaybackError<>> for
+                MissingAudioURLSnafu<> where PlaybackError<>: ::snafu::Error +
+                ::snafu::ErrorCompat {
+                type Source = ::snafu::NoneError;
+                #[track_caller]
+                fn into_error(self, error: Self::Source) -> PlaybackError<> {
+                    ;
+                    PlaybackError::MissingAudioURL {}
+                }
+            }
+            #[allow(single_use_lifetimes)]
+            impl ::core::fmt::Display for PlaybackError<> where  {
+                fn fmt(&self,
+                    __snafu_display_formatter: &mut ::core::fmt::Formatter)
+                    -> ::core::fmt::Result {
+
+                    #[allow(unused_variables)]
+                    match *self {
+                        PlaybackError::GuildIDNotFound {} => {
+                            __snafu_display_formatter.write_fmt(format_args!("Guild ID Not Found"))
+                        }
+                        PlaybackError::DirectSourceAcquisitionFailure { ref source }
+                            => {
+                            __snafu_display_formatter.write_fmt(format_args!("Failed to acquire DirectLink source"))
+                        }
+                        PlaybackError::YoutubeSourceAcquisitionFailure {} => {
+                            __snafu_display_formatter.write_fmt(format_args!("Failed to acquire YouTube source"))
+                        }
+                        PlaybackError::FailedToGetHandlerLock { ref source } => {
+                            __snafu_display_formatter.write_fmt(format_args!("Failed to get handler lock with Error: {0}",
+                                    source))
+                        }
+                        PlaybackError::MissingAudioURL {} => {
+                            __snafu_display_formatter.write_fmt(format_args!("Missing Audio URL"))
+                        }
+                    }
+                }
+            }
+            #[allow(single_use_lifetimes)]
+            impl ::snafu::Error for PlaybackError<> where
+                Self: ::core::fmt::Debug + ::core::fmt::Display {
+                fn description(&self) -> &str {
+                    match *self {
+                        PlaybackError::GuildIDNotFound { .. } =>
+                            "PlaybackError :: GuildIDNotFound",
+                        PlaybackError::DirectSourceAcquisitionFailure { .. } =>
+                            "PlaybackError :: DirectSourceAcquisitionFailure",
+                        PlaybackError::YoutubeSourceAcquisitionFailure { .. } =>
+                            "PlaybackError :: YoutubeSourceAcquisitionFailure",
+                        PlaybackError::FailedToGetHandlerLock { .. } =>
+                            "PlaybackError :: FailedToGetHandlerLock",
+                        PlaybackError::MissingAudioURL { .. } =>
+                            "PlaybackError :: MissingAudioURL",
+                    }
+                }
+                fn cause(&self)
+                    -> ::core::option::Option<&dyn ::snafu::Error> {
+                    use ::snafu::AsErrorSource;
+                    match *self {
+                        PlaybackError::GuildIDNotFound { .. } => {
+                            ::core::option::Option::None
+                        }
+                        PlaybackError::DirectSourceAcquisitionFailure { ref source,
+                            .. } => {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        PlaybackError::YoutubeSourceAcquisitionFailure { .. } => {
+                            ::core::option::Option::None
+                        }
+                        PlaybackError::FailedToGetHandlerLock { ref source, .. } =>
+                            {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        PlaybackError::MissingAudioURL { .. } => {
+                            ::core::option::Option::None
+                        }
+                    }
+                }
+                fn source(&self)
+                    -> ::core::option::Option<&(dyn ::snafu::Error + 'static)> {
+                    use ::snafu::AsErrorSource;
+                    match *self {
+                        PlaybackError::GuildIDNotFound { .. } => {
+                            ::core::option::Option::None
+                        }
+                        PlaybackError::DirectSourceAcquisitionFailure { ref source,
+                            .. } => {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        PlaybackError::YoutubeSourceAcquisitionFailure { .. } => {
+                            ::core::option::Option::None
+                        }
+                        PlaybackError::FailedToGetHandlerLock { ref source, .. } =>
+                            {
+                            ::core::option::Option::Some(source.as_error_source())
+                        }
+                        PlaybackError::MissingAudioURL { .. } => {
+                            ::core::option::Option::None
+                        }
+                    }
+                }
+            }
+            #[allow(single_use_lifetimes)]
+            impl ::snafu::ErrorCompat for PlaybackError<> where  {
+                fn backtrace(&self)
+                    -> ::core::option::Option<&::snafu::Backtrace> {
+                    match *self {
+                        PlaybackError::GuildIDNotFound { .. } => {
+                            ::core::option::Option::None
+                        }
+                        PlaybackError::DirectSourceAcquisitionFailure { .. } => {
+                            ::core::option::Option::None
+                        }
+                        PlaybackError::YoutubeSourceAcquisitionFailure { .. } => {
+                            ::core::option::Option::None
+                        }
+                        PlaybackError::FailedToGetHandlerLock { .. } => {
+                            ::core::option::Option::None
+                        }
+                        PlaybackError::MissingAudioURL { .. } => {
+                            ::core::option::Option::None
+                        }
+                    }
+                }
+            }
+            pub async fn play_direct_link(dwc: &DirectWorkerCommunication,
+                manager: &mut Option<Arc<Songbird>>, client: Client)
+                -> Result<TrackHandle, PlaybackError> {
+                let handler_lock =
+                    get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,
+                                    manager).await.context(FailedToGetHandlerLockSnafu {})?;
+                let mut handler = handler_lock.lock().await;
+                let source =
+                    HttpRequest::new(client,
+                        dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
+                let track_handle = handler.play_input(source.into());
+                Ok(track_handle)
+            }
+            pub async fn play_from_youtube(manager:
+                    &mut Option<Arc<Songbird>>, dwc: &DirectWorkerCommunication,
+                client: Client) -> Result<TrackHandle, PlaybackError> {
+                let handler_lock =
+                    get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,
+                                    manager).await.context(FailedToGetHandlerLockSnafu {})?;
+                let mut handler = handler_lock.lock().await;
+                let source =
+                    YoutubeDl::new(client,
+                        dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
+                let track_handle = handler.play_input(source.into());
+                Ok(track_handle)
+            }
+        }
+        pub mod track_manager {
+            use std::time::Duration;
+            use snafu::{OptionExt, ResultExt, Whatever};
+            use songbird::tracks::TrackHandle;
+            pub async fn pause_playback(track: &Option<TrackHandle>)
+                -> Result<(), Whatever> {
+                let t =
+                    track.as_ref().with_whatever_context(||
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Track not found"));
+                                    res
+                                })?;
+                let _ =
+                    t.pause().with_whatever_context(|e|
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Failed to pause track with error: {0}",
+                                                e));
+                                    res
+                                })?;
+                Ok(())
+            }
+            pub async fn resume_playback(track: &Option<TrackHandle>)
+                -> Result<(), Whatever> {
+                let t =
+                    track.as_ref().with_whatever_context(||
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Track not found"));
+                                    res
+                                })?;
+                let _ =
+                    t.play().with_whatever_context(|e|
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Failed to play track with error: {0}",
+                                                e));
+                                    res
+                                })?;
+                Ok(())
+            }
+            pub async fn seek_to_position(track: &Option<TrackHandle>,
+                position: Option<u64>) -> Result<(), Whatever> {
+                let t =
+                    track.as_ref().with_whatever_context(||
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Track not found"));
+                                    res
+                                })?;
+                let duration_pos =
+                    Duration::from_millis(position.with_whatever_context(||
+                                    "Failed to get seek position")?);
+                let _ = t.seek(duration_pos);
+                Ok(())
+            }
+            pub async fn loop_x_times(track: &Option<TrackHandle>,
+                times: Option<usize>) -> Result<(), Whatever> {
+                let t =
+                    track.as_ref().with_whatever_context(||
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Track not found"));
+                                    res
+                                })?;
+                let _ =
+                    t.loop_for(times.with_whatever_context(||
+                                    "Failed to get Loop Times")?);
+                Ok(())
+            }
+            pub async fn loop_indefinitely(track: &Option<TrackHandle>)
+                -> Result<(), Whatever> {
+                let t =
+                    track.as_ref().with_whatever_context(||
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Track not found"));
+                                    res
+                                })?;
+                let _ = t.enable_loop();
+                Ok(())
+            }
+            pub async fn force_stop_loop(track: &Option<TrackHandle>)
+                -> Result<(), Whatever> {
+                let t =
+                    track.as_ref().with_whatever_context(||
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Track not found"));
+                                    res
+                                })?;
+                let _ = t.disable_loop();
+                Ok(())
+            }
+            pub async fn set_playback_volume(track: &Option<TrackHandle>,
+                volume: Option<f32>) -> Result<(), Whatever> {
+                let t =
+                    track.as_ref().with_whatever_context(||
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Track not found"));
+                                    res
+                                })?;
+                let _ =
+                    t.set_volume(volume.with_whatever_context(||
+                                            "Failed to get Volume from request")?).with_whatever_context(|e|
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Failed to set volume with error: {0}",
+                                                e));
+                                    res
+                                })?;
+                Ok(())
+            }
+        }
+        pub mod helpers {
+            use std::sync::Arc;
+            use hearth_interconnect::worker_communication::DirectWorkerCommunication;
+            use snafu::{OptionExt, ResultExt, Whatever};
+            use songbird::{Call, Songbird};
+            use songbird::id::GuildId;
+            pub async fn get_manager_call(guild_id: &String,
+                manager: &mut Option<Arc<Songbird>>)
+                -> Result<Arc<tokio::sync::Mutex<Call>>, Whatever> {
+                let h =
+                    manager.as_mut().with_whatever_context(||
+                                            "Manager not initialized")?.get(GuildId(guild_id.parse().with_whatever_context(|e|
+                                                {
+                                                    let res =
+                                                        ::alloc::fmt::format(format_args!("Failed to parse Guild ID to u64 with error: {0}",
+                                                                e));
+                                                    res
+                                                })?)).with_whatever_context(||
+                                "Failed to retrieve manager Call")?;
+                return Ok(h);
+            }
+            #[macro_export]
+            macro_rules! dwc_guard {
+                ($dwc : ident, $closure : tt) =>
+                {
+                    use crate :: errors :: report_error ; match $dwc
+                    {
+                        Some(dwc) => { $closure() ; } None =>
+                        {
+                            report_error(ErrorReport
+                            {
+                                error : e.to_string(), request_id :
+                                "Unavailable".to_string(), job_id :
+                                "Unavailable".to_string()
+                            }, $config) ;
+                        }
+                    }
+                } ;
+            }
+            #[macro_export]
+            macro_rules! error_report {
+                ($x : expr, $rid : expr, $job_id : expr, $config : expr) =>
+                {
+                    {
+                        use crate :: errors :: report_error ; match $x
+                        {
+                            Ok(t) => { Some(t) }, Err(e) =>
+                            {
+                                report_error(ErrorReport
+                                {
+                                    error : e.to_string(), request_id : $rid, job_id : $job_id
+                                }, $config) ; None
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        pub mod metadata {
+            use snafu::{OptionExt, Whatever};
+            use songbird::input::Metadata;
+            use songbird::tracks::{Action, TrackHandle, View};
+            use symphonia_core::meta::Tag;
+            fn get_probed_metadata(meta: &mut Metadata)
+                -> Result<Vec<Tag>, Whatever> {
+                let probed =
+                    meta.probe.get().with_whatever_context(||
+                                "Failed to get probed metadata")?;
+                let tags =
+                    probed.current().with_whatever_context(||
+                                    "Failed to get current metadata")?.tags();
+                Ok(tags.to_vec())
+            }
+            fn get_format_metadata(meta: &Metadata)
+                -> Result<Vec<Tag>, Whatever> {
+                let format =
+                    meta.format.current().with_whatever_context(||
+                                "Failed to get format metadata")?;
+                let tags = format.tags();
+                Ok(tags.to_vec())
+            }
+            fn get_metadata_action(view: View) -> Option<Action> {
+                let mut meta = view.meta.unwrap();
+                let tags = get_probed_metadata(&mut meta);
+                match tags {
+                    Ok(t) => {
+                        { ::std::io::_print(format_args!("{0:?}\n", t)); }
+                    }
+                    Err(e) => {
+                        {
+                            ::std::io::_print(format_args!("Probed failed with: {0}\n",
+                                    e));
+                        };
+                        let tags = get_format_metadata(&meta).unwrap();
+                        { ::std::io::_print(format_args!("{0:?}\n", tags)); };
+                    }
+                }
+                None
+            }
+            pub async fn get_metadata(track: &Option<TrackHandle>)
+                -> Result<(), Whatever> {
+                let t =
+                    track.as_ref().with_whatever_context(||
+                                {
+                                    let res =
+                                        ::alloc::fmt::format(format_args!("Track not found"));
+                                    res
+                                })?;
+                t.action(get_metadata_action).unwrap();
+                Ok(())
+            }
+        }
+    }
+    pub mod errors {
+        use hearth_interconnect::errors::ErrorReport;
+        use hearth_interconnect::messages::Message;
+        use log::error;
+        use crate::config::Config;
+        use crate::utils::generic_connector::PRODUCER;
+        use crate::worker::connector::send_message;
+        pub fn report_error(error: ErrorReport, config: &Config) {
+            {
+                let lvl = ::log::Level::Error;
+                if lvl <= ::log::STATIC_MAX_LEVEL && lvl <= ::log::max_level()
+                        {
+                        ::log::__private_api_log(format_args!("{0}", error.error),
+                            lvl,
+                            &("hearth::worker::errors", "hearth::worker::errors",
+                                    "src/worker/errors.rs", 9u32),
+                            ::log::__private_api::Option::None);
+                    }
+            };
+            let mut px = PRODUCER.lock().unwrap();
+            let p = px.as_mut();
+            send_message(&Message::ErrorReport(error),
+                config.config.kafka_topic.as_str(), &mut p.unwrap());
+        }
+    }
+    pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
+        {
+            let lvl = ::log::Level::Info;
+            if lvl <= ::log::STATIC_MAX_LEVEL && lvl <= ::log::max_level() {
+                    ::log::__private_api_log(format_args!("Worker INIT"), lvl,
+                        &("hearth::worker", "hearth::worker", "src/worker.rs",
+                                18u32), ::log::__private_api::Option::None);
+                }
+        };
+        initialize_api(&config, ipc);
+    }
+}
+mod logger {
+    use std::time::SystemTime;
+    use fern::colors::{Color, ColoredLevelConfig};
+    use log::info;
+    pub fn setup_logger() -> Result<(), fern::InitError> {
+        let colors_line =
+            ColoredLevelConfig::new().error(Color::Red).warn(Color::Yellow).info(Color::White).debug(Color::White).trace(Color::BrightBlack);
+        let colors_level = colors_line.info(Color::Green);
+        fern::Dispatch::new().format(move |out, message, record|
+                                            {
+                                                out.finish(format_args!("{0}[{1} {3} {2} {0}] {4}\u{{1b}}[0m",
+                                                        format_args!("\u{{1b}}[{0}m",
+                                                            colors_line.get_color(&record.level()).to_fg_str()),
+                                                        humantime::format_rfc3339_seconds(SystemTime::now()),
+                                                        record.target(), colors_level.color(record.level()),
+                                                        message));
+                                            }).level(log::LevelFilter::Info).level_for("serenity",
+                                log::LevelFilter::Error).level_for("tracing",
+                            log::LevelFilter::Error).chain(std::io::stdout()).chain(fern::log_file("output.log")?).apply()?;
+        {
+            let lvl = ::log::Level::Info;
+            if lvl <= ::log::STATIC_MAX_LEVEL && lvl <= ::log::max_level() {
+                    ::log::__private_api_log(format_args!("------------------------------------------ NEW INSTANCE STARTED ------------------------------------------"),
+                        lvl,
+                        &("hearth::logger", "hearth::logger", "src/logger.rs",
+                                43u32), ::log::__private_api::Option::None);
+                }
+        };
+        Ok(())
+    }
+}
+mod utils {
+    pub(crate) mod generic_connector {
+        use std::process;
+        use std::sync::Mutex;
+        use std::time::Duration;
+        use hearth_interconnect::messages::Message;
+        use kafka;
+        use kafka::consumer::Consumer;
+        use kafka::producer::{Producer, Record, RequiredAcks};
+        use lazy_static::lazy_static;
+        use log::{debug, error, info, warn};
+        use openssl;
+        use snafu::Whatever;
+        use crate::config::Config;
+        use crate::worker::queue_processor::ProcessorIPC;
+        use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
+        use self::openssl::ssl::{
+            SslConnector, SslFiletype, SslMethod, SslVerifyMode,
+        };
+        #[allow(missing_copy_implementations)]
+        #[allow(non_camel_case_types)]
+        #[allow(dead_code)]
+        pub struct PRODUCER {
+            __private_field: (),
+        }
+        #[doc(hidden)]
+        pub static PRODUCER: PRODUCER = PRODUCER { __private_field: () };
+        impl ::lazy_static::__Deref for PRODUCER {
+            type Target = Mutex<Option<Producer>>;
+            fn deref(&self) -> &Mutex<Option<Producer>> {
+                #[inline(always)]
+                fn __static_ref_initialize() -> Mutex<Option<Producer>> {
+                    Mutex::new(None)
+                }
+                #[inline(always)]
+                fn __stability() -> &'static Mutex<Option<Producer>> {
+                    static LAZY:
+                        ::lazy_static::lazy::Lazy<Mutex<Option<Producer>>> =
+                        ::lazy_static::lazy::Lazy::INIT;
+                    LAZY.get(__static_ref_initialize)
+                }
+                __stability()
+            }
+        }
+        impl ::lazy_static::LazyStatic for PRODUCER {
+            fn initialize(lazy: &Self) { let _ = &**lazy; }
+        }
+        pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
+            let mut builder =
+                SslConnector::builder(SslMethod::tls()).unwrap();
+            builder.set_cipher_list("DEFAULT").unwrap();
+            builder.set_verify(SslVerifyMode::PEER);
+            let cert_file = "service.cert";
+            let cert_key = "service.key";
+            let ca_cert = "ca.pem";
+            {
+                let lvl = ::log::Level::Info;
+                if lvl <= ::log::STATIC_MAX_LEVEL && lvl <= ::log::max_level()
+                        {
+                        ::log::__private_api_log(format_args!("loading cert-file={0}, key-file={1}",
+                                cert_file, cert_key), lvl,
+                            &("hearth::utils::generic_connector",
+                                    "hearth::utils::generic_connector",
+                                    "src/utils/generic_connector.rs", 36u32),
+                            ::log::__private_api::Option::None);
+                    }
+            };
+            builder.set_certificate_file(cert_file,
+                    SslFiletype::PEM).unwrap();
+            builder.set_private_key_file(cert_key, SslFiletype::PEM).unwrap();
+            builder.check_private_key().unwrap();
+            builder.set_ca_file(ca_cert).unwrap();
+            let connector = builder.build();
+            let mut client =
+                KafkaClient::new_secure(brokers.to_owned(),
+                    SecurityConfig::new(connector));
+            match client.load_metadata_all() {
+                Err(e) => {
+                    {
+                        let lvl = ::log::Level::Error;
+                        if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                    lvl <= ::log::max_level() {
+                                ::log::__private_api_log(format_args!("{0:?}", e), lvl,
+                                    &("hearth::utils::generic_connector",
+                                            "hearth::utils::generic_connector",
+                                            "src/utils/generic_connector.rs", 59u32),
+                                    ::log::__private_api::Option::None);
+                            }
+                    };
+                    drop(client);
+                    process::exit(1);
+                }
+                Ok(_) => {
+                    if client.topics().len() == 0 {
+                            {
+                                let lvl = ::log::Level::Warn;
+                                if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                            lvl <= ::log::max_level() {
+                                        ::log::__private_api_log(format_args!("No topics available!"),
+                                            lvl,
+                                            &("hearth::utils::generic_connector",
+                                                    "hearth::utils::generic_connector",
+                                                    "src/utils/generic_connector.rs", 69u32),
+                                            ::log::__private_api::Option::None);
+                                    }
+                            };
+                        } else {
+                           let topics: Vec<String> =
+                               client.topics().names().map(Into::into).collect();
+                           match client.fetch_offsets(topics.as_slice(),
+                                   FetchOffset::Latest) {
+                               Err(e) => {
+                                   {
+                                       let lvl = ::log::Level::Error;
+                                       if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                                   lvl <= ::log::max_level() {
+                                               ::log::__private_api_log(format_args!("{0:?}", e), lvl,
+                                                   &("hearth::utils::generic_connector",
+                                                           "hearth::utils::generic_connector",
+                                                           "src/utils/generic_connector.rs", 77u32),
+                                                   ::log::__private_api::Option::None);
+                                           }
+                                   };
+                                   drop(client);
+                                   process::exit(1);
+                               }
+                               Ok(toffsets) => {
+                                   {
+                                       let lvl = ::log::Level::Debug;
+                                       if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                                   lvl <= ::log::max_level() {
+                                               ::log::__private_api_log(format_args!("Topic offsets:"),
+                                                   lvl,
+                                                   &("hearth::utils::generic_connector",
+                                                           "hearth::utils::generic_connector",
+                                                           "src/utils/generic_connector.rs", 82u32),
+                                                   ::log::__private_api::Option::None);
+                                           }
+                                   };
+                                   for (topic, mut offs) in toffsets {
+                                       offs.sort_by_key(|x| x.partition);
+                                       {
+                                           let lvl = ::log::Level::Debug;
+                                           if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                                       lvl <= ::log::max_level() {
+                                                   ::log::__private_api_log(format_args!("{0}", topic), lvl,
+                                                       &("hearth::utils::generic_connector",
+                                                               "hearth::utils::generic_connector",
+                                                               "src/utils/generic_connector.rs", 85u32),
+                                                       ::log::__private_api::Option::None);
+                                               }
+                                       };
+                                       for off in offs {
+                                           {
+                                               let lvl = ::log::Level::Debug;
+                                               if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                                           lvl <= ::log::max_level() {
+                                                       ::log::__private_api_log(format_args!("\t{0}: {1:?}",
+                                                               off.partition, off.offset), lvl,
+                                                           &("hearth::utils::generic_connector",
+                                                                   "hearth::utils::generic_connector",
+                                                                   "src/utils/generic_connector.rs", 87u32),
+                                                           ::log::__private_api::Option::None);
+                                                   }
+                                           };
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                }
+            }
+            return client;
+        }
+        pub fn initialize_producer(client: KafkaClient) -> Producer {
+            let producer =
+                Producer::from_client(client).with_ack_timeout(Duration::from_secs(1)).with_required_acks(RequiredAcks::One).create().unwrap();
+            return producer;
+        }
+        pub fn initialize_consume_generic(brokers: Vec<String>,
+            config: &Config,
+            callback:
+                fn(Message, &PRODUCER, &Config, &mut ProcessorIPC)
+                    -> Result<(), Whatever>, ipc: &mut ProcessorIPC,
+            mut producer: &PRODUCER, initialized_callback: fn(&Config)) {
+            let mut consumer =
+                Consumer::from_client(initialize_client(&brokers)).with_topic(config.config.kafka_topic.clone()).create().unwrap();
+            initialized_callback(&config);
+            loop {
+                let mss = consumer.poll().unwrap();
+                if mss.is_empty() {
+                        {
+                            let lvl = ::log::Level::Debug;
+                            if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                        lvl <= ::log::max_level() {
+                                    ::log::__private_api_log(format_args!("No messages available right now."),
+                                        lvl,
+                                        &("hearth::utils::generic_connector",
+                                                "hearth::utils::generic_connector",
+                                                "src/utils/generic_connector.rs", 124u32),
+                                        ::log::__private_api::Option::None);
+                                }
+                        };
+                    }
+                for ms in mss.iter() {
+                    for m in ms.messages() {
+                        let parsed_message: Result<Message, serde_json::Error> =
+                            serde_json::from_slice(&m.value);
+                        match parsed_message {
+                            Ok(message) => {
+                                let parse = callback(message, &mut producer, config, ipc);
+                                match parse {
+                                    Ok(_) => {}
+                                    Err(e) => {
+                                        let lvl = ::log::Level::Error;
+                                        if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                                    lvl <= ::log::max_level() {
+                                                ::log::__private_api_log(format_args!("Failed to parse message with error: {0}",
+                                                        e), lvl,
+                                                    &("hearth::utils::generic_connector",
+                                                            "hearth::utils::generic_connector",
+                                                            "src/utils/generic_connector.rs", 135u32),
+                                                    ::log::__private_api::Option::None);
+                                            }
+                                    }
+                                }
+                            }
+                            Err(e) => {
+                                let lvl = ::log::Level::Error;
+                                if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                            lvl <= ::log::max_level() {
+                                        ::log::__private_api_log(format_args!("{0} - Failed to parse message",
+                                                e), lvl,
+                                            &("hearth::utils::generic_connector",
+                                                    "hearth::utils::generic_connector",
+                                                    "src/utils/generic_connector.rs", 138u32),
+                                            ::log::__private_api::Option::None);
+                                    }
+                            }
+                        }
+                    }
+                    let _ = consumer.consume_messageset(ms);
+                }
+                consumer.commit_consumed().unwrap();
+            }
+        }
+        pub fn send_message_generic(message: &Message, topic: &str,
+            producer: &mut Producer) {
+            let data = serde_json::to_string(message).unwrap();
+            producer.send(&Record::from_value(topic, data)).unwrap();
+        }
+    }
+    pub(crate) use crate::utils::generic_connector::initialize_consume_generic;
+}
+mod deco {
+    use std::{env, fs};
+    use log::warn;
+    fn is_program_in_path(program: &str) -> bool {
+        if let Ok(path) = env::var("PATH") {
+                for p in path.split(":") {
+                    let p_str =
+                        {
+                            let res =
+                                ::alloc::fmt::format(format_args!("{0}/{1}", p, program));
+                            res
+                        };
+                    if fs::metadata(p_str).is_ok() { return true; }
+                }
+            }
+        false
+    }
+    pub fn print_warnings() {
+        if is_program_in_path("yt-dlp") == false {
+                {
+                    let lvl = ::log::Level::Warn;
+                    if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                lvl <= ::log::max_level() {
+                            ::log::__private_api_log(format_args!("yt-dlp is not installed! This Lantern instance will not be able to play tracks from YouTube until it is installed!"),
+                                lvl,
+                                &("hearth::deco", "hearth::deco", "src/deco.rs", 20u32),
+                                ::log::__private_api::Option::None);
+                        }
+                }
+            }
+    }
+    pub fn over_servers_warning() {
+        {
+            let lvl = ::log::Level::Warn;
+            if lvl <= ::log::STATIC_MAX_LEVEL && lvl <= ::log::max_level() {
+                    ::log::__private_api_log(format_args!("Guild count is over 5000. Hearth is only free up to 5000 discord servers. You must contact Hearth Industries within 14 Days of passing 5000 servers. For more details see the license in the github repo: LICENSE.md. If you have already acquired a paid license no further action is needed."),
+                        lvl,
+                        &("hearth::deco", "hearth::deco", "src/deco.rs", 25u32),
+                        ::log::__private_api::Option::None);
+                }
+        }
+    }
+    pub fn print_intro() {
+        {
+            ::std::io::_print(format_args!("\n    ██╗░░██╗███████╗░█████╗░██████╗░████████╗██╗░░██╗\n    ██║░░██║██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██║░░██║\n    ███████║█████╗░░███████║██████╔╝░░░██║░░░███████║\n    ██╔══██║██╔══╝░░██╔══██║██╔══██╗░░░██║░░░██╔══██║\n    ██║░░██║███████╗██║░░██║██║░░██║░░░██║░░░██║░░██║\n    ╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝\n"));
+        }
+    }
+}
+mod platform {
+    use snafu::{OptionExt, Whatever};
+    use sysinfo::{System, SystemExt};
+    pub fn check_platform_supported() -> Result<bool, Whatever> {
+        let mut sys = System::new_all();
+        sys.refresh_all();
+        if sys.name().with_whatever_context(|| "Failed to get OS Name")? ==
+                    "Darwin" {
+                return Ok(true);
+            }
+        return Ok(false);
+    }
+}
+async fn initialize_scheduler_internal(config: Config,
+    songbird_ipc: &mut ProcessorIPC) {
+    initialize_scheduler(config, songbird_ipc).await;
+}
+async fn initialize_worker_internal(config: Config,
+    songbird_ipc: &mut ProcessorIPC) {
+    initialize_worker(config, songbird_ipc).await;
+}
+fn main() {
+    let body =
+        async {
+            print_intro();
+            setup_logger().expect("Logger Setup Failed - A bit ironic no?");
+            print_warnings();
+            let platform_check = check_platform_supported();
+            match platform_check {
+                Ok(res) => {
+                    if res {
+                            {
+                                let lvl = ::log::Level::Warn;
+                                if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                            lvl <= ::log::max_level() {
+                                        ::log::__private_api_log(format_args!("Hearth may or may not work when running on MacOS with Apple Silicon."),
+                                            lvl, &("hearth", "hearth", "src/main.rs", 50u32),
+                                            ::log::__private_api::Option::None);
+                                    }
+                            };
+                        }
+                }
+                Err(e) => {
+                    let lvl = ::log::Level::Error;
+                    if lvl <= ::log::STATIC_MAX_LEVEL &&
+                                lvl <= ::log::max_level() {
+                            ::log::__private_api_log(format_args!("Failed to get system OS with error: {0}",
+                                    e), lvl, &("hearth", "hearth", "src/main.rs", 53u32),
+                                ::log::__private_api::Option::None);
+                        }
+                }
+            }
+            let worker_config = init_config();
+            let scheduler_config = worker_config.clone();
+            let songbird_config = worker_config.clone();
+            let (tx_processor, _rx_processor):
+                    (Sender<ProcessorIPCData>, Receiver<ProcessorIPCData>) =
+                broadcast::channel(16);
+            let songbird_rx = tx_processor.subscribe();
+            let scheduler_rx = tx_processor.subscribe();
+            let worker_rx = tx_processor.subscribe();
+            let songbird_tx = tx_processor.clone();
+            let scheduler_tx = tx_processor.clone();
+            let mut worker_ipc =
+                ProcessorIPC { sender: tx_processor, receiver: worker_rx };
+            let mut songbird_ipc =
+                ProcessorIPC { sender: songbird_tx, receiver: songbird_rx };
+            let mut scheduler_ipc =
+                ProcessorIPC { sender: scheduler_tx, receiver: scheduler_rx };
+            let mut futures = ::alloc::vec::Vec::new();
+            if worker_config.roles.worker {
+                    let worker =
+                        tokio::spawn(async move
+                                {
+                                return initialize_worker_internal(worker_config,
+                                            &mut worker_ipc).await;
+                            });
+                    let songbird =
+                        tokio::spawn(async move
+                                {
+                                return initialize_songbird(&songbird_config,
+                                            &mut songbird_ipc).await;
+                            });
+                    futures.push(worker);
+                    futures.push(songbird);
+                }
+            if scheduler_config.roles.scheduler {
+                    let scheduler =
+                        tokio::spawn(async move
+                                {
+                                if scheduler_config.roles.worker == true {
+                                        sleep(Duration::from_millis(1000)).await;
+                                    }
+                                return initialize_scheduler_internal(scheduler_config,
+                                            &mut scheduler_ipc).await;
+                            });
+                    futures.push(scheduler);
+                }
+            futures::future::join_all(futures).await;
+        };
+
+    #[allow(clippy :: expect_used, clippy :: diverging_sub_expression)]
+    {
+        return tokio::runtime::Builder::new_multi_thread().enable_all().build().expect("Failed building the Runtime").block_on(body);
+    }
+}

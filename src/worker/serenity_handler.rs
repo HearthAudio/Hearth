@@ -63,10 +63,10 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
                         });
                         match result {
                             Ok(_) => {},
-                            Err(_e) => error!("Failed to send songbird instance to job: {}",&msg.job_id)
+                            Err(_e) => error!("Failed to send songbird instance to job: {}",&msg.job_id.to_string())
                         }
                     },
-                    None => error!("Failed to get songbird instance for job: {}",&msg.job_id)
+                    None => error!("Failed to get songbird instance for job: {}",&msg.job_id.to_string())
                 }
 
             }

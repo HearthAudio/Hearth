@@ -23,7 +23,7 @@ use crate::utils::generic_connector::{ initialize_client, initialize_producer, P
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::errors::report_error;
-use crate::worker::queue_processor::{process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
+use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 
 pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
@@ -38,7 +38,7 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
             let result = ipc.sender.send(ProcessorIPCData {
                 action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
                 songbird: None,
-                job_id: job_id.clone(),
+                job_id: JobID::Specific(job_id.clone()),
                 dwc: Some(dwc),
                 error_report: None
             });

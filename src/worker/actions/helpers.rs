@@ -1,4 +1,5 @@
 use std::sync::{Arc};
+use hearth_interconnect::worker_communication::DirectWorkerCommunication;
 use snafu::{OptionExt, ResultExt, Whatever};
 use songbird::{Call, Songbird};
 use songbird::id::GuildId;

@@ -1,12 +1,12 @@
 use std::fs;
 use std::fs::File;
 use std::io::Write;
+use lazy_static::lazy_static;
 use log::error;
+use std::sync::Mutex;
 use nanoid::nanoid;
 // Loads config file
 use serde_derive::{Deserialize, Serialize};
-
-
 
 #[derive(Deserialize,Clone,Serialize)]
 pub struct InternalConfig {
@@ -14,7 +14,8 @@ pub struct InternalConfig {
     pub discord_bot_token: String,
     pub kafka_uri: String,
     pub kafka_topic: String,
-    pub worker_id: Option<String>
+    pub worker_id: Option<String>,
+    pub job_expiration_time: Option<u64> //
 }
 
 #[derive(Deserialize,Clone,Serialize)]

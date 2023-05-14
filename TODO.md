@@ -1,6 +1,4 @@
 # Features and Other stuff to Implement:
-- [ ] GetTrackMetadata
-- [ ] Kill Jobs after 8 hours to prevent zombie processes if audio is playing or two hours if no audio is playing. Allow time configuration in config file
 - [ ] Add SSL stuff to config
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
@@ -10,7 +8,10 @@
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 - [ ] Set Badges
 # Waiting for testing:
+- [ ] Kill Jobs after 6 hours to prevent zombie processes. Allow time configuration in config file
+- [ ] GetTrackMetadata
 # TODO General (Post-Launch)
+- [ ] Support large ongoing current stream counts by using seperate IPC channels per thread saved in a DashMap. Otherwise constantly accruing threads will cause slow downs after a while.
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Unit Tests
 - [ ] Dashboard
@@ -20,7 +21,6 @@
 - [ ] Kafka Fuzzing
 - [ ] Exposed Track Event System
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
-- [ ] Possible performance improvement by using single separate channel to listen DWC communications and store in HashMap instead of broadcasting. Use tokioselect! in loop to await standard ipc and seperate channel
 # DONE
 - [x] Replace current horrible message interface with typed sub enums
 - [x] Client Library
