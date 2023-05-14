@@ -1,9 +1,9 @@
 # Features and Other stuff to Implement:
 - [ ] GetTrackMetadata
+- [ ] Kill Jobs after 8 hours to prevent zombie processes. Allow time configuration in config file
 - [ ] Add SSL stuff to config
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
-- [ ] Kill Jobs after 8 hours to prevent zombie processes. Allow time configuration in config file
 - [ ] Error Reports for message parse fails
 - [ ] Add warning to set kafka latency settings to README
 - [ ] Test with multiple workers. And with single scheduler and multi-work
@@ -15,7 +15,6 @@
 - [ ] Unit Tests
 - [ ] Dashboard
 - [ ] Worker Interface for dynamic joins and disconnects
-- [ ] Find better way to handle message struct than a thousand options.
 - [ ] Add SoundCloud support. See `soundcloud` crate
 - [ ] Swap `youtube-dl` with the `rustube` crate (May require forking `rustube` and modifying) (This has a few issues chunk throttling - age restricted downloads etc... see Issues on repo)
 - [ ] Kafka Fuzzing
