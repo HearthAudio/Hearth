@@ -3,7 +3,7 @@ use songbird::Songbird;
 use songbird::tracks::TrackHandle;
 use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
-use crate::{dwc_guard, error_report};
+use crate::{error_report};
 use hearth_interconnect::errors::ErrorReport;
 
 use hearth_interconnect::worker_communication::{DirectWorkerCommunication, DWCActionType, Job};

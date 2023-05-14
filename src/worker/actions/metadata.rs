@@ -3,14 +3,14 @@ use lazy_static::lazy_static;
 use snafu::{OptionExt, Whatever};
 use songbird::tracks::{Action, TrackHandle, View};
 use symphonia_core::codecs::CodecParameters;
-use symphonia_core::meta::Tag;
-use symphonia_core::units::TimeBase;
+
+
 use crate::utils::generic_connector::PRODUCER;
 use crate::worker::connector::send_message;
 use crate::config::Config;
 use std::sync::Mutex;
 use hearth_interconnect::errors::ErrorReport;
-use crate::worker::errors::report_error;
+
 // This is a bit of a hack to pass data into the get metadata action
 lazy_static! {
     static ref CONFIG: Mutex<Option<Config>> = Mutex::new(None);

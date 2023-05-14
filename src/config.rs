@@ -1,9 +1,9 @@
 use std::fs;
 use std::fs::File;
 use std::io::Write;
-use lazy_static::lazy_static;
+
 use log::error;
-use std::sync::Mutex;
+
 use nanoid::nanoid;
 // Loads config file
 use serde_derive::{Deserialize, Serialize};
