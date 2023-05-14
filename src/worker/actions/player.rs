@@ -5,7 +5,7 @@ use reqwest::Client;
 
 use snafu::{OptionExt, ResultExt, Whatever};
 use songbird::{Songbird};
-use songbird::tracks::TrackHandle;
+use songbird::tracks::{Track, TrackHandle};
 use crate::worker::actions::helpers::get_manager_call;
 
 use snafu::Snafu;
@@ -23,37 +23,21 @@ pub enum PlaybackError {
     #[snafu(display("Failed to get handler lock with Error: {source}"))]
     FailedToGetHandlerLock { source: Whatever },
     #[snafu(display("Missing Audio URL"))]
-    MissingAudioURL { },
-    #[snafu(display("Failed to extract metadata"))]
-    FailedToExtractMetadata { source: AudioStreamError },
+    MissingAudioURL { }
 }
 
-pub struct PlaybackResult {
-    pub track_handle: TrackHandle,
-    pub metadata: AuxMetadata
-}
-
-pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Option<Arc<Songbird>>,client: Client) -> Result<PlaybackResult,PlaybackError> {
+pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Option<Arc<Songbird>>,client: Client) -> Result<TrackHandle,PlaybackError> {
     let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
     let mut handler = handler_lock.lock().await;
-    let mut source = HttpRequest::new(client, dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
-    let metadata = source.aux_metadata().await.unwrap();
-    println!("{:?}",metadata);
+    let source = HttpRequest::new(client, dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
     let track_handle = handler.play_input(source.into());
-    Ok(PlaybackResult {
-        metadata,
-        track_handle
-    })
+    Ok(track_handle)
 }
 
-pub async fn play_from_youtube(manager: &mut Option<Arc<Songbird>>,dwc: &DirectWorkerCommunication,client: Client) -> Result<PlaybackResult,PlaybackError> {
+pub async fn play_from_youtube(manager: &mut Option<Arc<Songbird>>,dwc: &DirectWorkerCommunication,client: Client) -> Result<TrackHandle,PlaybackError> {
     let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
     let mut handler = handler_lock.lock().await;
-    let mut source = YoutubeDl::new(client, dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
-    let metadata = source.aux_metadata().await.context(FailedToExtractMetadataSnafu)?;
+    let source = YoutubeDl::new(client, dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
     let track_handle = handler.play_input(source.into());
-    Ok(PlaybackResult {
-        metadata,
-        track_handle
-    })
+    Ok(track_handle)
 }
