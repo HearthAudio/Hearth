@@ -15,7 +15,7 @@ pub async fn get_manager_call(guild_id: &String, manager: &mut Option<Arc<Songbi
 macro_rules! error_report {
     ($x: expr,$rid: expr,$job_id: expr,$config: expr) => {
         {
-            use crate::connector::report_error;
+            use crate::errors::report_error;
             match $x {
                 Ok(t) => {
                     Some(t)

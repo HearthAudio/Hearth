@@ -54,10 +54,9 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
         job_id: job_id.clone(),
         error_report: None,
     }).unwrap();
-    let client = HttpClient::new(); // TEMP We should probs move this into an arc and share across jobs
+    let client = HttpClient::new(); //TODO: TEMP We should move this into an arc and share across jobs
     let mut manager : Option<Arc<Songbird>> = None;
     let mut track : Option<TrackHandle> = None;
-    let mut metadata : Option<AuxMetadata> = None;
     let mut ready = false;
     while let Ok(msg) = sender.subscribe().recv().await {
         if job_id == &msg.job_id {

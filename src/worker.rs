@@ -12,6 +12,7 @@ pub mod queue_processor;
 pub mod analytics_reporter;
 pub mod serenity_handler;
 pub mod actions;
+pub mod errors;
 
 pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
     info!("Worker INIT");

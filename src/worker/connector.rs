@@ -9,6 +9,7 @@ use serde_derive::Serialize;
 use kafka::producer::Producer;
 
 use log::{error, info};
+use serenity::all::MessageType;
 
 use snafu::{OptionExt, Whatever};
 
@@ -21,46 +22,13 @@ use crate::config::Config;
 use crate::utils::generic_connector::{ initialize_client, initialize_producer, PRODUCER, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
+use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 
 pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
     let broker = config.config.kafka_uri.to_owned();
     initialize_worker_consume(vec![broker],config,ipc);
-}
-
-// #[derive(Deserialize,Debug,Serialize,Clone)]
-// #[serde(tag = "type")]
-// pub enum Message {
-//     InternalWorkerAnalytics(Analytics),
-//     InternalWorkerQueueJob(Job),
-//     InternalPingPongRequest,
-//     InternalPongResponse,
-//     // External
-//     ExternalQueueJob(JobRequest),
-//     ExternalQueueJobResponse(ExternalQueueJobResponse),
-//     // Other
-//     DirectWorkerCommunication(DirectWorkerCommunication),
-//     ErrorReport(ErrorReport)
-// }
-
-pub fn report_error(error: ErrorReport,config: &Config) {
-    error!("{}",error.error);
-
-    // let mut px = PRODUCER.lock().unwrap();
-    // let p = px.as_mut();
-    // send_a(&Message {
-    //     message_type: MessageType::ErrorReport,
-    //     analytics: None,
-    //     queue_job_request: None,
-    //     queue_job_internal: None,
-    //     request_id: error.request_id.clone(),
-    //     worker_id: None,
-    //     direct_worker_communication: None,
-    //     external_queue_job_response: None,
-    //     job_event: None,
-    //     error_report: Some(error),
-    // },config.config.kafka_topic.as_str(),&mut p.unwrap());
 }
 
 fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) -> Result<(),Whatever> {

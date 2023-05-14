@@ -1,6 +1,6 @@
 # Features and Other stuff to Implement:
 - [ ] GetTrackMetadata
-- [ ] Kill Jobs after 8 hours to prevent zombie processes. Allow time configuration in config file
+- [ ] Kill Jobs after 8 hours to prevent zombie processes if audio is playing or two hours if no audio is playing. Allow time configuration in config file
 - [ ] Add SSL stuff to config
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
