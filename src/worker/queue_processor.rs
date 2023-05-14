@@ -13,8 +13,8 @@ use reqwest::Client as HttpClient;
 
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
-use crate::worker::actions::track_manager::{force_stop_loop, get_metadata, pause_playback, resume_playback, set_playback_volume};
-
+use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
+use super::actions::metadata::get_metadata;
 use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_position};
 
 #[derive(Clone,Debug)]
