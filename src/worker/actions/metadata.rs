@@ -75,7 +75,13 @@ fn get_metadata_action(view: View) -> Option<Action> {
             let mut px = PRODUCER.lock().unwrap();
             let p = px.as_mut();
 
-            send_message(&Message::ExternalMetadataResult(a),"communication",&mut *p.unwrap())
+            let mut cx = CONFIG.lock().unwrap();
+            let c = cx.as_mut();
+
+            let config = c.unwrap();
+            let topic = config.config.kafka_topic.clone();
+
+            send_message(&Message::ExternalMetadataResult(a),&topic,&mut *p.unwrap())
         },
         Err(e) => {
             report_metadata_error!(e);
