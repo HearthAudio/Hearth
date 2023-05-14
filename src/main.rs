@@ -46,8 +46,8 @@ async fn main() {
     let platform_check = check_platform_supported();
     match platform_check {
         Ok(res) => {
-            if res == true {
-                warn!("Hearth may or may not work when running on MacOS. But it will probably not work");
+            if res {
+                warn!("Hearth may or may not work when running on MacOS with Apple Silicon.");
             }
         },
         Err(e) => error!("Failed to get system OS with error: {}", e)
