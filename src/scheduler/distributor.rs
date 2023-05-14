@@ -2,9 +2,9 @@ use std::sync::Mutex;
 use hearth_interconnect::messages::{JobRequest, Message};
 use hearth_interconnect::worker_communication::Job;
 use kafka::producer::Producer;
-use log::error;
+
 use once_cell::sync::Lazy;
-use serde::{Serialize,Deserialize};
+
 use nanoid::nanoid;
 use crate::config::Config;
 use crate::scheduler::connector::{send_message};

@@ -29,7 +29,7 @@ fn parse_message_callback(parsed_message: Message, _: &PRODUCER, config: &Config
 
             distribute_job(j, &mut *p.unwrap(), config);
         }
-        Message::InternalWorkerAnalytics(a) => {
+        Message::InternalWorkerAnalytics(_a) => {
             //TODO
         },
         Message::InternalPongResponse(r) => {

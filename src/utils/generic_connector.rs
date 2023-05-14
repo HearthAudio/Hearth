@@ -11,8 +11,8 @@ use kafka::producer::{Producer, Record, RequiredAcks};
 use lazy_static::lazy_static;
 use log::{debug, error, info, warn};
 use openssl;
-use serde::Deserialize;
-use serde_derive::Serialize;
+
+
 use snafu::Whatever;
 use crate::config::Config;
 use crate::worker::queue_processor::{ProcessorIPC};

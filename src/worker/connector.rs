@@ -1,17 +1,17 @@
 
 use std::thread;
-use hearth_interconnect::errors::ErrorReport;
-use hearth_interconnect::messages::{Analytics, ExternalQueueJobResponse, JobRequest, Message, PingPongResponse};
-use hearth_interconnect::worker_communication::{DirectWorkerCommunication, Job};
-use serde_derive::Deserialize;
-use serde_derive::Serialize;
+
+use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
+
+
+
 
 use kafka::producer::Producer;
 
 use log::{error, info};
-use serenity::all::MessageType;
 
-use snafu::{OptionExt, Whatever};
+
+use snafu::{Whatever};
 
 
 

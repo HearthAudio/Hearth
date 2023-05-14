@@ -5,11 +5,11 @@ use reqwest::Client;
 
 use snafu::{OptionExt, ResultExt, Whatever};
 use songbird::{Songbird};
-use songbird::tracks::{Track, TrackHandle};
+use songbird::tracks::{TrackHandle};
 use crate::worker::actions::helpers::get_manager_call;
 
 use snafu::Snafu;
-use songbird::input::{AudioStreamError, AuxMetadata, Compose, HttpRequest, Input, MetadataError, YoutubeDl};
+use songbird::input::{HttpRequest, YoutubeDl};
 
 
 #[derive(Debug, Snafu)]

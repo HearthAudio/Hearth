@@ -1,4 +1,4 @@
-use log::warn;
+
 use snafu::{OptionExt, Whatever};
 use sysinfo::{System, SystemExt};
 

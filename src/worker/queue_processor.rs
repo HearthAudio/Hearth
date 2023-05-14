@@ -5,12 +5,12 @@ use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
 use crate::error_report;
 use hearth_interconnect::errors::ErrorReport;
-use hearth_interconnect::messages::Message;
+
 use hearth_interconnect::worker_communication::{DirectWorkerCommunication, DWCActionType, Job};
-use serde::Deserialize;
-use serde::Serialize;
+
+
 use reqwest::Client as HttpClient;
-use songbird::input::AuxMetadata;
+
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{force_stop_loop, get_metadata, pause_playback, resume_playback, set_playback_volume};
