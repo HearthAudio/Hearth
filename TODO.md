@@ -1,8 +1,8 @@
 # Features and Other stuff to Implement:
 - [ ] GetTrackMetadata
+- [ ] Kill Jobs after 8 hours to prevent zombie processes. Allow time configuration in config file
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
-- [ ] Kill Jobs after 8 hours to prevent zombie processes. Allow time configuration in config file
 - [ ] Error Reports for message parse fails
 - [ ] Add warning to set kafka latency settings to README
 - [ ] Test with multiple workers. And with single scheduler and multi-work
