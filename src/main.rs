@@ -1,3 +1,4 @@
+use std::sync::Arc;
 use std::time::Duration;
 use log::{error, warn};
 use crate::config::*;
@@ -61,18 +62,17 @@ async fn main() {
     let songbird_rx = tx_processor.subscribe();
     let scheduler_rx = tx_processor.subscribe();
     let worker_rx = tx_processor.subscribe();
-    let songbird_tx = tx_processor.clone();
-    let scheduler_tx  = tx_processor.clone();
+    let tx_main = Arc::new(tx_processor);
     let mut worker_ipc = ProcessorIPC {
-        sender: tx_processor,
+        sender: tx_main.clone(),
         receiver: worker_rx,
     };
     let mut songbird_ipc = ProcessorIPC {
-        sender: songbird_tx,
+        sender: tx_main.clone(),
         receiver: songbird_rx,
     };
     let mut scheduler_ipc = ProcessorIPC {
-        sender: scheduler_tx,
+        sender: tx_main.clone(),
         receiver: scheduler_rx,
     };
     // Depending on roles initialize worker and or scheduler on separate threads
