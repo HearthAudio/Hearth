@@ -87,9 +87,6 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
             match msg.action_type {
                 ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming) => {
                     manager = msg.songbird;
-                    // Join channel
-                    let join = join_channel(&job,job.request_id.clone(),&mut manager,report_error,config.clone()).await;
-                    let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),config);
                 },
                 ProcessorIncomingAction::Infrastructure(Infrastructure::CheckTime) => {
                     // If this job has been running for more than designated time break it
@@ -100,6 +97,12 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
                         break;
                     }
                 },
+                ProcessorIncomingAction::Actions(DWCActionType::JoinChannel) => {
+                    // Join channel
+                    let dwc = dwc.unwrap();
+                    let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.to_string(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone()).await;
+                    let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),config);
+                }
                 ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
                     let dwc = dwc.unwrap();
                     let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);

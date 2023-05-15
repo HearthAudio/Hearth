@@ -73,6 +73,4 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
             _ => {}
         }
     }
-    tokio::signal::ctrl_c().await.unwrap();
-    warn!("Received Ctrl-C, shutting down.");
 }

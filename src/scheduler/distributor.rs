@@ -20,8 +20,6 @@ pub fn distribute_job(job: JobRequest,producer: &mut Producer,config: &Config) {
     let workers_guard = WORKERS.lock().unwrap();
     let job_id = nanoid!();
     let internal_message = &Message::InternalWorkerQueueJob(Job {
-        guild_id: job.guild_id,
-        voice_channel_id: job.voice_channel_id,
         job_id: job_id,
         worker_id: workers_guard[*index_guard].clone(),
         request_id: job.request_id
