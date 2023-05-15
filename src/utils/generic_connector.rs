@@ -2,7 +2,7 @@
 
 
 use std::process;
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use hearth_interconnect::messages::Message;
 use kafka;
@@ -14,6 +14,7 @@ use openssl;
 
 
 use snafu::Whatever;
+use songbird::Songbird;
 use crate::config::Config;
 use crate::worker::queue_processor::{ProcessorIPC};
 use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
@@ -110,7 +111,7 @@ pub fn initialize_producer(client: KafkaClient) -> Producer {
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config)) {
+pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC,Option<Arc<Songbird>>) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config),songbird: Option<Arc<Songbird>>) {
     let mut consumer = Consumer::from_client(initialize_client(&brokers))
         .with_topic(config.config.kafka_topic.clone())
         .create()
@@ -129,7 +130,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callbac
                 let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(m.value);
                 match parsed_message {
                     Ok(message) => {
-                        let parse = callback(message,&mut producer, config,ipc);
+                        let parse = callback(message,&mut producer, config,ipc,songbird.clone());
                         match parse {
                             Ok(_) => {},
                             Err(e) => error!("Failed to parse message with error: {}",e)

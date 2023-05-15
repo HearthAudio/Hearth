@@ -81,11 +81,7 @@ async fn main() {
         let worker = tokio::spawn(async move {
             return initialize_worker_internal(worker_config, &mut worker_ipc).await;
         });
-        let songbird = tokio::spawn(async move {
-            return initialize_songbird(&songbird_config, &mut songbird_ipc).await;
-        });
         futures.push(worker);
-        futures.push(songbird);
     }
     if scheduler_config.roles.scheduler {
         let scheduler = tokio::spawn(async move {

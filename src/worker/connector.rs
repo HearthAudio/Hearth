@@ -1,4 +1,4 @@
-
+use std::sync::Arc;
 use std::thread;
 
 use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
@@ -12,7 +12,7 @@ use log::{error, info};
 
 
 use snafu::{Whatever};
-
+use songbird::Songbird;
 
 
 use tokio::runtime::Builder;
@@ -26,12 +26,12 @@ use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 
-pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
+pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
     let broker = config.config.kafka_uri.to_owned();
-    initialize_worker_consume(vec![broker],config,ipc);
+    initialize_worker_consume(vec![broker],config,ipc,songbird);
 }
 
-fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) -> Result<(),Whatever> {
+fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) -> Result<(),Whatever> {
     match message {
         Message::DirectWorkerCommunication(dwc) => {
             if &dwc.worker_id == config.config.worker_id.as_ref().unwrap() {
@@ -70,7 +70,7 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
                         .enable_all()
                         .build()
                         .unwrap();
-                    rt.block_on(process_job(job, &proc_config, sender,report_error));
+                    rt.block_on(process_job(job, &proc_config, sender,report_error,songbird));
                 });
                 let mut px = PRODUCER.lock().unwrap();
                 let p = px.as_mut();
@@ -87,11 +87,11 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
 }
 
 
-pub fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mut ProcessorIPC) {
+pub fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
     let producer : Producer = initialize_producer(initialize_client(&brokers));
     *PRODUCER.lock().unwrap() = Some(producer);
 
-    initialize_consume_generic(brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback);
+    initialize_consume_generic(brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback,songbird);
 }
 
 fn initialized_callback(_: &Config) {}

@@ -18,7 +18,6 @@ use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
 use crate::worker::constants::DEFAULT_JOB_EXPIRATION_TIME;
 use crate::worker::helpers::get_unix_timestamp_as_seconds;
-use crate::worker::serenity_handler::SONGBIRD;
 use super::actions::metadata::get_metadata;
 use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_position};
 
@@ -67,17 +66,11 @@ pub struct ProcessorIPC {
 }
 
 
-pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<ProcessorIPCData>>,report_error: fn(ErrorReport,&Config)) {
+pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<ProcessorIPCData>>,report_error: fn(ErrorReport,&Config),mut manager: Option<Arc<Songbird>>) {
     let job_id = JobID::Specific(job.job_id.clone());
     let global_job_id = JobID::Global();
     let client = HttpClient::new(); //TODO: TEMP We should move this into an arc and share across jobs
 
-    // Pull in Songbird Instance
-    let mut manager : Option<Arc<Songbird>> = None;
-    {
-        let mut sx = SONGBIRD.lock().await;
-        manager = sx.clone();
-    }
     // Start core
     let mut track : Option<TrackHandle> = None;
     let start_time = get_unix_timestamp_as_seconds();

@@ -1,9 +1,11 @@
+use std::sync::Arc;
 use hearth_interconnect::messages::{Message};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 
 use kafka::producer::{Producer};
 use snafu::Whatever;
+use songbird::Songbird;
 
 use crate::scheduler::distributor::{distribute_job, WORKERS};
 use crate::config::Config;
@@ -20,7 +22,7 @@ pub fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
     initialize_scheduler_consume(brokers,config,ipc);
 }
 
-fn parse_message_callback(parsed_message: Message, _: &PRODUCER, config: &Config, _: &mut ProcessorIPC) -> Result<(),Whatever> {
+fn parse_message_callback(parsed_message: Message, _: &PRODUCER, config: &Config, _: &mut ProcessorIPC,_: Option<Arc<Songbird>>) -> Result<(),Whatever> {
     match parsed_message {
         Message::ExternalQueueJob(j) => {
             // Handle event listener
@@ -43,7 +45,7 @@ fn parse_message_callback(parsed_message: Message, _: &PRODUCER, config: &Config
 
 
 pub fn initialize_scheduler_consume(brokers: Vec<String>,config: &Config,ipc: &mut ProcessorIPC) {
-    initialize_consume_generic(brokers, config, parse_message_callback,  ipc,&PRODUCER,initialized_callback);
+    initialize_consume_generic(brokers, config, parse_message_callback,  ipc,&PRODUCER,initialized_callback,None);
 }
 
 fn initialized_callback(config: &Config) {

@@ -19,10 +19,6 @@ use songbird::Songbird;
 
 struct Handler;
 
-lazy_static! {
-    pub static ref SONGBIRD: Mutex<Option<Arc<Songbird>>> = Mutex::new(None);
-}
-
 #[async_trait]
 impl EventHandler for Handler {
     async fn ready(&self, _: Context, ready: Ready) {
@@ -30,7 +26,7 @@ impl EventHandler for Handler {
     }
 }
 
-pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
+pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) -> Option<Arc<Songbird>> {
 
     let intents = GatewayIntents::non_privileged();
 
@@ -53,33 +49,7 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) {
     });
 
     info!("Songbird INIT");
-    let manager = songbird::get(client_data.read().await).await;
-    *SONGBIRD.lock().await = manager;
 
-    // while let Ok(msg) = ipc.receiver.recv().await {
-    //     match msg.action_type {
-    //         ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdInstanceRequest) => {
-    //             sleep(Duration::from_millis(250)).await;
-    //             let manager = songbird::get(client_data.read().await).await;
-    //             match manager {
-    //                 Some(manager) => {
-    //                     let result = ipc.sender.send(ProcessorIPCData {
-    //                         action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming),
-    //                         songbird: Some(manager),
-    //                         dwc: None,
-    //                         job_id: msg.job_id.clone(),
-    //                         error_report: None,
-    //                     });
-    //                     match result {
-    //                         Ok(_) => {},
-    //                         Err(_e) => error!("Failed to send songbird instance to job: {}",&msg.job_id.to_string())
-    //                     }
-    //                 },
-    //                 None => error!("Failed to get songbird instance for job: {}",&msg.job_id.to_string())
-    //             }
-    //
-    //         }
-    //         _ => {}
-    //     }
-    // }
+    let manager = songbird::get(client_data.read().await).await;
+    return manager;
 }

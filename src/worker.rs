@@ -7,6 +7,7 @@ use crate::config::Config;
 use crate::worker::connector::initialize_api;
 use crate::worker::expiration::init_expiration_timer;
 use crate::worker::queue_processor::ProcessorIPC;
+use crate::worker::serenity_handler::initialize_songbird;
 
 pub mod connector;
 pub mod queue_processor;
@@ -20,7 +21,8 @@ pub mod expiration;
 
 pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
     info!("Worker INIT");
-    // Init server
+    //
+    let songbird = initialize_songbird(&config, ipc).await;
     init_expiration_timer(ipc.sender.clone());
-    initialize_api(&config,ipc);
+    initialize_api(&config,ipc,songbird);
 }
