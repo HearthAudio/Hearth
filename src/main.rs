@@ -56,20 +56,14 @@ async fn main() {
     // Load config
     let worker_config = init_config();
     let scheduler_config = worker_config.clone();
-    let songbird_config = worker_config.clone();
     // Setup Flume Songbird IPC
     let (tx_processor, _rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
-    let songbird_rx = tx_processor.subscribe();
     let scheduler_rx = tx_processor.subscribe();
     let worker_rx = tx_processor.subscribe();
     let tx_main = Arc::new(tx_processor);
     let mut worker_ipc = ProcessorIPC {
         sender: tx_main.clone(),
         receiver: worker_rx,
-    };
-    let mut songbird_ipc = ProcessorIPC {
-        sender: tx_main.clone(),
-        receiver: songbird_rx,
     };
     let mut scheduler_ipc = ProcessorIPC {
         sender: tx_main.clone(),
@@ -79,7 +73,7 @@ async fn main() {
     let mut futures = vec![];
     if worker_config.roles.worker {
         let worker = tokio::spawn(async move {
-            return initialize_worker_internal(worker_config, &mut worker_ipc).await;
+            initialize_worker_internal(worker_config, &mut worker_ipc).await;
         });
         futures.push(worker);
     }
@@ -88,7 +82,7 @@ async fn main() {
             if scheduler_config.roles.worker == true {
                 sleep(Duration::from_millis(1000)).await; // If worker is also started on same node wait a second so ping pong is accurate
             }
-            return initialize_scheduler_internal(scheduler_config, &mut scheduler_ipc).await;
+            initialize_scheduler_internal(scheduler_config, &mut scheduler_ipc).await;
         });
         futures.push(scheduler);
     }

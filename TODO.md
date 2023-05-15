@@ -1,5 +1,5 @@
 # Features and Other stuff to Implement:
-- [ ] Parse Worker IDs
+- [ ] Support Internal Sharding
 - [ ] Add SSL stuff to config
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
@@ -21,6 +21,7 @@
 - [ ] Exposed Track Event System
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 # DONE
+- [x] Parse Worker IDs
 - [x] GetTrackMetadata
 - [x] Kill Jobs after 6 hours to prevent zombie processes. Allow time configuration in config file
 - [x] Replace current horrible message interface with typed sub enums

@@ -8,14 +8,16 @@ use serenity::{
     prelude::GatewayIntents,
 };
 use songbird::{SerenityInit};
-use tokio::time::sleep;
 use crate::config::Config;
 use crate::deco::over_servers_warning;
 use crate::worker::queue_processor::{Infrastructure, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 use lazy_static::lazy_static;
 use tokio::sync::Mutex;
 use std::sync::Arc;
+use std::thread::sleep;
 use songbird::Songbird;
+use crate::worker::actions::channel_manager::join_channel;
+use crate::worker::errors::report_error;
 
 struct Handler;
 
@@ -49,7 +51,6 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) -> Opti
     });
 
     info!("Songbird INIT");
-
-    let manager = songbird::get(client_data.read().await).await;
+    let mut manager = songbird::get(client_data.read().await).await;
     return manager;
 }

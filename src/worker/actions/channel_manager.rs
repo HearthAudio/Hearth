@@ -61,7 +61,9 @@ impl VoiceEventHandler for TrackErrorNotifier {
 pub async fn join_channel(guild_id: String, voice_channel_id: String, job_id: String, request_id: String, manager: &mut Option<Arc<Songbird>>, error_reporter: fn(ErrorReport, &Config), config: Config) -> Result<(),ChannelControlError> {
     let gid = guild_id.parse().context(GuildIDParsingFailedSnafu)?;
     let vcid = voice_channel_id.parse().context(ChannelIDParsingFailedSnafu)?;
+    println!("CHECK");
     if let Ok(handler_lock) = manager.as_mut().context(ManagerAcquisitionFailedSnafu)?.join(GuildId(gid), ChannelId(vcid)).await {
+        println!("EVH");
         // Attach an event handler to see notifications of all track errors.
         let mut handler = handler_lock.lock().await;
         handler.add_global_event(TrackEvent::Error.into(), TrackErrorNotifier {

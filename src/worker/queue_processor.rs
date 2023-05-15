@@ -69,6 +69,14 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
     let global_job_id = JobID::Global();
     let client = HttpClient::new(); //TODO: TEMP We should move this into an arc and share across jobs
 
+    // println!("IXX");
+    // let x = config.clone();
+    // tokio::spawn(async move {
+    //     // sleep(Duration::from_millis(500)).await;
+    //     println!("JOINT");
+    //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut manager, report_error, x).await.unwrap();
+    // }).await.unwrap();
+
     // Start core
     let mut track : Option<TrackHandle> = None;
     let start_time = get_unix_timestamp_as_seconds();
@@ -89,12 +97,12 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::JoinChannel) => {
                     // Join channel
                     let dwc = dwc.unwrap();
-                    let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.to_string(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone()).await;
-                    let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),config);
+                    // let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.to_string(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone()).await;
+                    // let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
                     let dwc = dwc.unwrap();
-                    let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    // let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
                     let dwc = dwc.unwrap();
@@ -114,11 +122,11 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
                     let dwc = dwc.unwrap();
-                    track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    // track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
                     let dwc = dwc.unwrap();
-                    track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    // track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
                     let dwc = dwc.unwrap();
