@@ -83,10 +83,6 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
 
     while let Ok(msg) = sender.subscribe().recv().await {
         if job_id == msg.job_id || msg.job_id == global_job_id {
-            let dwc : Option<DirectWorkerCommunication> = match msg.dwc {
-                Some(d) => Some(d),
-                None => None
-            };
             match msg.action_type {
                 ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming) => {
                     manager = msg.songbird;
