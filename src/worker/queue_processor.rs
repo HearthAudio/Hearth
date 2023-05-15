@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::time::Duration;
 use songbird::Songbird;
 use songbird::tracks::TrackHandle;
 use tokio::sync::broadcast::{Receiver, Sender};
@@ -7,6 +8,7 @@ use crate::{error_report};
 use hearth_interconnect::errors::ErrorReport;
 
 use hearth_interconnect::worker_communication::{DirectWorkerCommunication, DWCActionType, Job};
+use log::info;
 
 
 use reqwest::Client as HttpClient;
@@ -97,6 +99,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Sender<ProcessorIPCD
                     let current_time = get_unix_timestamp_as_seconds();
                     let time_change = current_time - start_time;
                     if time_change > config.config.job_expiration_time.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME) {
+                        info!("Killing JOB: {} due to expiration after: {} hours",job_id.to_string(),(time_change / 60) / 60);
                         break;
                     }
                 },

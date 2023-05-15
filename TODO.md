@@ -1,4 +1,5 @@
 # Features and Other stuff to Implement:
+- [ ] Parse Worker IDs
 - [ ] Add SSL stuff to config
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
@@ -8,10 +9,8 @@
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 - [ ] Set Badges
 # Waiting for testing:
-- [ ] Kill Jobs after 6 hours to prevent zombie processes. Allow time configuration in config file
-- [ ] GetTrackMetadata
 # TODO General (Post-Launch)
-- [ ] Support large ongoing current stream counts by using seperate IPC channels per thread saved in a DashMap. Otherwise constantly accruing threads will cause slow downs after a while.
+- [ ] Use seperate IPC channels per thread saved in a DashMap. Otherwise constantly accruing threads will cause slow downs after a while.
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Unit Tests
 - [ ] Dashboard
@@ -22,6 +21,8 @@
 - [ ] Exposed Track Event System
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 # DONE
+- [x] GetTrackMetadata
+- [x] Kill Jobs after 6 hours to prevent zombie processes. Allow time configuration in config file
 - [x] Replace current horrible message interface with typed sub enums
 - [x] Client Library
 - [x] Move kafka topic into config

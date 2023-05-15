@@ -34,17 +34,19 @@ pub fn initialize_api(config: &Config, ipc: &mut ProcessorIPC) {
 fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC) -> Result<(),Whatever> {
     match message {
         Message::DirectWorkerCommunication(dwc) => {
-            let job_id = dwc.job_id.clone();
-            let result = ipc.sender.send(ProcessorIPCData {
-                action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
-                songbird: None,
-                job_id: JobID::Specific(job_id.clone()),
-                dwc: Some(dwc),
-                error_report: None
-            });
-            match result {
-                Ok(_) => {},
-                Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
+            if &dwc.worker_id == config.config.worker_id.as_ref().unwrap() {
+                let job_id = dwc.job_id.clone();
+                let result = ipc.sender.send(ProcessorIPCData {
+                    action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
+                    songbird: None,
+                    job_id: JobID::Specific(job_id.clone()),
+                    dwc: Some(dwc),
+                    error_report: None
+                });
+                match result {
+                    Ok(_) => {},
+                    Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
+                }
             }
         },
         Message::InternalPingPongRequest => {
@@ -55,27 +57,31 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
             }),config.config.kafka_topic.as_str(), &mut *p.unwrap());
         }
         Message::InternalWorkerQueueJob(job) => {
-            let proc_config = config.clone();
-            let job_id = job.job_id.clone();
-            // This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
-            // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
-            // let sender = ipc.sender;
-            let sender = ipc.sender.clone();
-            info!("Starting new worker");
-            thread::spawn(move || {
-                let rt = Builder::new_current_thread()
-                    .enable_all()
-                    .build()
-                    .unwrap();
-                rt.block_on(process_job(job, &proc_config, sender,report_error));
-            });
-            let mut px = PRODUCER.lock().unwrap();
-            let p = px.as_mut();
+            if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
+                let proc_config = config.clone();
+                let job_id = job.job_id.clone();
+                let guild_id = job.guild_id.clone();
+                // This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
+                // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
+                // let sender = ipc.sender;
+                let sender = ipc.sender.clone();
+                info!("Starting new worker");
+                thread::spawn(move || {
+                    let rt = Builder::new_current_thread()
+                        .enable_all()
+                        .build()
+                        .unwrap();
+                    rt.block_on(process_job(job, &proc_config, sender,report_error));
+                });
+                let mut px = PRODUCER.lock().unwrap();
+                let p = px.as_mut();
 
-            send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
-                job_id: job_id,
-                worker_id: config.config.worker_id.as_ref().unwrap().clone(),
-            }),config.config.kafka_topic.as_str(), &mut *p.unwrap());
+                send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
+                    job_id,
+                    guild_id,
+                    worker_id: config.config.worker_id.as_ref().unwrap().clone(),
+                }), config.config.kafka_topic.as_str(), &mut *p.unwrap());
+            }
         }
         _ => {}
     }

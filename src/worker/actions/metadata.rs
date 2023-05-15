@@ -60,10 +60,17 @@ fn get_duration_wrapper(codec: &CodecParameters) -> Option<u64> {
 
 fn get_codec_metadata(view: &View) -> Result<Metadata,Whatever> {
     let codec = view.codec.as_ref().with_whatever_context(|| "Failed to get codec")?;
+
+    let mut jx = JOB_ID.lock().unwrap();
+    let j = jx.as_mut();
+
+    let job_id = j.as_ref().unwrap();
+
     Ok(Metadata {
         duration: get_duration_wrapper(codec),
         position: Some(view.position.as_secs()),
         sample_rate: Some(codec.sample_rate.with_whatever_context(|| "Failed to get Sample Rate")?),
+        job_id: job_id.to_string(),
     })
 }
 

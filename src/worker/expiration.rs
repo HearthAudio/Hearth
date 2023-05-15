@@ -1,5 +1,5 @@
 use std::time::Duration;
-use log::{debug, error};
+use log::{debug, error, info};
 use tokio::{task, time};
 use tokio::sync::broadcast::Sender;
 use crate::worker::constants::EXPIRATION_CHECK_TIME;
@@ -20,7 +20,7 @@ pub fn init_expiration_timer(s: Sender<ProcessorIPCData>) {
             });
             match x {
                 Ok(_) => {
-                    debug!("Sent expiration check")
+                    info!("Sent expiration check for jobs")
                 }
                 Err(e) => {
                     error!("Failed to send expiration check with error: {}",e)

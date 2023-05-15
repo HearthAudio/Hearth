@@ -126,7 +126,7 @@ pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callbac
 
         for ms in mss.iter() {
             for m in ms.messages() {
-                let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(&m.value);
+                let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(m.value);
                 match parsed_message {
                     Ok(message) => {
                         let parse = callback(message,&mut producer, config,ipc);
