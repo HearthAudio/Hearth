@@ -29,6 +29,8 @@ snafu = "0.7.4"
 symphonia-core = "0.5.2"
 lazy_static = "1.4.0"
 sysinfo = "0.29.0"
+colored = "2.0.0"
+rand = "0.8.5"
 
 [dependencies.songbird]
 git = "https://github.com/Hearth-Industries/songbird-next-fork.git"

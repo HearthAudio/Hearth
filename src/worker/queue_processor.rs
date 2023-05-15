@@ -23,8 +23,6 @@ use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_pos
 
 #[derive(Clone,Debug)]
 pub enum Infrastructure {
-    SongbirdIncoming,
-    SongbirdInstanceRequest,
     CheckTime
 }
 
@@ -79,9 +77,6 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
         if job_id == msg.job_id || msg.job_id == global_job_id {
             let dwc : Option<DirectWorkerCommunication> = msg.dwc;
             match msg.action_type {
-                ProcessorIncomingAction::Infrastructure(Infrastructure::SongbirdIncoming) => {
-                    manager = msg.songbird;
-                },
                 ProcessorIncomingAction::Infrastructure(Infrastructure::CheckTime) => {
                     // If this job has been running for more than designated time break it
                     let current_time = get_unix_timestamp_as_seconds();

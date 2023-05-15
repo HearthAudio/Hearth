@@ -198,6 +198,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "colored"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3616f750b84d8f0de8a58bda93e08e2a81ad3f523089b05f1dffecab48c6cbd"
+dependencies = [
+ "atty",
+ "lazy_static",
+ "winapi",
+]
+
+[[package]]
 name = "command_attr"
 version = "0.4.1"
 source = "git+https://github.com/serenity-rs/serenity?branch=next#219229581ab0a850078881af5eb8a4c36fb33f01"
@@ -427,7 +438,7 @@ version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d9f0c14694cbd524c8720dd69b0e3179344f04ebb5f90f2e4a440c6ea3b2f1ee"
 dependencies = [
- "colored",
+ "colored 1.9.3",
  "log",
 ]
 
@@ -648,6 +659,7 @@ name = "hearth"
 version = "0.1.0"
 dependencies = [
  "bytes",
+ "colored 2.0.0",
  "fern",
  "futures",
  "hearth-interconnect",
@@ -658,6 +670,7 @@ dependencies = [
  "nanoid",
  "once_cell",
  "openssl",
+ "rand",
  "reqwest",
  "retry",
  "serde",
