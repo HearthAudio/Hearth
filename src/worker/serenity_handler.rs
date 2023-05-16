@@ -39,7 +39,6 @@ pub async fn initialize_songbird(config: &Config,_ipc: &mut ProcessorIPC) -> Opt
         .await
         .unwrap()
         ;
-    // let client = register(client_b);
 
     let client_data = client.data.clone();
     let server_count = client.cache.guild_count();
