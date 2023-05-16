@@ -4,13 +4,10 @@ use std::thread;
 use std::time::Duration;
 
 use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
-
-
-
-
-use kafka::producer::Producer;
+use rdkafka::Message as KafkaMessage;
 
 use log::{error, info};
+use rdkafka::producer::FutureProducer;
 
 
 use snafu::{Whatever};
@@ -52,7 +49,7 @@ pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,mut songbird
     //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, x).await.unwrap();
     // }).await.unwrap();
 
-    initialize_worker_consume(vec![broker],config,ipc,songbird).await;
+    initialize_worker_consume(broker, config,ipc,songbird).await;
 }
 
 fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) -> Result<(),Whatever> {
@@ -134,15 +131,15 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
 }
 
 
-pub async fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) {
-    let producer : Producer = initialize_producer(initialize_kafka_config(&brokers));
+pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) {
+    let producer : FutureProducer = initialize_producer(&brokers,&config.config.kafka_group_id.as_ref().unwrap());
     *PRODUCER.lock().unwrap() = Some(producer);
 
-    initialize_consume_generic(brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback,songbird);
+    initialize_consume_generic(&brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback,songbird);
 }
 
 fn initialized_callback(_: &Config) {}
 
-pub fn send_message(message: &Message, topic: &str, producer: &mut Producer) {
+pub fn send_message(message: &Message, topic: &str, producer: &mut FutureProducer) {
     send_message_generic(message,topic,producer);
 }

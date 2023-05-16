@@ -1,11 +1,11 @@
 use std::sync::Mutex;
 use hearth_interconnect::messages::{JobRequest, Message};
 use hearth_interconnect::worker_communication::Job;
-use kafka::producer::Producer;
 
 use once_cell::sync::Lazy;
 
 use nanoid::nanoid;
+use rdkafka::producer::FutureProducer;
 use crate::config::Config;
 use crate::scheduler::connector::{send_message};
 // Handles distribution across worker nodes via round robin or maybe another method?
@@ -15,7 +15,7 @@ static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
 pub static WORKERS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(vec![]));
 
 // TODO: Implement Adaptive load balancing instead of round robin
-pub fn distribute_job(job: JobRequest,producer: &mut Producer,config: &Config) {
+pub fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) {
     let mut index_guard = ROUND_ROBIN_INDEX.lock().unwrap();
     let workers_guard = WORKERS.lock().unwrap();
     let job_id = nanoid!();

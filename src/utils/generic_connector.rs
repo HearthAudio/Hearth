@@ -12,12 +12,13 @@ use log::{debug, error, info, warn};
 use openssl;
 use rdkafka::{ClientConfig};
 use rdkafka::consumer::{Consumer, StreamConsumer};
-use rdkafka::producer::FutureProducer;
+use rdkafka::producer::{FutureProducer, FutureRecord};
 
 
 use snafu::Whatever;
 use songbird::Songbird;
 use crate::config::Config;
+use crate::utils::constants::KAFKA_SEND_TIMEOUT;
 use crate::worker::queue_processor::{ProcessorIPC};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 
@@ -25,25 +26,25 @@ lazy_static! {
     pub static ref PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
 }
 
-pub fn initialize_kafka_config(brokers: String, group_id: String) -> &'static mut ClientConfig {
+pub fn initialize_kafka_config(brokers: &String, group_id: &String) -> ClientConfig {
     ClientConfig::new()
-        .set("group.id", &group_id)
-        .set("bootstrap.servers", &brokers)
+        .set("group.id", group_id)
+        .set("bootstrap.servers", brokers)
         .set("enable.partition.eof", "false")
         .set("session.timeout.ms", "6000")
         .set("enable.auto.commit", "false")
-
+        .clone()
 }
 
-pub fn initialize_producer(brokers: String, group_id: String) -> FutureProducer {
+pub fn initialize_producer(brokers: &String, group_id: &String) -> FutureProducer {
     let producer: FutureProducer = initialize_kafka_config(brokers,group_id).create().unwrap();
     return producer;
 }
 
 
-pub async fn initialize_consume_generic(brokers: String, group_id: String, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC,Option<Arc<Songbird>>) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config),songbird: Option<Arc<Songbird>>) {
+pub async fn initialize_consume_generic(brokers: &String,  config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC,Option<Arc<Songbird>>) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config),songbird: Option<Arc<Songbird>>) {
 
-    let consumer : StreamConsumer = initialize_kafka_config(brokers,group_id).create().unwrap();
+    let consumer : StreamConsumer = initialize_kafka_config(brokers,&config.config.kafka_group_id.as_ref().unwrap()).create().unwrap();
     consumer
         .subscribe(&[&config.config.kafka_topic])
         .expect("Can't subscribe to specified topic");
@@ -78,8 +79,9 @@ pub async fn initialize_consume_generic(brokers: String, group_id: String, confi
     }
 }
 
-pub fn send_message_generic(message: &Message, topic: &str, producer: &mut Producer) {
+pub async fn send_message_generic(message: &Message, topic: &str, producer: &mut FutureProducer) {
     // Send message to worker
     let data = serde_json::to_string(message).unwrap();
-    producer.send(&Record::from_value(topic, data)).unwrap();
+    let record : FutureRecord<String,String> = FutureRecord::to(topic).payload(&data);
+    producer.send(record, KAFKA_SEND_TIMEOUT).await.unwrap();
 }
