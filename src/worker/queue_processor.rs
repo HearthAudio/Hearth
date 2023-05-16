@@ -65,7 +65,7 @@ pub struct ProcessorIPC {
 }
 
 
-pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<ProcessorIPCData>>, _report_error: fn(ErrorReport,&Config), mut manager: Option<Arc<Songbird>>) {
+pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<ProcessorIPCData>>, report_error: fn(ErrorReport,&Config), mut manager: Option<Arc<Songbird>>) {
     let job_id = JobID::Specific(job.job_id.clone());
     let global_job_id = JobID::Global();
     let client = HttpClient::new(); //TODO: TEMP We should move this into an arc and share across jobs

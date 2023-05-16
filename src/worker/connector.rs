@@ -23,6 +23,7 @@ use crate::worker::actions::channel_manager::join_channel;
 use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 use anyhow::{Context, Result};
+use tokio::sync::broadcast::Sender;
 
 pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
     let broker = config.config.kafka_uri.to_owned();
@@ -49,13 +50,13 @@ pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Op
     initialize_worker_consume(broker, config,ipc,songbird).await;
 }
 
-fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) -> Result<()> {
+async fn parse_message_callback(message: Message, config: Config, sender: Arc<Sender<ProcessorIPCData>>,mut songbird: Option<Arc<Songbird>>) -> Result<()> {
 
     match message {
         Message::DirectWorkerCommunication(dwc) => {
             if &dwc.worker_id == config.config.worker_id.as_ref().unwrap() {
                 let job_id = dwc.job_id.clone();
-                let result = ipc.sender.send(ProcessorIPCData {
+                let result = sender.send(ProcessorIPCData {
                     action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
                     songbird: None,
                     job_id: JobID::Specific(job_id.clone()),
@@ -69,7 +70,7 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
             }
         },
         Message::InternalPingPongRequest => {
-            let mut px = PRODUCER.lock().unwrap();
+            let mut px = PRODUCER.lock().await;
             let p = px.as_mut();
 
             let rt = Handle::current();
@@ -85,7 +86,7 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
                 // This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
                 // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
                 // let sender = ipc.sender;
-                let _sender = ipc.sender.clone();
+                let sender = sender.clone();
                 info!("Starting new worker");
 
                 // tokio::spawn(async move {
@@ -104,7 +105,7 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
                 // });
 
                 tokio::spawn(async move {
-                    process_job(job,&proc_config,_sender,report_error,songbird).await;
+                    process_job(job,&proc_config,sender,report_error,songbird).await;
                 });
 
                 // thread::spawn(move || {
@@ -140,12 +141,12 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
 
 pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
     let producer : FutureProducer = initialize_producer(&brokers,&config.config.kafka_group_id.as_ref().unwrap());
-    *PRODUCER.lock().unwrap() = Some(producer);
+    *PRODUCER.lock().await = Some(producer);
 
     initialize_consume_generic(&brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback,songbird).await;
 }
 
-fn initialized_callback(_: &Config) {}
+async fn initialized_callback(_: Config) {}
 
 pub async fn send_message(message: &Message, topic: &str, producer: &mut FutureProducer) {
     send_message_generic(message,topic,producer).await;

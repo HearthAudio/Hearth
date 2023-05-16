@@ -9,9 +9,12 @@ use crate::worker::connector::send_message;
 pub fn report_error(error: ErrorReport, config: &Config) {
     error!("{}",error.error);
 
-    let mut px = PRODUCER.lock().unwrap();
-    let p = px.as_mut();
+    let t_config = config.clone();
 
-    let rt = Handle::current();
-    rt.block_on(send_message(&Message::ErrorReport(error),config.config.kafka_topic.as_str(),&mut p.unwrap()));
+    tokio::task::spawn(async move {
+        let mut px = PRODUCER.lock().await;
+        let p = px.as_mut();
+
+        send_message(&Message::ErrorReport(error),t_config.config.kafka_topic.as_str(),&mut p.unwrap()).await;
+    });
 }

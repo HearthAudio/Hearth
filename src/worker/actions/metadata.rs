@@ -1,3 +1,4 @@
+use std::time::Duration;
 use hearth_interconnect::messages::{Message, Metadata};
 use lazy_static::lazy_static;
 use anyhow::{Context, Result};
@@ -8,7 +9,7 @@ use symphonia_core::codecs::CodecParameters;
 use crate::utils::generic_connector::PRODUCER;
 use crate::worker::connector::send_message;
 use crate::config::Config;
-use std::sync::Mutex;
+use tokio::sync::Mutex;
 use hearth_interconnect::errors::ErrorReport;
 use tokio::runtime::Handle;
 
@@ -24,13 +25,13 @@ macro_rules! report_metadata_error {
     ($e: ident) => {
         use crate::errors::report_error;
 
-        let mut cx = CONFIG.lock().unwrap();
+        let mut cx = CONFIG.lock().await;
         let c = cx.as_mut();
 
-        let mut jx = JOB_ID.lock().unwrap();
+        let mut jx = JOB_ID.lock().await;
         let j = jx.as_mut();
 
-        let mut rx = REQUEST_ID.lock().unwrap();
+        let mut rx = REQUEST_ID.lock().await;
         let r = rx.as_mut();
 
         report_error(ErrorReport {
@@ -46,7 +47,7 @@ fn get_duration(codec: &CodecParameters) -> Result<Option<u64>> {
     Ok(Some(time_base.calc_time(codec.n_frames.context("Failed to get N frames")?).seconds))
 }
 
-fn get_duration_wrapper(codec: &CodecParameters) -> Option<u64> {
+async fn get_duration_wrapper(codec: &CodecParameters) -> Option<u64> {
     let duration = get_duration(codec);
     match duration {
         Ok(d) => {
@@ -59,53 +60,54 @@ fn get_duration_wrapper(codec: &CodecParameters) -> Option<u64> {
     }
 }
 
-fn get_codec_metadata(view: &View) -> Result<Metadata> {
-    let codec = view.codec.as_ref().context("Failed to get codec")?;
+async fn get_codec_metadata(codec: Option<CodecParameters>,position: u64) -> Result<Metadata> {
+    let codec = codec.as_ref().context("Failed to get codec")?;
 
-    let mut jx = JOB_ID.lock().unwrap();
+    let mut jx = JOB_ID.lock().await;
     let j = jx.as_mut();
 
     let job_id = j.as_ref().unwrap();
 
     Ok(Metadata {
-        duration: get_duration_wrapper(codec),
-        position: Some(view.position.as_secs()),
+        duration: get_duration_wrapper(codec).await,
+        position: Some(position),
         sample_rate: Some(codec.sample_rate.context("Failed to get Sample Rate")?),
         job_id: job_id.to_string(),
     })
 }
 
 fn get_metadata_action(view: View) -> Option<Action> {
-    let r = get_codec_metadata(&view);
-    //TODO: DO work on another thread to not slow track playback
-    match r {
-        Ok(a) => {
-            let mut px = PRODUCER.lock().unwrap();
-            let p = px.as_mut();
+    let codec = view.codec;
+    let position = view.position.as_secs();
+    tokio::task::spawn(async move {
+        let r = get_codec_metadata(codec,position).await;
+        match r {
+            Ok(a) => {
+                let mut px = PRODUCER.lock().await;
+                let p = px.as_mut();
 
-            let mut cx = CONFIG.lock().unwrap();
-            let c = cx.as_mut();
+                let mut cx = CONFIG.lock().await;
+                let c = cx.as_mut();
 
-            let config = c.unwrap();
-            let topic = config.config.kafka_topic.clone();
+                let config = c.unwrap();
+                let topic = config.config.kafka_topic.clone();
 
-            let rt = Handle::current();
-
-            rt.block_on(send_message(&Message::ExternalMetadataResult(a),&topic,&mut *p.unwrap()));
-        },
-        Err(e) => {
-            report_metadata_error!(e);
+                send_message(&Message::ExternalMetadataResult(a),&topic,&mut *p.unwrap()).await;
+            }
+            Err(e) => {
+                report_metadata_error!(e);
+            }
         }
-    }
+    });
     None
 }
 
 pub async fn get_metadata(track: &Option<TrackHandle>,config: &Config,request_id: String,job_id: String) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
 
-    *CONFIG.lock().unwrap() = Some(config.clone());
-    *JOB_ID.lock().unwrap() = Some(job_id.clone());
-    *REQUEST_ID.lock().unwrap() = Some(request_id.clone());
+    *CONFIG.lock().await = Some(config.clone());
+    *JOB_ID.lock().await = Some(job_id);
+    *REQUEST_ID.lock().await = Some(request_id);
 
     t.action(get_metadata_action).unwrap();
     Ok(())
