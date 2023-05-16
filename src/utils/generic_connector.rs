@@ -1,147 +1,80 @@
 // Internal connector
 
 
+use std::future::Future;
 use std::process;
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use hearth_interconnect::messages::Message;
-use kafka;
-use kafka::consumer::Consumer;
-use kafka::producer::{Producer, Record, RequiredAcks};
+use rdkafka::Message as KafkaMessage;
 use lazy_static::lazy_static;
 use log::{debug, error, info, warn};
 use openssl;
+use rdkafka::{ClientConfig};
+use rdkafka::consumer::{Consumer, StreamConsumer};
+use rdkafka::producer::FutureProducer;
 
 
 use snafu::Whatever;
 use songbird::Songbird;
 use crate::config::Config;
 use crate::worker::queue_processor::{ProcessorIPC};
-use self::kafka::client::{FetchOffset, KafkaClient, SecurityConfig};
 use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
 
 lazy_static! {
-    pub static ref PRODUCER: Mutex<Option<Producer>> = Mutex::new(None);
+    pub static ref PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
 }
 
-pub fn initialize_client(brokers: &Vec<String>) -> KafkaClient {
-    // ~ OpenSSL offers a variety of complex configurations. Here is an example:
-    let mut builder = SslConnector::builder(SslMethod::tls()).unwrap();
-    builder.set_cipher_list("DEFAULT").unwrap();
-    builder.set_verify(SslVerifyMode::PEER);
-
-    let cert_file = "service.cert";
-    let cert_key = "service.key";
-    let ca_cert = "ca.pem";
-
-    info!("loading cert-file={}, key-file={}", cert_file, cert_key);
-
-    builder
-        .set_certificate_file(cert_file, SslFiletype::PEM)
-        .unwrap();
-    builder
-        .set_private_key_file(cert_key, SslFiletype::PEM)
-        .unwrap();
-    builder.check_private_key().unwrap();
-
-    builder.set_ca_file(ca_cert).unwrap();
-
-    let connector = builder.build();
-
-    // ~ instantiate KafkaClient with the previous OpenSSL setup
-    let mut client = KafkaClient::new_secure(
-        brokers.to_owned(),
-        SecurityConfig::new(connector)
-    );
-
-    // ~ communicate with the brokers
-    match client.load_metadata_all() {
-        Err(e) => {
-            error!("{:?}", e);
-            drop(client);
-            process::exit(1);
-        }
-        Ok(_) => {
-            // ~ at this point we have successfully loaded
-            // metadata via a secured connection to one of the
-            // specified brokers
-
-            if client.topics().len() == 0 {
-                warn!("No topics available!");
-            } else {
-                // ~ now let's communicate with all the brokers in
-                // the cluster our topics are spread over
-
-                let topics: Vec<String> = client.topics().names().map(Into::into).collect();
-                match client.fetch_offsets(topics.as_slice(), FetchOffset::Latest) {
-                    Err(e) => {
-                        error!("{:?}", e);
-                        drop(client);
-                        process::exit(1);
-                    }
-                    Ok(toffsets) => {
-                        debug!("Topic offsets:");
-                        for (topic, mut offs) in toffsets {
-                            offs.sort_by_key(|x| x.partition);
-                            debug!("{}", topic);
-                            for off in offs {
-                                debug!("\t{}: {:?}", off.partition, off.offset);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-    return client;
+pub fn initialize_kafka_config(brokers: String, group_id: String) -> &'static mut ClientConfig {
+    ClientConfig::new()
+        .set("group.id", &group_id)
+        .set("bootstrap.servers", &brokers)
+        .set("enable.partition.eof", "false")
+        .set("session.timeout.ms", "6000")
+        .set("enable.auto.commit", "false")
 
 }
 
-pub fn initialize_producer(client: KafkaClient) -> Producer {
-    let producer = Producer::from_client(client)
-        // ~ give the brokers one second time to ack the message
-        .with_ack_timeout(Duration::from_secs(1))
-        // ~ require only one broker to ack the message
-        .with_required_acks(RequiredAcks::One)
-        // ~ build the producer with the above settings
-        .create().unwrap();
+pub fn initialize_producer(brokers: String, group_id: String) -> FutureProducer {
+    let producer: FutureProducer = initialize_kafka_config(brokers,group_id).create().unwrap();
     return producer;
 }
 
 
-pub fn initialize_consume_generic(brokers: Vec<String>, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC,Option<Arc<Songbird>>) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config),songbird: Option<Arc<Songbird>>) {
-    let mut consumer = Consumer::from_client(initialize_client(&brokers))
-        .with_topic(config.config.kafka_topic.clone())
-        .create()
-        .unwrap();
+pub async fn initialize_consume_generic(brokers: String, group_id: String, config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC,Option<Arc<Songbird>>) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config),songbird: Option<Arc<Songbird>>) {
+
+    let consumer : StreamConsumer = initialize_kafka_config(brokers,group_id).create().unwrap();
+    consumer
+        .subscribe(&[&config.config.kafka_topic])
+        .expect("Can't subscribe to specified topic");
+
 
     initialized_callback(&config);
 
     loop {
-        let mss = consumer.poll().unwrap();
-        if mss.is_empty() {
-            debug!("No messages available right now.");
-        }
+        let mss = consumer.recv().await;
 
-        for ms in mss.iter() {
-            for m in ms.messages() {
-                let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(m.value);
+        match mss {
+            Ok(m) => {
+                let payload = m.payload().unwrap();
+
+                let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(payload);
+
                 match parsed_message {
-                    Ok(message) => {
-                        let parse = callback(message,&mut producer, config,ipc,songbird.clone());
+                    Ok(m) => {
+                        let parse = callback(m,&mut producer, config,ipc,songbird.clone());
                         match parse {
                             Ok(_) => {},
                             Err(e) => error!("Failed to parse message with error: {}",e)
                         }
                     },
-                    Err(e) => error!("{} - Failed to parse message",e),
+                    Err(e) => error!("{}",e)
                 }
-            }
-            let _ = consumer.consume_messageset(ms);
+
+            },
+            Err(e) => error!("{}",e)
         }
-        consumer.commit_consumed().unwrap();
+
     }
 }
 

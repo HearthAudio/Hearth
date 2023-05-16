@@ -9,14 +9,14 @@ use songbird::Songbird;
 
 use crate::scheduler::distributor::{distribute_job, WORKERS};
 use crate::config::Config;
-use crate::utils::generic_connector::{initialize_client, initialize_producer, PRODUCER, send_message_generic};
+use crate::utils::generic_connector::{initialize_kafka_config, initialize_producer, PRODUCER, send_message_generic};
 use crate::worker::queue_processor::ProcessorIPC;
 
 pub fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
     let broker = config.config.kafka_uri.to_owned();
     let brokers = vec![broker];
 
-    let producer : Producer = initialize_producer(initialize_client(&brokers));
+    let producer : Producer = initialize_producer(initialize_kafka_config(&brokers));
     *PRODUCER.lock().unwrap() = Some(producer);
 
     initialize_scheduler_consume(brokers,config,ipc);

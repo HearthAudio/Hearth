@@ -22,7 +22,7 @@ use tokio::time::sleep;
 
 
 use crate::config::Config;
-use crate::utils::generic_connector::{ initialize_client, initialize_producer, PRODUCER, send_message_generic};
+use crate::utils::generic_connector::{initialize_kafka_config, initialize_producer, PRODUCER, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::actions::channel_manager::join_channel;
@@ -135,7 +135,7 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
 
 
 pub async fn initialize_worker_consume(brokers: Vec<String>, config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) {
-    let producer : Producer = initialize_producer(initialize_client(&brokers));
+    let producer : Producer = initialize_producer(initialize_kafka_config(&brokers));
     *PRODUCER.lock().unwrap() = Some(producer);
 
     initialize_consume_generic(brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback,songbird);
