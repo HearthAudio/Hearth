@@ -3,7 +3,6 @@ use hearth_interconnect::messages::{Message};
 use rdkafka::producer::FutureProducer;
 // Internal connector
 use crate::utils::initialize_consume_generic;
-use snafu::Whatever;
 use songbird::Songbird;
 use tokio::runtime::Handle;
 
@@ -11,6 +10,7 @@ use crate::scheduler::distributor::{distribute_job, WORKERS};
 use crate::config::Config;
 use crate::utils::generic_connector::{initialize_producer, PRODUCER, send_message_generic};
 use crate::worker::queue_processor::ProcessorIPC;
+use anyhow::{Context, Result};
 
 pub async fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
     let broker = config.config.kafka_uri.to_owned();
@@ -21,7 +21,7 @@ pub async fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
     initialize_scheduler_consume(broker,  config,ipc).await;
 }
 
-fn parse_message_callback(parsed_message: Message, _: &PRODUCER, config: &Config, _: &mut ProcessorIPC,_: Option<Arc<Songbird>>) -> Result<(),Whatever> {
+fn parse_message_callback(parsed_message: Message, _: &PRODUCER, config: &Config, _: &mut ProcessorIPC,_: Option<Arc<Songbird>>) -> Result<()> {
     match parsed_message {
         Message::ExternalQueueJob(j) => {
             // Handle event listener

@@ -1,14 +1,13 @@
 use std::sync::{Arc};
-
-use snafu::{OptionExt, ResultExt, Whatever};
 use songbird::{Call, Songbird};
 use songbird::id::GuildId;
+use anyhow::{Context, Result};
 
-pub async fn get_manager_call(guild_id: &String, manager: &mut Option<Arc<Songbird>>) -> Result<Arc<tokio::sync::Mutex<Call>>,Whatever> {
+pub async fn get_manager_call(guild_id: &String, manager: &mut Option<Arc<Songbird>>) -> Result<Arc<tokio::sync::Mutex<Call>>> {
    let h = manager.as_mut()
-       .with_whatever_context(|| "Manager not initialized")?.get(GuildId(guild_id.parse()
-       .with_whatever_context(|e| format!("Failed to parse Guild ID to u64 with error: {}", e))?))
-       .with_whatever_context(|| "Failed to retrieve manager Call")?;
+       .context("Manager not initialized")?.get(GuildId(guild_id.parse()
+       .context("Failed to parse Guild ID to u64")?))
+       .context("Failed to retrieve manager Call")?;
     return Ok(h);
 }
 

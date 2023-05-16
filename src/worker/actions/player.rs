@@ -1,43 +1,42 @@
-
+use std::error::Error;
+use std::fmt;
 use std::sync::Arc;
 use hearth_interconnect::worker_communication::DirectWorkerCommunication;
 use reqwest::Client;
-
-use snafu::{OptionExt, ResultExt, Whatever};
 use songbird::{Songbird};
 use songbird::tracks::{TrackHandle};
 use crate::worker::actions::helpers::get_manager_call;
-
-use snafu::Snafu;
 use songbird::input::{HttpRequest, YoutubeDl};
+use anyhow::{Context, Result};
 
-
-#[derive(Debug, Snafu)]
-pub enum PlaybackError {
-    #[snafu(display("Guild ID Not Found"))]
-    GuildIDNotFound { },
-    #[snafu(display("Failed to acquire DirectLink source"))]
-    DirectSourceAcquisitionFailure { source: Whatever },
-    #[snafu(display("Failed to acquire YouTube source"))]
-    YoutubeSourceAcquisitionFailure { },
-    #[snafu(display("Failed to get handler lock with Error: {source}"))]
-    FailedToGetHandlerLock { source: Whatever },
-    #[snafu(display("Missing Audio URL"))]
-    MissingAudioURL { }
+#[derive(Debug)]
+enum PlaybackError {
+    GuildIDNotFound,
+    MissingAudioURL
 }
 
-pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Option<Arc<Songbird>>,client: Client) -> Result<TrackHandle,PlaybackError> {
-    let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
+impl fmt::Display for PlaybackError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            PlaybackError::GuildIDNotFound => write!(f, "Guild ID Not Found"),
+            PlaybackError::MissingAudioURL => write!(f, "Missing Audio URL"),
+        }
+    }
+}
+
+
+pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Option<Arc<Songbird>>,client: Client) -> Result<TrackHandle> {
+    let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(PlaybackError::GuildIDNotFound.to_string())?,manager).await?;
     let mut handler = handler_lock.lock().await;
-    let source = HttpRequest::new(client, dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
+    let source = HttpRequest::new(client, dwc.play_audio_url.clone().context(PlaybackError::MissingAudioURL.to_string())?);
     let track_handle = handler.play_input(source.into());
     Ok(track_handle)
 }
 
-pub async fn play_from_youtube(manager: &mut Option<Arc<Songbird>>,dwc: &DirectWorkerCommunication,client: Client) -> Result<TrackHandle,PlaybackError> {
-    let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(GuildIDNotFoundSnafu)?,manager).await.context(FailedToGetHandlerLockSnafu { })?;
+pub async fn play_from_youtube(manager: &mut Option<Arc<Songbird>>,dwc: &DirectWorkerCommunication,client: Client) -> Result<TrackHandle> {
+    let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(PlaybackError::GuildIDNotFound.to_string())?,manager).await?;
     let mut handler = handler_lock.lock().await;
-    let source = YoutubeDl::new(client, dwc.play_audio_url.clone().context(MissingAudioURLSnafu)?);
+    let source = YoutubeDl::new(client, dwc.play_audio_url.clone().context(PlaybackError::MissingAudioURL.to_string())?);
     let track_handle = handler.play_input(source.into());
     Ok(track_handle)
 }

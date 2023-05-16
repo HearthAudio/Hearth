@@ -13,14 +13,11 @@ use log::{error};
 use rdkafka::{ClientConfig};
 use rdkafka::consumer::{Consumer, StreamConsumer};
 use rdkafka::producer::{FutureProducer, FutureRecord};
-
-
-use snafu::Whatever;
 use songbird::Songbird;
 use crate::config::Config;
 use crate::utils::constants::KAFKA_SEND_TIMEOUT;
 use crate::worker::queue_processor::{ProcessorIPC};
-
+use anyhow::{Context, Result};
 
 lazy_static! {
     pub static ref PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
@@ -42,7 +39,7 @@ pub fn initialize_producer(brokers: &String, group_id: &String) -> FutureProduce
 }
 
 
-pub async fn initialize_consume_generic(brokers: &String,  config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC,Option<Arc<Songbird>>) -> Result<(),Whatever>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config),songbird: Option<Arc<Songbird>>) {
+pub async fn initialize_consume_generic(brokers: &String,  config: &Config, callback: fn(Message, &PRODUCER, &Config, &mut ProcessorIPC,Option<Arc<Songbird>>) -> Result<()>, ipc: &mut ProcessorIPC, mut producer: &PRODUCER, initialized_callback: fn(&Config),songbird: Option<Arc<Songbird>>) {
 
     let consumer : StreamConsumer = initialize_kafka_config(brokers,&config.config.kafka_group_id.as_ref().unwrap()).create().unwrap();
     consumer

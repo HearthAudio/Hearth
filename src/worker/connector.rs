@@ -8,9 +8,6 @@ use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongR
 
 use log::{error, info};
 use rdkafka::producer::FutureProducer;
-
-
-use snafu::{Whatever};
 use songbird::Songbird;
 use tokio::runtime::Handle;
 
@@ -25,7 +22,7 @@ use crate::utils::initialize_consume_generic;
 use crate::worker::actions::channel_manager::join_channel;
 use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
-
+use anyhow::{Context, Result};
 
 pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
     let broker = config.config.kafka_uri.to_owned();
@@ -52,7 +49,7 @@ pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Op
     initialize_worker_consume(broker, config,ipc,songbird).await;
 }
 
-fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) -> Result<(),Whatever> {
+fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) -> Result<()> {
 
     match message {
         Message::DirectWorkerCommunication(dwc) => {

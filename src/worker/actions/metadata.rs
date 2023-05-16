@@ -1,6 +1,6 @@
 use hearth_interconnect::messages::{Message, Metadata};
 use lazy_static::lazy_static;
-use snafu::{OptionExt, Whatever};
+use anyhow::{Context, Result};
 use songbird::tracks::{Action, TrackHandle, View};
 use symphonia_core::codecs::CodecParameters;
 
@@ -41,9 +41,9 @@ macro_rules! report_metadata_error {
     };
 }
 
-fn get_duration(codec: &CodecParameters) -> Result<Option<u64>,Whatever> {
-    let time_base = codec.time_base.with_whatever_context(|| "Failed to get timebase")?;
-    Ok(Some(time_base.calc_time(codec.n_frames.with_whatever_context(|| "Failed to get N frames")?).seconds))
+fn get_duration(codec: &CodecParameters) -> Result<Option<u64>> {
+    let time_base = codec.time_base.context("Failed to get timebase")?;
+    Ok(Some(time_base.calc_time(codec.n_frames.context("Failed to get N frames")?).seconds))
 }
 
 fn get_duration_wrapper(codec: &CodecParameters) -> Option<u64> {
@@ -59,8 +59,8 @@ fn get_duration_wrapper(codec: &CodecParameters) -> Option<u64> {
     }
 }
 
-fn get_codec_metadata(view: &View) -> Result<Metadata,Whatever> {
-    let codec = view.codec.as_ref().with_whatever_context(|| "Failed to get codec")?;
+fn get_codec_metadata(view: &View) -> Result<Metadata> {
+    let codec = view.codec.as_ref().context("Failed to get codec")?;
 
     let mut jx = JOB_ID.lock().unwrap();
     let j = jx.as_mut();
@@ -70,7 +70,7 @@ fn get_codec_metadata(view: &View) -> Result<Metadata,Whatever> {
     Ok(Metadata {
         duration: get_duration_wrapper(codec),
         position: Some(view.position.as_secs()),
-        sample_rate: Some(codec.sample_rate.with_whatever_context(|| "Failed to get Sample Rate")?),
+        sample_rate: Some(codec.sample_rate.context("Failed to get Sample Rate")?),
         job_id: job_id.to_string(),
     })
 }
@@ -100,8 +100,8 @@ fn get_metadata_action(view: View) -> Option<Action> {
     None
 }
 
-pub async fn get_metadata(track: &Option<TrackHandle>,config: &Config,request_id: String,job_id: String) -> Result<(),Whatever> {
-    let t = track.as_ref().with_whatever_context(|| "Track not found")?;
+pub async fn get_metadata(track: &Option<TrackHandle>,config: &Config,request_id: String,job_id: String) -> Result<()> {
+    let t = track.as_ref().context("Track not found")?;
 
     *CONFIG.lock().unwrap() = Some(config.clone());
     *JOB_ID.lock().unwrap() = Some(job_id.clone());
