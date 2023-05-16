@@ -1,6 +1,6 @@
 use std::sync::Arc;
 use std::time::Duration;
-use log::{debug, error, info};
+use log::{error, info};
 use tokio::{task, time};
 use tokio::sync::broadcast::Sender;
 use crate::worker::constants::EXPIRATION_CHECK_TIME;

@@ -10,6 +10,7 @@ use crate::worker::connector::send_message;
 use crate::config::Config;
 use std::sync::Mutex;
 use hearth_interconnect::errors::ErrorReport;
+use tokio::runtime::Handle;
 
 // This is a bit of a hack to pass data into the get metadata action
 lazy_static! {
@@ -88,7 +89,9 @@ fn get_metadata_action(view: View) -> Option<Action> {
             let config = c.unwrap();
             let topic = config.config.kafka_topic.clone();
 
-            send_message(&Message::ExternalMetadataResult(a),&topic,&mut *p.unwrap())
+            let rt = Handle::current();
+
+            rt.block_on(send_message(&Message::ExternalMetadataResult(a),&topic,&mut *p.unwrap()));
         },
         Err(e) => {
             report_metadata_error!(e);

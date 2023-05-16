@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use std::time::Duration;
+
 use songbird::Songbird;
 use songbird::tracks::TrackHandle;
 use tokio::sync::broadcast::{Receiver, Sender};
@@ -13,8 +13,8 @@ use log::info;
 
 use reqwest::Client as HttpClient;
 
-use crate::worker::actions::channel_manager::{join_channel, leave_channel};
-use crate::worker::actions::player::{play_direct_link, play_from_youtube};
+
+
 use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
 use crate::worker::constants::DEFAULT_JOB_EXPIRATION_TIME;
 use crate::worker::helpers::get_unix_timestamp_as_seconds;
@@ -64,10 +64,10 @@ pub struct ProcessorIPC {
 }
 
 
-pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<ProcessorIPCData>>,report_error: fn(ErrorReport,&Config),mut manager: Option<Arc<Songbird>>) {
+pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<ProcessorIPCData>>,_report_error: fn(ErrorReport,&Config),_manager: Option<Arc<Songbird>>) {
     let job_id = JobID::Specific(job.job_id.clone());
     let global_job_id = JobID::Global();
-    let client = HttpClient::new(); //TODO: TEMP We should move this into an arc and share across jobs
+    let _client = HttpClient::new(); //TODO: TEMP We should move this into an arc and share across jobs
 
     // println!("IXX");
     // let x = config.clone();
@@ -78,7 +78,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
     // }).await.unwrap();
 
     // Start core
-    let mut track : Option<TrackHandle> = None;
+    let mut track: Option<TrackHandle> = None;
     let start_time = get_unix_timestamp_as_seconds();
 
     while let Ok(msg) = sender.subscribe().recv().await {
@@ -96,13 +96,13 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::JoinChannel) => {
                     // Join channel
-                    let dwc = dwc.unwrap();
-                    // let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.to_string(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone()).await;
-                    // let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),config);
+                    let _dwc = dwc.unwrap();
+                    let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.to_string(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone()).await;
+                    let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
-                    let dwc = dwc.unwrap();
-                    // let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    let _dwc = dwc.unwrap();
+                    let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
                     let dwc = dwc.unwrap();
@@ -121,12 +121,12 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     let _ = error_report!(loop_indefinitely(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
-                    let dwc = dwc.unwrap();
-                    // track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    let _dwc = dwc.unwrap();
+                    track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
-                    let dwc = dwc.unwrap();
-                    // track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    let _dwc = dwc.unwrap();
+                    track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
                     let dwc = dwc.unwrap();

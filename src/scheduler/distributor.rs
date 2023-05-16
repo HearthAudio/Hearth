@@ -15,7 +15,7 @@ static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
 pub static WORKERS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(vec![]));
 
 // TODO: Implement Adaptive load balancing instead of round robin
-pub fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) {
+pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) {
     let mut index_guard = ROUND_ROBIN_INDEX.lock().unwrap();
     let workers_guard = WORKERS.lock().unwrap();
     let job_id = nanoid!();
@@ -24,7 +24,7 @@ pub fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Con
         worker_id: workers_guard[*index_guard].clone(),
         request_id: job.request_id
     });
-    send_message(internal_message,config.config.kafka_topic.as_str(),producer);
+    send_message(internal_message,config.config.kafka_topic.as_str(),producer).await;
     *index_guard += 1;
     if *index_guard == workers_guard.len() {
         *index_guard = 0;

@@ -1,10 +1,10 @@
 use std::sync::Arc;
-use std::thread;
+
 // use std::thread::sleep;
 use std::time::Duration;
 
 use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
-use rdkafka::Message as KafkaMessage;
+
 
 use log::{error, info};
 use rdkafka::producer::FutureProducer;
@@ -12,14 +12,14 @@ use rdkafka::producer::FutureProducer;
 
 use snafu::{Whatever};
 use songbird::Songbird;
+use tokio::runtime::Handle;
 
 
-use tokio::runtime::Builder;
 use tokio::time::sleep;
 
 
 use crate::config::Config;
-use crate::utils::generic_connector::{initialize_kafka_config, initialize_producer, PRODUCER, send_message_generic};
+use crate::utils::generic_connector::{initialize_producer, PRODUCER, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::actions::channel_manager::join_channel;
@@ -27,9 +27,9 @@ use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 
 
-pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) {
+pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
     let broker = config.config.kafka_uri.to_owned();
-    let x = config.clone();
+    let _x = config.clone();
     // thread::spawn(move || {
     //     let rt = Builder::new_current_thread()
     //         .enable_all()
@@ -74,9 +74,12 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
         Message::InternalPingPongRequest => {
             let mut px = PRODUCER.lock().unwrap();
             let p = px.as_mut();
-            send_message(&Message::InternalPongResponse(PingPongResponse {
+
+            let rt = Handle::current();
+
+            rt.block_on(send_message(&Message::InternalPongResponse(PingPongResponse {
                 worker_id: config.config.worker_id.clone().unwrap()
-            }),config.config.kafka_topic.as_str(), &mut *p.unwrap());
+            }),config.config.kafka_topic.as_str(), &mut *p.unwrap()));
         }
         Message::InternalWorkerQueueJob(job) => {
             if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
@@ -85,15 +88,15 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
                 // This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
                 // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
                 // let sender = ipc.sender;
-                let sender = ipc.sender.clone();
+                let _sender = ipc.sender.clone();
                 info!("Starting new worker");
 
-                tokio::spawn(async move {
-                    println!("X");
-                    sleep(Duration::from_millis(500)).await;
-                    println!("XS");
-                    join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, proc_config).await.unwrap();
-                });
+                // tokio::spawn(async move {
+                //     println!("X");
+                //     sleep(Duration::from_millis(500)).await;
+                //     println!("XS");
+                //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, proc_config).await.unwrap();
+                // });
 
                 // println!("IXX");
                 // let x = config.clone();
@@ -102,6 +105,10 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
                 //     println!("JOINT");
                 //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, x).await.unwrap();
                 // });
+
+                tokio::spawn(async move {
+                    process_job(job,&proc_config,_sender,report_error,songbird).await;
+                });
 
                 // thread::spawn(move || {
                 //     let rt = Builder::new_multi_thread()
@@ -116,13 +123,16 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
                 //     rt.block_on(join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, proc_config)).unwrap();
                 // });
 
-                let mut px = PRODUCER.lock().unwrap();
-                let p = px.as_mut();
 
-                send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
-                    job_id,
-                    worker_id: config.config.worker_id.as_ref().unwrap().clone(),
-                }), config.config.kafka_topic.as_str(), &mut *p.unwrap());
+                //TODO: Put back
+
+                // let mut px = PRODUCER.lock().unwrap();
+                // let p = px.as_mut();
+                //
+                // send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
+                //     job_id,
+                //     worker_id: config.config.worker_id.as_ref().unwrap().clone(),
+                // }), config.config.kafka_topic.as_str(), &mut *p.unwrap());
             }
         }
         _ => {}
@@ -131,15 +141,15 @@ fn parse_message_callback(message: Message, _producer: &PRODUCER, config: &Confi
 }
 
 
-pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,mut songbird: Option<Arc<Songbird>>) {
+pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
     let producer : FutureProducer = initialize_producer(&brokers,&config.config.kafka_group_id.as_ref().unwrap());
     *PRODUCER.lock().unwrap() = Some(producer);
 
-    initialize_consume_generic(&brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback,songbird);
+    initialize_consume_generic(&brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback,songbird).await;
 }
 
 fn initialized_callback(_: &Config) {}
 
-pub fn send_message(message: &Message, topic: &str, producer: &mut FutureProducer) {
-    send_message_generic(message,topic,producer);
+pub async fn send_message(message: &Message, topic: &str, producer: &mut FutureProducer) {
+    send_message_generic(message,topic,producer).await;
 }

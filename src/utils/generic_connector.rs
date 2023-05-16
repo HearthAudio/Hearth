@@ -1,15 +1,15 @@
 // Internal connector
 
 
-use std::future::Future;
-use std::process;
+
+
 use std::sync::{Arc, Mutex};
-use std::time::Duration;
+
 use hearth_interconnect::messages::Message;
 use rdkafka::Message as KafkaMessage;
 use lazy_static::lazy_static;
-use log::{debug, error, info, warn};
-use openssl;
+use log::{error};
+
 use rdkafka::{ClientConfig};
 use rdkafka::consumer::{Consumer, StreamConsumer};
 use rdkafka::producer::{FutureProducer, FutureRecord};
@@ -20,7 +20,7 @@ use songbird::Songbird;
 use crate::config::Config;
 use crate::utils::constants::KAFKA_SEND_TIMEOUT;
 use crate::worker::queue_processor::{ProcessorIPC};
-use self::openssl::ssl::{SslConnector, SslFiletype, SslMethod, SslVerifyMode};
+
 
 lazy_static! {
     pub static ref PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);

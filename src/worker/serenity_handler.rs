@@ -1,5 +1,5 @@
-use std::time::Duration;
-use log::{error, info, warn};
+
+use log::{info};
 use serenity::client::Context;
 use serenity::{
     async_trait,
@@ -10,14 +10,14 @@ use serenity::{
 use songbird::{SerenityInit};
 use crate::config::Config;
 use crate::deco::over_servers_warning;
-use crate::worker::queue_processor::{Infrastructure, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
-use lazy_static::lazy_static;
-use tokio::sync::Mutex;
+use crate::worker::queue_processor::{ProcessorIPC};
+
+
 use std::sync::Arc;
-use std::thread::sleep;
+
 use songbird::Songbird;
-use crate::worker::actions::channel_manager::join_channel;
-use crate::worker::errors::report_error;
+
+
 
 struct Handler;
 
@@ -28,7 +28,7 @@ impl EventHandler for Handler {
     }
 }
 
-pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) -> Option<Arc<Songbird>> {
+pub async fn initialize_songbird(config: &Config,_ipc: &mut ProcessorIPC) -> Option<Arc<Songbird>> {
 
     let intents = GatewayIntents::non_privileged();
 
@@ -51,6 +51,6 @@ pub async fn initialize_songbird(config: &Config,ipc: &mut ProcessorIPC) -> Opti
     });
 
     info!("Songbird INIT");
-    let mut manager = songbird::get(client_data.read().await).await;
+    let manager = songbird::get(client_data.read().await).await;
     return manager;
 }
