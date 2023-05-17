@@ -41,7 +41,13 @@ A Discord Bot is an autonomous unit that interacts with the Discord platform to 
 4. Direct messaging
 
 ## Open Source
-Open Source here means that the source code for the software is available to any party free of charge. Which may be hosted on a platform such as: Github, Bitbucket, or Gitlab. Additionally to qualify for Open-Source said software there must be no need to contact the distributor of said software in order to obtain the full source code.
+Open Source here means that the source code for the 
+software is available to any party free of charge. 
+Which may be hosted on a platform such as: Github, Bitbucket, or Gitlab. Additionally, to qualify for Open-Source said software there must be no need to 
+contact the distributor of said software in order to obtain the full source code.
+
+## Source Code
+The “source code” for a work means the preferred form of the work for making modifications to it.
 
 ## Terms and Conditions
 
