@@ -32,7 +32,7 @@ lazy_static! {
 }
 
 pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>,group_id: &String) {
-    let broker = config.config.kafka_uri.to_owned();
+    let broker = config.kafka.kafka_uri.to_string();
     let _x = config.clone();
 
     initialize_worker_consume(broker, config,ipc,songbird,group_id).await;
@@ -63,7 +63,7 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
 
             send_message(&Message::InternalPongResponse(PingPongResponse {
                 worker_id: config.config.worker_id.clone().unwrap()
-            }),config.config.kafka_topic.as_str(), &mut *p.unwrap()).await;
+            }),&config.kafka.kafka_topic, &mut *p.unwrap()).await;
         }
         Message::InternalWorkerQueueJob(job) => {
             if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
@@ -85,7 +85,7 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
                 send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
                     job_id,
                     worker_id: config.config.worker_id.as_ref().unwrap().clone(),
-                }), config.config.kafka_topic.as_str(), &mut *p.unwrap()).await;
+                }), config.kafka.kafka_topic.as_str(), &mut *p.unwrap()).await;
             }
         }
         _ => {}

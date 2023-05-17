@@ -1,6 +1,4 @@
 # Features and Other stuff to Implement:
-- [ ] Sentry support
-- [ ] Add SSL stuff to config
 - [ ] Test Full Command Set for client library
 - [ ] Rust Bindings -> Typescript/JS for Client Library
 - [ ] Error Reports for message parse fails
@@ -23,6 +21,8 @@
 - [ ] Exposed Track Event System
 - [ ] Add Effects (Timescale,Rotation,Vibrato, and Distortion)
 # DONE
+- [x] Add SSL stuff to config
+- [x] Sentry support
 - [x] Support Internal Sharding
 - [x] Parse Worker IDs
 - [x] GetTrackMetadata

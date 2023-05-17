@@ -31,7 +31,7 @@ pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config
         worker_id: workers_guard[*index_guard].clone(),
         request_id: job.request_id
     });
-    send_message(internal_message,config.config.kafka_topic.as_str(),producer).await;
+    send_message(internal_message,config.kafka.kafka_topic.as_str(),producer).await;
     *index_guard += 1;
     if *index_guard == workers_guard.len() {
         *index_guard = 0;

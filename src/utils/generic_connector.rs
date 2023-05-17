@@ -39,23 +39,36 @@ pub fn initialize_producer(brokers: &String) -> FutureProducer {
 
 pub async fn initialize_consume_generic(brokers: &String,  config: &Config, callback: impl AsyncFn4<Message, Config,Arc<Sender<ProcessorIPCData>>,Option<Arc<Songbird>>,Output = Result<()>>, ipc: &mut ProcessorIPC, initialized_callback: impl AsyncFn1<Config, Output = ()>,songbird: Option<Arc<Songbird>>,group_id: &String) {
 
-    let consumer : StreamConsumer = ClientConfig::new()
-        .set("group.id", group_id)
-        .set("bootstrap.servers", brokers)
-        .set("enable.partition.eof", "false")
-        .set("session.timeout.ms", "6000")
-        .set("enable.auto.commit", "true")
-        .set("security.protocol","ssl")
-        //SSL
-        .set("ssl.ca.location","ca.pem")
-        .set("ssl.certificate.location","service.cert")
-        .set("ssl.key.location","service.key")
-        .clone()
-        .create()
-        .unwrap();
+    let mut consumer : StreamConsumer;
+    if config.kafka.kafka_use_ssl {
+        consumer = ClientConfig::new()
+            .set("group.id", group_id)
+            .set("bootstrap.servers", brokers)
+            .set("enable.partition.eof", "false")
+            .set("session.timeout.ms", "6000")
+            .set("enable.auto.commit", "true")
+            .set("security.protocol","ssl")
+            //SSL
+            .set("ssl.ca.location","ca.pem")
+            .set("ssl.certificate.location","service.cert")
+            .set("ssl.key.location","service.key")
+            .clone()
+            .create()
+            .unwrap();
+    } else {
+        consumer = ClientConfig::new()
+            .set("group.id", group_id)
+            .set("bootstrap.servers", brokers)
+            .set("enable.partition.eof", "false")
+            .set("session.timeout.ms", "6000")
+            .set("enable.auto.commit", "true")
+            .clone()
+            .create()
+            .unwrap();
+    }
 
     consumer
-        .subscribe(&[&config.config.kafka_topic])
+        .subscribe(&[&config.kafka.kafka_topic])
         .expect("Can't subscribe to specified topic");
 
 

@@ -12,17 +12,26 @@ use serde_derive::{Deserialize, Serialize};
 pub struct InternalConfig {
     pub discord_bot_id: u64,
     pub discord_bot_token: String,
-    pub kafka_uri: String,
-    pub kafka_topic: String,
     pub worker_id: Option<String>,
     pub job_expiration_time: Option<u64>,//
-    pub sentry_url: Option<String>
+    pub sentry_url: Option<String>,
+}
+
+#[derive(Deserialize,Clone,Serialize)]
+pub struct KafkaConfig {
+    pub kafka_uri: String,
+    pub kafka_topic: String,
+    pub kafka_use_ssl: bool,
+    pub kafka_ssl_cert: Option<String>,
+    pub kafka_ssl_key: Option<String>,
+    pub kafka_ssl_ca: Option<String>,
 }
 
 #[derive(Deserialize,Clone,Serialize)]
 pub struct Config {
     pub roles: Roles,
-    pub config: InternalConfig
+    pub config: InternalConfig,
+    pub kafka: KafkaConfig
 }
 
 #[derive(Deserialize,Clone,Serialize)]

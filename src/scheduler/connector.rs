@@ -25,7 +25,7 @@ lazy_static! {
 }
 
 pub async fn initialize_api(config: &Config,ipc: &mut ProcessorIPC,group_id: &String) {
-    let broker = config.config.kafka_uri.to_owned();
+    let broker = config.kafka.kafka_uri.to_owned();
 
     let producer : FutureProducer = initialize_producer(&broker);
     *SCHEDULER_PRODUCER.lock().await = Some(producer);
@@ -84,7 +84,7 @@ async fn initialized_callback(config: Config) {
             interval.tick().await;
             let mut px = SCHEDULER_PRODUCER.lock().await;
             let p = px.as_mut();
-            send_message(&Message::InternalPingPongRequest,config.config.kafka_topic.as_str(),&mut *p.unwrap()).await;
+            send_message(&Message::InternalPingPongRequest,config.kafka.kafka_topic.as_str(),&mut *p.unwrap()).await;
             icounts += 1;
             if icounts > 4 {
                 let wg = WORKERS.lock().await;

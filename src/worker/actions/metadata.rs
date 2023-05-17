@@ -87,7 +87,7 @@ fn get_metadata_action(view: View) -> Option<Action> {
                 let c = cx.as_mut();
 
                 let config = c.unwrap();
-                let topic = config.config.kafka_topic.clone();
+                let topic = config.kafka.kafka_topic.clone();
 
                 send_message(&Message::ExternalMetadataResult(a),&topic,&mut *p.unwrap()).await;
             }
