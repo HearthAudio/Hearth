@@ -46,7 +46,7 @@ pub async fn initialize_songbird(config: &Config,_ipc: &mut ProcessorIPC) -> Opt
         over_servers_warning();
     }
     tokio::spawn(async move {
-        let _ = client.start().await.map_err(|why| println!("Client ended: {:?}", why));
+        let _ = client.start_autosharded().await.map_err(|why| println!("Client ended: {:?}", why));
     });
 
     info!("Songbird INIT");
