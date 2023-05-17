@@ -44,7 +44,10 @@ A Discord Bot is an autonomous unit that interacts with the Discord platform to 
 Open Source here means that the source code for the 
 software is available to any party free of charge. 
 Which may be hosted on a platform such as: Github, Bitbucket, or Gitlab. Additionally, to qualify for Open-Source said software there must be no need to 
-contact the distributor of said software in order to obtain the full source code.
+contact the distributor of said software in order to obtain the full source code. Said Source Code must also be available within a reasonable amount of effort on the part of the party wanting to acquire the Software.
+
+## Closed Source
+Closed Source here means the opposite of Open-Source in that the Software is not freely available free of charge to any entity.
 
 ## Source Code
 The “source code” for a work means the preferred form of the work for making modifications to it.
@@ -73,7 +76,7 @@ The “source code” for a work means the preferred form of the work for making
 
 3. If your Bot has more than 5000 Discord Servers you need to contact Bryght, LLC within 16 Days of passing
 5000 Discord servers additionally a custom agreement explicitly permitting usage above 5000 users must be signed and agreed to by both parties
-within 30 days of passing 5000 Discord servers. Or you will be in violation of this contract. 
+within 30 days of passing 5000 Discord servers. Or you will be in violation of this agreement. This Clause only applies if your Software is closed-source.
 
 4. Clause 6 only applies if you have not made a custom agreement with Bryght, LLC to provide warranty.
 5. Permission is hereby granted, free of charge, to any person or company obtaining a copy of this Software for use with Discord Bots that have less than or equal to 5000 Discord Servers or for unlimited use with Software that is Open-Source. To deal in the Software with restriction, with the rights to use, copy, modify, merge, and publish, excluding the ability to sublicense, sell, or otherwise distribute the Software in any manner, and all other actions not explicitly permitted.
@@ -87,5 +90,4 @@ within 30 days of passing 5000 Discord servers. Or you will be in violation of t
 11. This Agreement shall be construed, interpreted, and governed by the laws of the State of California in the United States of America.
 12. This Agreement constitutes the complete agreement between the Parties and supersedes all prior or contemporaneous discussions, representations, and proposals, written or oral, with respect to the subject matters discussed herein. No modification of this Agreement will be effective unless contained in a written document executed by an authorized representative of each Party. If any provision of the Agreement is found void or unenforceable, the remainder will remain valid and enforceable according to its terms. If any remedy provided is determined to have failed for its essential purpose, all limitations of liability and exclusions of damages set forth in this Agreement shall remain in effect.
 13. All claims and disputes arising under or relating to this Agreement are to be settled by binding arbitration in the state of California or another location mutually agreeable to the parties. The arbitration shall be conducted on a confidential basis pursuant to the Commercial Arbitration Rules of the American Arbitration Association. Any decision or award as a result of any such arbitration proceeding shall be in writing and shall provide an explanation for all conclusions of law and fact and shall include the assessment of costs, expenses, and reasonable attorneys' fees. Any such arbitration shall be conducted by an arbitrator experienced in Software Contract Law and shall include a written record of the arbitration hearing. The parties reserve the right to object to any individual who shall be employed by or affiliated with a competing organization or entity. An award of arbitration may be confirmed in a court of competent jurisdiction.
-14. Clause 3 Does not apply if your Software is open source.
-15. Bryght, LLC Is Committed to offering an Open-Source license that allows any party to use Hearth free of charge as long as there Software is Open-Source as well.
+14. Bryght, LLC Is Committed to offering an Open-Source license that allows any party to use Hearth free of charge as long as there Software is Open-Source as well.
