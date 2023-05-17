@@ -35,8 +35,8 @@ pub fn setup_logger() -> Result<(), fern::InitError> {
             ));
         })
         .level(log::LevelFilter::Info)
-        .level_for("serenity", log::LevelFilter::Error)
-        .level_for("tracing", log::LevelFilter::Error)
+        .level_for("serenity", log::LevelFilter::Warn)
+        .level_for("tracing", log::LevelFilter::Warn)
         .chain(std::io::stdout())
         .chain(fern::log_file("output.log")?)
         .apply()?;
