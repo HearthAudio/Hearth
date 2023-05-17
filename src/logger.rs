@@ -2,9 +2,19 @@ use std::time::SystemTime;
 
 use fern::colors::{Color, ColoredLevelConfig};
 use log::info;
+use crate::config::Config;
 
-
+pub fn setup_sentry(config: &Config) {
+    // If Sentry is enabled in config use it
+    if config.config.sentry_url.is_some() {
+        let _guard = sentry::init((config.config.sentry_url.clone().unwrap(), sentry::ClientOptions {
+            release: sentry::release_name!(),
+            ..Default::default()
+        }));
+    }
+}
 pub fn setup_logger() -> Result<(), fern::InitError> {
+
     let colors_line = ColoredLevelConfig::new()
         .error(Color::Red)
         .warn(Color::Yellow)
@@ -19,7 +29,6 @@ pub fn setup_logger() -> Result<(), fern::InitError> {
     // just clone `colors_line` and overwrite our changes
     let colors_level = colors_line.info(Color::Green);
 
-    //TODO: Include sentry support
     fern::Dispatch::new()
         .format(move |out, message, record| {
             out.finish(format_args!(

@@ -15,7 +15,8 @@ pub struct InternalConfig {
     pub kafka_uri: String,
     pub kafka_topic: String,
     pub worker_id: Option<String>,
-    pub job_expiration_time: Option<u64> //
+    pub job_expiration_time: Option<u64>,//
+    pub sentry_url: Option<String>
 }
 
 #[derive(Deserialize,Clone,Serialize)]

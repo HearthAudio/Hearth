@@ -3,7 +3,7 @@ use std::sync::Arc;
 use log::{error, warn};
 use crate::config::*;
 use crate::deco::{print_intro, print_warnings};
-use crate::logger::setup_logger;
+use crate::logger::{setup_logger, setup_sentry};
 use crate::scheduler::*;
 use crate::worker::*;
 
@@ -56,7 +56,10 @@ async fn main() {
     // Load config
     let worker_config = init_config();
     let scheduler_config = worker_config.clone();
-    // Setup Flume Songbird IPC
+
+    setup_sentry(&worker_config); // Setup sentry
+
+    // Setup IPC
     let (tx_processor, _rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
     let scheduler_rx = tx_processor.subscribe();
     let worker_rx = tx_processor.subscribe();
@@ -69,6 +72,7 @@ async fn main() {
         sender: tx_main.clone(),
         receiver: scheduler_rx,
     };
+    
     // Depending on roles initialize worker and or scheduler on separate threads
     let mut futures = vec![];
     if worker_config.roles.worker {
