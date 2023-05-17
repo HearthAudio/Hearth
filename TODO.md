@@ -10,7 +10,7 @@
 # TODO General (Post-Launch)
 - [ ] Exponential worker discovery backoff
 - [ ] Less shitty error checking for the client library
-- [ ] Use seperate IPC channels per thread saved in a DashMap. Otherwise constantly accruing threads will cause slow downs after a while.
+- [ ] Use separate IPC channels per thread saved in a DashMap. Otherwise constantly accruing threads will cause slow downs after a while.
 - [ ] Scheduler fail over with dead marking if fail rate is high
 - [ ] Unit Tests
 - [ ] Dashboard
