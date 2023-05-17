@@ -22,22 +22,20 @@ pub async fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
     initialize_scheduler_consume(broker,  config,ipc).await;
 }
 
-async fn parse_message_callback(parsed_message: Message, config: Config, sender: Arc<Sender<ProcessorIPCData>>,mut songbird: Option<Arc<Songbird>>) -> Result<()> {
+async fn parse_message_callback(parsed_message: Message, config: Config, _: Arc<Sender<ProcessorIPCData>>,_: Option<Arc<Songbird>>) -> Result<()> {
     match parsed_message {
         Message::ExternalQueueJob(j) => {
             // Handle event listener
             let mut px = PRODUCER.lock().await;
             let p = px.as_mut();
 
-            let rt = Handle::current();
-
-            rt.block_on(distribute_job(j, &mut *p.unwrap(), &config));
+            distribute_job(j, &mut *p.unwrap(), &config).await;
         }
         Message::InternalWorkerAnalytics(_a) => {
             //TODO
         },
         Message::InternalPongResponse(r) => {
-            WORKERS.lock().unwrap().push(r.worker_id);
+            WORKERS.lock().await.push(r.worker_id);
         }
         _ => {}
     }

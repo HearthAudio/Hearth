@@ -1,4 +1,4 @@
-use std::sync::Mutex;
+use tokio::sync::Mutex;
 use hearth_interconnect::messages::{JobRequest, Message};
 use hearth_interconnect::worker_communication::Job;
 
@@ -16,8 +16,8 @@ pub static WORKERS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(vec![]));
 
 // TODO: Implement Adaptive load balancing instead of round robin
 pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) {
-    let mut index_guard = ROUND_ROBIN_INDEX.lock().unwrap();
-    let workers_guard = WORKERS.lock().unwrap();
+    let mut index_guard = ROUND_ROBIN_INDEX.lock().await;
+    let workers_guard = WORKERS.lock().await;
     let job_id = nanoid!();
     let internal_message = &Message::InternalWorkerQueueJob(Job {
         job_id: job_id,

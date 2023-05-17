@@ -73,11 +73,9 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
             let mut px = PRODUCER.lock().await;
             let p = px.as_mut();
 
-            let rt = Handle::current();
-
-            rt.block_on(send_message(&Message::InternalPongResponse(PingPongResponse {
+            send_message(&Message::InternalPongResponse(PingPongResponse {
                 worker_id: config.config.worker_id.clone().unwrap()
-            }),config.config.kafka_topic.as_str(), &mut *p.unwrap()));
+            }),config.config.kafka_topic.as_str(), &mut *p.unwrap()).await;
         }
         Message::InternalWorkerQueueJob(job) => {
             if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
