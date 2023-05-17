@@ -1,4 +1,4 @@
-use std::time::Duration;
+
 use hearth_interconnect::messages::{Message, Metadata};
 use lazy_static::lazy_static;
 use anyhow::{Context, Result};
@@ -8,7 +8,7 @@ use crate::worker::connector::{send_message, WORKER_PRODUCER};
 use crate::config::Config;
 use tokio::sync::Mutex;
 use hearth_interconnect::errors::ErrorReport;
-use tokio::runtime::Handle;
+
 
 // This is a bit of a hack to pass data into the get metadata action
 lazy_static! {

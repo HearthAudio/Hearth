@@ -3,12 +3,12 @@
 
 
 
-use std::process::Output;
+
 use std::sync::{Arc};
-use tokio::sync::Mutex;
+
 use hearth_interconnect::messages::Message;
 use rdkafka::Message as KafkaMessage;
-use log::{debug, error, info};
+use log::{debug, error};
 
 use rdkafka::{ClientConfig};
 use rdkafka::consumer::{Consumer, StreamConsumer};
@@ -17,9 +17,9 @@ use songbird::Songbird;
 use crate::config::Config;
 use crate::utils::constants::KAFKA_SEND_TIMEOUT;
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
-use async_fn_traits::{AsyncFn0, AsyncFn1, AsyncFn4, AsyncFn5, AsyncFnOnce1};
+use async_fn_traits::{AsyncFn1, AsyncFn4};
 use tokio::sync::broadcast::Sender;
-use anyhow::{Context, Result};
+use anyhow::{Result};
 
 
 pub fn initialize_producer(brokers: &String) -> FutureProducer {
@@ -71,7 +71,7 @@ pub async fn initialize_consume_generic(brokers: &String,  config: &Config, call
 
                 match parsed_message {
                     Ok(m) => {
-                        let parse = callback(m,config.clone(),ipc.sender.clone(),songbird.clone()).await; // More Unfortunate clones because of Async trait. At least most of these implement Arc so it's not the worst thing in the world
+                        let _parse = callback(m,config.clone(),ipc.sender.clone(),songbird.clone()).await; // More Unfortunate clones because of Async trait. At least most of these implement Arc so it's not the worst thing in the world
                         // match parse {
                         //     Ok(_) => {},
                         //     Err(e) => error!("Failed to parse message with error: {}",e)

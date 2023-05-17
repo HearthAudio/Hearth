@@ -5,18 +5,18 @@ use rdkafka::producer::FutureProducer;
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use songbird::Songbird;
-use tokio::runtime::Handle;
+
 
 use crate::scheduler::distributor::{distribute_job, WORKERS};
 use crate::config::Config;
 use crate::utils::generic_connector::{initialize_producer, send_message_generic};
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
-use anyhow::{Context, Result};
+use anyhow::{Result};
 use hearth_interconnect::errors::ErrorReport;
 use lazy_static::lazy_static;
 use log::{debug, info, warn};
 use tokio::sync::broadcast::Sender;
-use tokio::time::sleep;
+
 use tokio::sync::Mutex;
 use crate::worker::errors::report_error;
 

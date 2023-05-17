@@ -1,5 +1,4 @@
-# Features and Other stuff to Implement:
-- [ ] Make Join Command not incredibly slow
+# Features and Other stuff to Implement:c
 - [ ] Support Internal Sharding
 - [ ] Add SSL stuff to config
 - [ ] Test Full Command Set for client library

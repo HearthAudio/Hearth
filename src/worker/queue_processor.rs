@@ -17,7 +17,7 @@ use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
 use crate::worker::constants::DEFAULT_JOB_EXPIRATION_TIME;
-use crate::worker::errors::report_error;
+
 use crate::worker::helpers::get_unix_timestamp_as_seconds;
 use super::actions::metadata::get_metadata;
 use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_position};

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 // use std::thread::sleep;
-use std::time::Duration;
+
 
 use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
 
@@ -9,20 +9,20 @@ use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongR
 use log::{debug, error, info};
 use rdkafka::producer::FutureProducer;
 use songbird::Songbird;
-use tokio::runtime::Handle;
 
 
-use tokio::time::sleep;
+
+
 
 
 use crate::config::Config;
 use crate::utils::generic_connector::{initialize_producer, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
-use crate::worker::actions::channel_manager::join_channel;
+
 use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
-use anyhow::{Context, Result};
+use anyhow::{Result};
 use lazy_static::lazy_static;
 use tokio::sync::broadcast::Sender;
 use tokio::sync::Mutex;
@@ -38,7 +38,7 @@ pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Op
     initialize_worker_consume(broker, config,ipc,songbird,group_id).await;
 }
 
-async fn parse_message_callback(message: Message, config: Config, sender: Arc<Sender<ProcessorIPCData>>,mut songbird: Option<Arc<Songbird>>) -> Result<()> {
+async fn parse_message_callback(message: Message, config: Config, sender: Arc<Sender<ProcessorIPCData>>,songbird: Option<Arc<Songbird>>) -> Result<()> {
     debug!("WORKER GOT MSG: {:?}",message);
     match message {
         Message::DirectWorkerCommunication(dwc) => {

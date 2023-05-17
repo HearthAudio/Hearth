@@ -1,7 +1,7 @@
 use tokio::sync::Mutex;
 use hearth_interconnect::messages::{JobRequest, Message};
 use hearth_interconnect::worker_communication::Job;
-use log::info;
+
 
 use once_cell::sync::Lazy;
 
@@ -21,7 +21,7 @@ pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config
     let mut index_guard = ROUND_ROBIN_INDEX.lock().await;
     let workers_guard = WORKERS.lock().await;
 
-    if (workers_guard.len() == 0) {
+    if workers_guard.len() == 0 {
         bail!("No Workers Registered! Can't distribute Job!")
     }
 

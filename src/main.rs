@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use std::time::Duration;
+
 use log::{error, warn};
 use crate::config::*;
 use crate::deco::{print_intro, print_warnings};
@@ -10,7 +10,7 @@ use crate::worker::*;
 
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::{Receiver, Sender};
-use tokio::time::sleep;
+
 use crate::platform::check_platform_supported;
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 

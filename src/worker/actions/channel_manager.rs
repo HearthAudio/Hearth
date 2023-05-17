@@ -1,4 +1,4 @@
-use std::num::ParseIntError;
+
 use std::sync::Arc;
 use hearth_interconnect::errors::ErrorReport;
 use hearth_interconnect::worker_communication::{DirectWorkerCommunication};
@@ -6,7 +6,7 @@ use songbird::id::GuildId;
 use songbird::id::ChannelId;
 use songbird::{Event, EventContext, Songbird};
 use songbird::events::{EventHandler as VoiceEventHandler,TrackEvent};
-use songbird::error::JoinError;
+
 use serenity::async_trait;
 use crate::config::Config;
 use std::fmt;

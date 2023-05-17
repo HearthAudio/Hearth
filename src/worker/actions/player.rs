@@ -1,4 +1,4 @@
-use std::error::Error;
+
 use std::fmt;
 use std::sync::Arc;
 use hearth_interconnect::worker_communication::DirectWorkerCommunication;
