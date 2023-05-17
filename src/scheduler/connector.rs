@@ -14,7 +14,7 @@ use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 use anyhow::{Context, Result};
 use hearth_interconnect::errors::ErrorReport;
 use lazy_static::lazy_static;
-use log::info;
+use log::{debug, info, warn};
 use tokio::sync::broadcast::Sender;
 use tokio::time::sleep;
 use tokio::sync::Mutex;
@@ -34,6 +34,7 @@ pub async fn initialize_api(config: &Config,ipc: &mut ProcessorIPC,group_id: &St
 }
 
 async fn parse_message_callback(parsed_message: Message, config: Config, _: Arc<Sender<ProcessorIPCData>>,_: Option<Arc<Songbird>>) -> Result<()> {
+    debug!("SCHEDULER GOT MSG: {:?}",parsed_message);
     match parsed_message {
         Message::ExternalQueueJob(j) => {
             // Handle event listener
@@ -86,7 +87,12 @@ async fn initialized_callback(config: Config) {
             send_message(&Message::InternalPingPongRequest,config.config.kafka_topic.as_str(),&mut *p.unwrap()).await;
             icounts += 1;
             if icounts > 4 {
-                info!("Ping Checking Stopped");
+                let wg = WORKERS.lock().await;
+                if wg.len() == 0 {
+                    warn!("Ping checking has been stopped. But no workers have been found! Make sure all of your workers are running!");
+                    break;
+                }
+                info!("Ping Checking Stopped. Found: {} workers!",wg.len());
                 break;
             }
         }

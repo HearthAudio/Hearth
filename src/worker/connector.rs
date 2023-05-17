@@ -6,7 +6,7 @@ use std::time::Duration;
 use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
 
 
-use log::{error, info};
+use log::{debug, error, info};
 use rdkafka::producer::FutureProducer;
 use songbird::Songbird;
 use tokio::runtime::Handle;
@@ -57,6 +57,7 @@ pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Op
 }
 
 async fn parse_message_callback(message: Message, config: Config, sender: Arc<Sender<ProcessorIPCData>>,mut songbird: Option<Arc<Songbird>>) -> Result<()> {
+    debug!("WORKER GOT MSG: {:?}",message);
     match message {
         Message::DirectWorkerCommunication(dwc) => {
             if &dwc.worker_id == config.config.worker_id.as_ref().unwrap() {
