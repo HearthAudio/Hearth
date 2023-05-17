@@ -16,7 +16,6 @@ use anyhow::{bail, Result};
 static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
 pub static WORKERS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(vec![]));
 
-// TODO: Implement Adaptive load balancing instead of round robin
 pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) -> Result<()> {
 
     let mut index_guard = ROUND_ROBIN_INDEX.lock().await;

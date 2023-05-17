@@ -34,24 +34,6 @@ lazy_static! {
 pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>,group_id: &String) {
     let broker = config.config.kafka_uri.to_owned();
     let _x = config.clone();
-    // thread::spawn(move || {
-    //     let rt = Builder::new_current_thread()
-    //         .enable_all()
-    //         .build()
-    //         .unwrap();
-    //     // rt.block_on(process_job(job, &proc_config, sender,report_error,songbird));
-    //     println!("SW");
-    //     sleep(Duration::from_secs(1));
-    //     println!("EXEC J");
-    //     rt.block_on(join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, x)).unwrap();
-    // });
-
-    // tokio::spawn(async move {
-    //     println!("X");
-    //     sleep(Duration::from_millis(500)).await;
-    //     println!("XS");
-    //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, x).await.unwrap();
-    // }).await.unwrap();
 
     initialize_worker_consume(broker, config,ipc,songbird,group_id).await;
 }
