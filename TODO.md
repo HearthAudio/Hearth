@@ -1,15 +1,14 @@
 # Features and Other stuff to Implement:
 - [ ] Test Full Command Set for client library
-- [ ] Rust Bindings -> Typescript/JS for Client Library
 - [ ] Error Reports for message parse fails
-- [ ] Add warning to set kafka latency settings to README
 - [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 - [ ] Set Badges
 - [ ] Proper License
 - [ ] Documentation
 # Waiting for testing:
-# TODO General (Post-Launch)
+# TODO Post:
+- [ ] Rust Bindings -> Typescript/JS for Client Library
 - [ ] Exponential worker discovery backoff
 - [ ] Less shitty error checking for the client library
 - [ ] Use separate IPC channels per thread saved in a DashMap. Otherwise constantly accruing threads will cause slow downs after a while.
