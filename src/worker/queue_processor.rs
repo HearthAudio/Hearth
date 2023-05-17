@@ -81,7 +81,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
     // Start core
     let mut track: Option<TrackHandle> = None;
     let start_time = get_unix_timestamp_as_seconds();
-
+    info!("Worker started");
     while let Ok(msg) = sender.subscribe().recv().await {
         if job_id == msg.job_id || msg.job_id == global_job_id {
             let dwc : Option<DirectWorkerCommunication> = msg.dwc;

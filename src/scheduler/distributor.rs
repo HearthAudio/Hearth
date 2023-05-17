@@ -1,6 +1,7 @@
 use tokio::sync::Mutex;
 use hearth_interconnect::messages::{JobRequest, Message};
 use hearth_interconnect::worker_communication::Job;
+use log::info;
 
 use once_cell::sync::Lazy;
 
@@ -8,6 +9,7 @@ use nanoid::nanoid;
 use rdkafka::producer::FutureProducer;
 use crate::config::Config;
 use crate::scheduler::connector::{send_message};
+use anyhow::{bail, Result};
 // Handles distribution across worker nodes via round robin or maybe another method?
 
 
@@ -15,9 +17,15 @@ static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
 pub static WORKERS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(vec![]));
 
 // TODO: Implement Adaptive load balancing instead of round robin
-pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) {
+pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) -> Result<()> {
+
     let mut index_guard = ROUND_ROBIN_INDEX.lock().await;
     let workers_guard = WORKERS.lock().await;
+
+    if (workers_guard.len() == 0) {
+        bail!("No Workers Registered! Can't distribute Job!")
+    }
+
     let job_id = nanoid!();
     let internal_message = &Message::InternalWorkerQueueJob(Job {
         job_id: job_id,
@@ -29,6 +37,5 @@ pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config
     if *index_guard == workers_guard.len() {
         *index_guard = 0;
     }
-
-
+    Ok(())
 }

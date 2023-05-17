@@ -4,10 +4,7 @@ use lazy_static::lazy_static;
 use anyhow::{Context, Result};
 use songbird::tracks::{Action, TrackHandle, View};
 use symphonia_core::codecs::CodecParameters;
-
-
-use crate::utils::generic_connector::PRODUCER;
-use crate::worker::connector::send_message;
+use crate::worker::connector::{send_message, WORKER_PRODUCER};
 use crate::config::Config;
 use tokio::sync::Mutex;
 use hearth_interconnect::errors::ErrorReport;
@@ -83,7 +80,7 @@ fn get_metadata_action(view: View) -> Option<Action> {
         let r = get_codec_metadata(codec,position).await;
         match r {
             Ok(a) => {
-                let mut px = PRODUCER.lock().await;
+                let mut px = WORKER_PRODUCER.lock().await;
                 let p = px.as_mut();
 
                 let mut cx = CONFIG.lock().await;

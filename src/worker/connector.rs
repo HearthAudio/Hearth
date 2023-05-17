@@ -16,16 +16,22 @@ use tokio::time::sleep;
 
 
 use crate::config::Config;
-use crate::utils::generic_connector::{initialize_producer, PRODUCER, send_message_generic};
+use crate::utils::generic_connector::{initialize_producer, send_message_generic};
 // Internal connector
 use crate::utils::initialize_consume_generic;
 use crate::worker::actions::channel_manager::join_channel;
 use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 use anyhow::{Context, Result};
+use lazy_static::lazy_static;
 use tokio::sync::broadcast::Sender;
+use tokio::sync::Mutex;
 
-pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
+lazy_static! {
+    pub static ref WORKER_PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
+}
+
+pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>,group_id: &String) {
     let broker = config.config.kafka_uri.to_owned();
     let _x = config.clone();
     // thread::spawn(move || {
@@ -47,11 +53,10 @@ pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Op
     //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, x).await.unwrap();
     // }).await.unwrap();
 
-    initialize_worker_consume(broker, config,ipc,songbird).await;
+    initialize_worker_consume(broker, config,ipc,songbird,group_id).await;
 }
 
 async fn parse_message_callback(message: Message, config: Config, sender: Arc<Sender<ProcessorIPCData>>,mut songbird: Option<Arc<Songbird>>) -> Result<()> {
-
     match message {
         Message::DirectWorkerCommunication(dwc) => {
             if &dwc.worker_id == config.config.worker_id.as_ref().unwrap() {
@@ -70,7 +75,7 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
             }
         },
         Message::InternalPingPongRequest => {
-            let mut px = PRODUCER.lock().await;
+            let mut px = WORKER_PRODUCER.lock().await;
             let p = px.as_mut();
 
             send_message(&Message::InternalPongResponse(PingPongResponse {
@@ -87,48 +92,17 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
                 let sender = sender.clone();
                 info!("Starting new worker");
 
-                // tokio::spawn(async move {
-                //     println!("X");
-                //     sleep(Duration::from_millis(500)).await;
-                //     println!("XS");
-                //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, proc_config).await.unwrap();
-                // });
-
-                // println!("IXX");
-                // let x = config.clone();
-                // tokio::spawn(async move {
-                //     // sleep(Duration::from_millis(500)).await;
-                //     println!("JOINT");
-                //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, x).await.unwrap();
-                // });
-
                 tokio::spawn(async move {
                     process_job(job,&proc_config,sender,report_error,songbird).await;
                 });
 
-                // thread::spawn(move || {
-                //     let rt = Builder::new_multi_thread()
-                //         .worker_threads(4)
-                //         .enable_all()
-                //         .build()
-                //         .unwrap();
-                //     // rt.block_on(process_job(job, &proc_config, sender,report_error,songbird));
-                //     println!("SW");
-                //     sleep(Duration::from_secs(1));
-                //     println!("EXEC J");
-                //     rt.block_on(join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut songbird, report_error, proc_config)).unwrap();
-                // });
+                let mut px = WORKER_PRODUCER.lock().await;
+                let p = px.as_mut();
 
-
-                //TODO: Put back
-
-                // let mut px = PRODUCER.lock().unwrap();
-                // let p = px.as_mut();
-                //
-                // send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
-                //     job_id,
-                //     worker_id: config.config.worker_id.as_ref().unwrap().clone(),
-                // }), config.config.kafka_topic.as_str(), &mut *p.unwrap());
+                send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
+                    job_id,
+                    worker_id: config.config.worker_id.as_ref().unwrap().clone(),
+                }), config.config.kafka_topic.as_str(), &mut *p.unwrap()).await;
             }
         }
         _ => {}
@@ -137,14 +111,14 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
 }
 
 
-pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>) {
-    let producer : FutureProducer = initialize_producer(&brokers,&config.config.kafka_group_id.as_ref().unwrap());
-    *PRODUCER.lock().await = Some(producer);
-
-    initialize_consume_generic(&brokers, config, parse_message_callback, ipc,&PRODUCER,initialized_callback,songbird).await;
+pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>,group_id: &String) {
+    let producer : FutureProducer = initialize_producer(&brokers);
+    *WORKER_PRODUCER.lock().await = Some(producer);
+    initialize_consume_generic(&brokers, config, parse_message_callback, ipc,initialized_callback,songbird,group_id).await;
 }
 
-async fn initialized_callback(_: Config) {}
+async fn initialized_callback(_: Config) {
+}
 
 pub async fn send_message(message: &Message, topic: &str, producer: &mut FutureProducer) {
     send_message_generic(message,topic,producer).await;

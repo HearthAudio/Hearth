@@ -4,6 +4,7 @@
 
 
 use log::info;
+use nanoid::nanoid;
 
 use crate::config::Config;
 
@@ -29,5 +30,5 @@ pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
     let songbird = initialize_songbird(&config, ipc).await;
 
     init_expiration_timer(ipc.sender.clone());
-    initialize_api(&config,ipc,songbird).await;
+    initialize_api(&config,ipc,songbird,&nanoid!()).await;
 }

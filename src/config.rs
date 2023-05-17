@@ -14,7 +14,6 @@ pub struct InternalConfig {
     pub discord_bot_token: String,
     pub kafka_uri: String,
     pub kafka_topic: String,
-    pub kafka_group_id: Option<String>,
     pub worker_id: Option<String>,
     pub job_expiration_time: Option<u64> //
 }
@@ -63,10 +62,6 @@ pub fn init_config() -> Config {
             Err(e) => error!("Failed to write updated config with worker ID with error: {}",e)
 
         }
-    }
-
-    if config.config.kafka_group_id.is_none() {
-        config.config.kafka_group_id = Some("HEARTH-INTERCONNECT".to_string());
     }
 
     return config;

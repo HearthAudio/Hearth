@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::time::Duration;
 use hearth_interconnect::messages::{Message};
 use rdkafka::producer::FutureProducer;
 // Internal connector
@@ -8,34 +9,60 @@ use tokio::runtime::Handle;
 
 use crate::scheduler::distributor::{distribute_job, WORKERS};
 use crate::config::Config;
-use crate::utils::generic_connector::{initialize_producer, PRODUCER, send_message_generic};
+use crate::utils::generic_connector::{initialize_producer, send_message_generic};
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 use anyhow::{Context, Result};
+use hearth_interconnect::errors::ErrorReport;
+use lazy_static::lazy_static;
+use log::info;
 use tokio::sync::broadcast::Sender;
+use tokio::time::sleep;
+use tokio::sync::Mutex;
+use crate::worker::errors::report_error;
 
-pub async fn initialize_api(config: &Config,ipc: &mut ProcessorIPC) {
+lazy_static! {
+    pub static ref SCHEDULER_PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
+}
+
+pub async fn initialize_api(config: &Config,ipc: &mut ProcessorIPC,group_id: &String) {
     let broker = config.config.kafka_uri.to_owned();
 
-    let producer : FutureProducer = initialize_producer(&broker,config.config.kafka_group_id.as_ref().unwrap());
-    *PRODUCER.lock().await = Some(producer);
+    let producer : FutureProducer = initialize_producer(&broker);
+    *SCHEDULER_PRODUCER.lock().await = Some(producer);
 
-    initialize_scheduler_consume(broker,  config,ipc).await;
+    initialize_scheduler_consume(broker, config,ipc,group_id).await;
 }
 
 async fn parse_message_callback(parsed_message: Message, config: Config, _: Arc<Sender<ProcessorIPCData>>,_: Option<Arc<Songbird>>) -> Result<()> {
     match parsed_message {
         Message::ExternalQueueJob(j) => {
             // Handle event listener
-            let mut px = PRODUCER.lock().await;
+            let mut px = SCHEDULER_PRODUCER.lock().await;
             let p = px.as_mut();
 
-            distribute_job(j, &mut *p.unwrap(), &config).await;
+            let rid = j.request_id.clone();
+
+            let distribute = distribute_job(j, &mut *p.unwrap(), &config).await;
+            match distribute {
+                Ok(_) => {},
+                Err(e) => {
+                    report_error(ErrorReport {
+                        error: e.to_string(),
+                        request_id: rid,
+                        job_id: "N/A".to_string(),
+                    },&config)
+                }
+            }
         }
         Message::InternalWorkerAnalytics(_a) => {
             //TODO
         },
         Message::InternalPongResponse(r) => {
-            WORKERS.lock().await.push(r.worker_id);
+            let mut workers = WORKERS.lock().await;
+            if !workers.contains(&r.worker_id) {
+                workers.push(r.worker_id.clone());
+                info!("ADDED NEW WORKER: {}",r.worker_id);
+            }
         }
         _ => {}
     }
@@ -44,19 +71,26 @@ async fn parse_message_callback(parsed_message: Message, config: Config, _: Arc<
 
 
 
-pub async fn initialize_scheduler_consume(brokers: String,config: &Config,ipc: &mut ProcessorIPC) {
-    initialize_consume_generic(&brokers, config, parse_message_callback,  ipc,&PRODUCER,initialized_callback,None).await;
+pub async fn initialize_scheduler_consume(brokers: String,config: &Config,ipc: &mut ProcessorIPC,group_id: &String) {
+    initialize_consume_generic(&brokers, config, parse_message_callback,  ipc,initialized_callback,None,group_id).await;
 }
 
 async fn initialized_callback(config: Config) {
-    //TODO: Test
-
-    let mut px = PRODUCER.lock().await;
-    let p = px.as_mut();
-
-    let rt = Handle::current();
-
-    send_message(&Message::InternalPingPongRequest,config.config.kafka_topic.as_str(),&mut *p.unwrap());
+    tokio::task::spawn(async move {
+        let mut interval = tokio::time::interval(Duration::from_millis(3000)); //TODO: Exponential decrease. MAX: 10S from 1.5S over 60S TF
+        let mut icounts = 0;
+        loop {
+            interval.tick().await;
+            let mut px = SCHEDULER_PRODUCER.lock().await;
+            let p = px.as_mut();
+            send_message(&Message::InternalPingPongRequest,config.config.kafka_topic.as_str(),&mut *p.unwrap()).await;
+            icounts += 1;
+            if icounts > 4 {
+                info!("Ping Checking Stopped");
+                break;
+            }
+        }
+    });
 }
 
 pub async fn send_message(message: &Message, topic: &str, producer: &mut FutureProducer) {
