@@ -6,6 +6,8 @@
 - [ ] Test with multiple workers. And with single scheduler and multi-work
 - [ ] Final Benchmarks and make sure to update 10x claims or such everywhere to final benchmark numbers
 - [ ] Set Badges
+- [ ] Proper License
+- [ ] Documentation
 # Waiting for testing:
 # TODO General (Post-Launch)
 - [ ] Exponential worker discovery backoff
