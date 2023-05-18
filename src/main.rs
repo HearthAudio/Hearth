@@ -1,9 +1,10 @@
 use std::sync::Arc;
 
-use log::{error, warn};
+use log::{error, info, warn};
+use sentry::ClientInitGuard;
 use crate::config::*;
 use crate::deco::{print_intro, print_warnings};
-use crate::logger::{setup_logger, setup_sentry};
+use crate::logger::{setup_logger};
 use crate::scheduler::*;
 use crate::worker::*;
 
@@ -41,8 +42,6 @@ async fn initialize_worker_internal(config: Config, songbird_ipc: &mut Processor
 async fn main() {
     // let source = uri_stream("").await;
     print_intro();
-    // Setup logger
-    setup_logger().expect("Logger Setup Failed - A bit ironic no?");
     print_warnings();
     let platform_check = check_platform_supported();
     match platform_check {
@@ -57,7 +56,21 @@ async fn main() {
     let worker_config = init_config();
     let scheduler_config = worker_config.clone();
 
-    setup_sentry(&worker_config); // Setup sentry
+    // Setup logger
+    setup_logger(&worker_config).expect("Logger Setup Failed - A bit ironic no?");
+
+    // Setup Sentry
+    let mut sentry : ClientInitGuard;
+    if worker_config.config.sentry_url.is_some() {
+        println!("ES");
+        sentry = sentry::init((worker_config.config.sentry_url.clone().unwrap(), sentry::ClientOptions {
+            release: sentry::release_name!(),
+            ..Default::default()
+        }));
+        if sentry.is_enabled() {
+            info!("Sentry Logger Enabled!");
+        }
+    }
 
     // Setup IPC
     let (tx_processor, _rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
@@ -72,7 +85,7 @@ async fn main() {
         sender: tx_main.clone(),
         receiver: scheduler_rx,
     };
-    
+
     // Depending on roles initialize worker and or scheduler on separate threads
     let mut futures = vec![];
     if worker_config.roles.worker {
@@ -87,7 +100,6 @@ async fn main() {
         });
         futures.push(scheduler);
     }
-
 
     futures::future::join_all(futures).await;
 }

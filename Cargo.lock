@@ -722,6 +722,7 @@ dependencies = [
  "reqwest",
  "retry",
  "sentry",
+ "sentry-log",
  "serde",
  "serde_derive",
  "serde_json",
@@ -2008,6 +2009,16 @@ checksum = "e758030b31ee2cd97424a980dfa34a12dcd8477424861cf81ae3aa1f9f616a8c"
 dependencies = [
  "findshlibs",
  "once_cell",
+ "sentry-core",
+]
+
+[[package]]
+name = "sentry-log"
+version = "0.31.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee978a28d4cb15c89618dc035ab56ea18fe82d5a248ddcd771d153876ccbdf56"
+dependencies = [
+ "log",
  "sentry-core",
 ]
 
