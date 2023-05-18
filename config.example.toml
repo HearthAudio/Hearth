@@ -1,0 +1,15 @@
+[roles]
+worker = true
+scheduler = true
+
+[config]
+discord_bot_id = 1928467321045049352
+discord_bot_token = "TOKEN-HERE"
+
+[kafka]
+kafka_topic = "communication"
+kafka_uri = "kafka-uri"
+kafka_use_ssl = true
+kafka_ssl_cert = "service.cert"
+kafka_ssl_key = "service.key"
+kafka_ssl_ca = "ca.pem"
