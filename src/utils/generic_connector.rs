@@ -32,7 +32,7 @@ pub fn initialize_producer(brokers: &String) -> FutureProducer {
         .set("ssl.key.location","service.key")
         .clone()
         .create()
-        .unwrap();
+        .expect("Failed to create Producer");
     return producer;
 }
 
@@ -54,7 +54,7 @@ pub async fn initialize_consume_generic(brokers: &String,  config: &Config, call
             .set("ssl.key.location","service.key")
             .clone()
             .create()
-            .unwrap();
+            .expect("Failed to create Kafka Configuration");
     } else {
         consumer = ClientConfig::new()
             .set("group.id", group_id)
@@ -64,7 +64,7 @@ pub async fn initialize_consume_generic(brokers: &String,  config: &Config, call
             .set("enable.auto.commit", "true")
             .clone()
             .create()
-            .unwrap();
+            .expect("Failed to create Kafka Configuration");
     }
 
     consumer
@@ -78,19 +78,27 @@ pub async fn initialize_consume_generic(brokers: &String,  config: &Config, call
         let mss = consumer.recv().await;
         match mss {
             Ok(m) => {
-                let payload = m.payload().unwrap();
+                let payload = m.payload();
+                
+                match payload {
+                    Some(payload) => {
+                        let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(payload);
 
-                let parsed_message : Result<Message,serde_json::Error> = serde_json::from_slice(payload);
-
-                match parsed_message {
-                    Ok(m) => {
-                        let _parse = callback(m,config.clone(),ipc.sender.clone(),songbird.clone()).await; // More Unfortunate clones because of Async trait. At least most of these implement Arc so it's not the worst thing in the world
-                        // match parse {
-                        //     Ok(_) => {},
-                        //     Err(e) => error!("Failed to parse message with error: {}",e)
-                        // }
+                        match parsed_message {
+                            Ok(m) => {
+                                let _parse = callback(m,config.clone(),ipc.sender.clone(),songbird.clone()).await; // More Unfortunate clones because of Async trait. At least most of these implement Arc so it's not the worst thing in the world
+                                // match parse {
+                                //     Ok(_) => {},
+                                //     Err(e) => error!("Failed to parse message with error: {}",e)
+                                // }
+                            },
+                            Err(e) => error!("{}",e)
+                        }
                     },
-                    Err(e) => error!("{}",e)
+                    None => {
+                        error!("Received No Payload!");
+                    }
+                    
                 }
 
             },

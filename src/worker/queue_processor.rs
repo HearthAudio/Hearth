@@ -97,52 +97,52 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::JoinChannel) => {
                     // Join channel
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.to_string(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone()).await;
                     let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(loop_x_times(&track, dwc.loop_times).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::ForceStopLoop) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(force_stop_loop(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::SeekToPosition) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(seek_to_position(&track, dwc.seek_position).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::LoopForever) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(loop_indefinitely(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(pause_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::ResumePlayback) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(resume_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(set_playback_volume(&track,dwc.new_volume).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::GetMetaData) => {
-                    let dwc = dwc.unwrap();
+                    let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(get_metadata(&track,config,dwc.request_id.clone().unwrap(),dwc.job_id.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 }
                 _ => {}

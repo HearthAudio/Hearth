@@ -74,7 +74,8 @@ pub fn init_config() -> Config {
 
         }
     }
-
+    
+    // Default to INFO if no Log Level is configured
     if config.config.log_level.is_none() {
         config.config.log_level = Some("INFO".to_string());
     }

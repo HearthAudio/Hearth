@@ -37,7 +37,7 @@ pub async fn initialize_songbird(config: &Config,_ipc: &mut ProcessorIPC) -> Opt
         .event_handler(Handler)
         .register_songbird()
         .await
-        .unwrap()
+        .expect("Failed to register Songbird")
         ;
 
     let client_data = client.data.clone();

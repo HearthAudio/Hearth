@@ -26,7 +26,7 @@ pub fn setup_logger(config: &Config) -> Result<(), fern::InitError> {
     let config_f = config.clone();
 
     // Map Log level in config to `log` level
-    let log_level = match config.config.log_level.as_ref().unwrap().as_str() {
+    let log_level = match config.config.log_level.as_ref().expect("This should never happen. Because it is filled in by the config loader if none is specified").as_str() {
         "DEBUG" => log::LevelFilter::Debug,
         "INFO" => log::LevelFilter::Info,
         "WARN" => log::LevelFilter::Warn,

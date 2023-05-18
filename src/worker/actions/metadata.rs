@@ -63,7 +63,7 @@ async fn get_codec_metadata(codec: Option<CodecParameters>,position: u64) -> Res
     let mut jx = JOB_ID.lock().await;
     let j = jx.as_mut();
 
-    let job_id = j.as_ref().unwrap();
+    let job_id = j.as_ref().context("Failed to get JOB ID. While getting Metadata")?;
 
     Ok(Metadata {
         duration: get_duration_wrapper(codec).await,
