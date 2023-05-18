@@ -26,22 +26,19 @@ pub fn over_servers_warning() {
     warn!("Guild count is over 5000. Hearth is only free up to 5000 discord servers. You must contact Hearth Industries within 14 Days of passing 5000 servers. For more details see the license in the github repo: LICENSE.md. If you have already acquired a paid license no further action is needed.")
 }
 
-fn check_use_true_colors() -> bool {
-    let env_val = env::var("COLORTERM");
-
-    match env_val {
-        Ok(v) => {
-            match v.as_str() {
-                "truecolor" => true,
-                _ => false
-            }
-        }
-        Err(e) => {
-            error!("Failed to fetch terminal color scheme with error: {}",e);
-            false
-        }
-    }
-}
+// fn check_use_true_colors() -> bool {
+//     let env_val = env::var("COLORTERM");
+//
+//     match env_val {
+//         Ok(v) => {
+//             matches!(v.as_str(), "truecolor")
+//         }
+//         Err(e) => {
+//             error!("Failed to fetch terminal color scheme with error: {}",e);
+//             false
+//         }
+//     }
+// }
 
 pub fn print_intro() {
     let s = r"
@@ -54,7 +51,7 @@ pub fn print_intro() {
     let mut rng = rand::thread_rng();
     let dice = rng.gen_range(0..2);
 
-    let use_true_colors = check_use_true_colors();
+    // let use_true_colors = check_use_true_colors();
 
     match dice {
         0 => println!("{}",s.red()),

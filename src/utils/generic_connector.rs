@@ -43,7 +43,7 @@ pub fn initialize_producer(brokers: &String,config: &Config) -> FutureProducer {
 
     let producer : FutureProducer = kafka_config.create().expect("Failed to create Producer");
 
-    return producer;
+    producer
 }
 
 pub async fn initialize_consume_generic(brokers: &String,  config: &Config, callback: impl AsyncFn4<Message, Config,Arc<Sender<ProcessorIPCData>>,Option<Arc<Songbird>>,Output = Result<()>>, ipc: &mut ProcessorIPC, initialized_callback: impl AsyncFn1<Config, Output = ()>,songbird: Option<Arc<Songbird>>,group_id: &String) {
