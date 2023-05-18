@@ -29,13 +29,13 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
             <img height="70" src="assets/java.svg"/>
             <img  height="70"  src="assets/spacer.png"/>
             <img height="70" src="assets/python.png"/>
-            <h4>Available Now:</h4>
             <img  height="70"  src="assets/spacer.png"/>
             <img  height="70"  src="assets/javascript.svg"/>
             <img  height="70"  src="assets/spacer.png"/>
-            <img  height="70"  src="assets/rust.svg"/>
-            <img  height="70"  src="assets/spacer.png"/>
             <img  height="70"  src="assets/typescript.svg"/>
+            <h4>Available Now:</h4>
+            <img  height="70"  src="assets/spacer.png"/>
+            <img  height="70"  src="assets/rust.svg"/>
         </div>
         <br/>
         <p align="center" >
@@ -71,7 +71,7 @@ We are planning tons of new features to make Hearth even better!
 <h3 align="center">Licensing</h3>
 <hr/>
 <p align="center" >
-Hearth is free to use for any bot's that service under 5000 servers past that you must contact us to acquire an enterprise license. See our <a href="https://github.com/Hearth-Industries/Hearth/blob/master/LICENSE.md">license</a> for more details.
+Hearth is free to use without any limitations on server count if your bot is open source as well. If your bot is closed source Hearth is free under 5000 servers. Past that you must contact us to acquire an enterprise license. See our <a href="https://github.com/Hearth-Industries/Hearth/blob/master/LICENSE.md">license</a> for more details.
 </p>
 <h3 align="center">Contact</h3>
 <hr/>
