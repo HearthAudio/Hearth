@@ -8,7 +8,7 @@ use crate::worker::queue_processor::{Infrastructure, JobID, ProcessorIncomingAct
 
 pub fn init_expiration_timer(s: Arc<Sender<ProcessorIPCData>>) {
     let _expiration_timer = task::spawn(async move {
-        let mut interval = time::interval(Duration::from_secs(EXPIRATION_CHECK_TIME));
+        let mut interval = time::interval(EXPIRATION_CHECK_TIME);
 
         loop {
             interval.tick().await;

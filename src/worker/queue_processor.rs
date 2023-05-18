@@ -90,7 +90,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     // If this job has been running for more than designated time break it
                     let current_time = get_unix_timestamp_as_seconds();
                     let time_change = current_time - start_time;
-                    if time_change > config.config.job_expiration_time.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME) {
+                    if time_change > config.config.job_expiration_time_seconds.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME) {
                         info!("Killing JOB: {} due to expiration after: {} hours",job_id.to_string(),(time_change / 60) / 60);
                         break;
                     }

@@ -27,6 +27,7 @@ mod utils;
 
 mod deco;
 mod platform;
+mod extensions;
 
 // This is a bit of a hack to get around annoying type issues
 async fn initialize_scheduler_internal(config: Config,songbird_ipc: &mut ProcessorIPC) {

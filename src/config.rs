@@ -13,7 +13,7 @@ pub struct InternalConfig {
     pub discord_bot_id: u64,
     pub discord_bot_token: String,
     pub worker_id: Option<String>,
-    pub job_expiration_time: Option<u64>,//
+    pub job_expiration_time_seconds: Option<u64>,// In seconds
     pub sentry_url: Option<String>,
     pub log_level: Option<String>
 }
