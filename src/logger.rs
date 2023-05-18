@@ -23,17 +23,16 @@ pub fn setup_logger(config: &Config) -> Result<(), fern::InitError> {
     // just clone `colors_line` and overwrite our changes
     let colors_level = colors_line.info(Color::Green);
 
-
-    let mut sentry : ClientInitGuard;
-    if config.config.sentry_url.is_some() {
-        println!("ES");
-        sentry = sentry::init((config.config.sentry_url.clone().unwrap(), sentry::ClientOptions {
-            release: sentry::release_name!(),
-            ..Default::default()
-        }));
-    }
-
     let config_f = config.clone();
+
+    // Map Log level in config to `log` level
+    let log_level = match config.config.log_level.as_ref().unwrap().as_str() {
+        "DEBUG" => log::LevelFilter::Debug,
+        "INFO" => log::LevelFilter::Info,
+        "WARN" => log::LevelFilter::Warn,
+        "ERROR" => log::LevelFilter::Error,
+        _ => log::LevelFilter::Info
+    };
 
     fern::Dispatch::new()
         .format(move |out, message, record| {
@@ -41,7 +40,6 @@ pub fn setup_logger(config: &Config) -> Result<(), fern::InitError> {
             if config_f.config.sentry_url.is_some() {
                 if let Level::Error = record.level() {
                     sentry::capture_message(&format!("[{} {}] {}",record.level(),record.target(),message), sentry::Level::Error);
-                    info!("Logged Message to Sentry");
                 }
             }
             // Formats
@@ -57,7 +55,7 @@ pub fn setup_logger(config: &Config) -> Result<(), fern::InitError> {
                 message = message,
             ));
         })
-        .level(log::LevelFilter::Info)
+        .level(log_level)
         .level_for("serenity", log::LevelFilter::Warn)
         .level_for("tracing", log::LevelFilter::Warn)
         .chain(std::io::stdout())

@@ -69,9 +69,7 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
             if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
                 let proc_config = config.clone();
                 let job_id = job.job_id.clone();
-                // This is a bit of a hack try and replace with tokio. Issue: Tokio task not executing when spawned inside another tokio task
-                // rt.block_on(process_job(parsed_message, &proc_config, ipc.sender));
-                // let sender = ipc.sender;
+
                 let sender = sender.clone();
                 info!("Starting new worker");
 

@@ -15,6 +15,7 @@ pub struct InternalConfig {
     pub worker_id: Option<String>,
     pub job_expiration_time: Option<u64>,//
     pub sentry_url: Option<String>,
+    pub log_level: Option<String>
 }
 
 #[derive(Deserialize,Clone,Serialize)]
@@ -72,6 +73,10 @@ pub fn init_config() -> Config {
             Err(e) => error!("Failed to write updated config with worker ID with error: {}",e)
 
         }
+    }
+
+    if config.config.log_level.is_none() {
+        config.config.log_level = Some("INFO".to_string());
     }
 
     return config;
