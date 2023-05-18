@@ -64,7 +64,6 @@ We are planning tons of new features to make Hearth even better!
 <hr/>
 <p align="center" >
   Effects<br/><br/>
-  Faster YouTube downloads<br/><br/>
   Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS<br/><br/>
   Soundcloud Support<br/><br/>
   Dashboard Interface for Scheduler <br/><br/>
