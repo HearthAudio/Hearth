@@ -61,7 +61,7 @@ async fn main() {
     setup_logger(&worker_config).expect("Logger Setup Failed - A bit ironic no?");
 
     // Setup Sentry
-    let mut sentry : ClientInitGuard;
+    let sentry : ClientInitGuard;
     if worker_config.config.sentry_url.is_some() {
         println!("ES");
         sentry = sentry::init((worker_config.config.sentry_url.clone().unwrap(), sentry::ClientOptions {

@@ -1,9 +1,9 @@
-use std::fmt::format;
+
 use std::time::SystemTime;
 
 use fern::colors::{Color, ColoredLevelConfig};
 use log::{info, Level};
-use sentry::ClientInitGuard;
+
 use crate::config::Config;
 
 

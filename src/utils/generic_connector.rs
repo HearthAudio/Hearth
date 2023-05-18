@@ -79,7 +79,7 @@ pub async fn initialize_consume_generic(brokers: &String,  config: &Config, call
 
                         match parsed_message {
                             Ok(m) => {
-                                let parse = callback(m,config.clone(),ipc.sender.clone(),songbird.clone()).await; // More Unfortunate clones because of Async trait. At least most of these implement Arc so it's not the worst thing in the world
+                                let _parse = callback(m,config.clone(),ipc.sender.clone(),songbird.clone()).await; // More Unfortunate clones because of Async trait. At least most of these implement Arc so it's not the worst thing in the world
                             },
                             Err(e) => error!("{}",e)
                         }
