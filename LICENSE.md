@@ -2,6 +2,7 @@
 
 Version 1.0
 
+
 Copyright © 2023 Bryght, LLC <https://hearthindustries.io/imprint.html>
 
 Bryght, LLC (**Bryght**, **us**, **we** or **our**) grants a license to the
