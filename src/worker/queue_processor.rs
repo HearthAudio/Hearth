@@ -6,6 +6,7 @@ use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
 use crate::{error_report};
 use hearth_interconnect::errors::ErrorReport;
+use hearth_interconnect::messages::{ExternalQueueJobResponse, Message};
 
 use hearth_interconnect::worker_communication::{DirectWorkerCommunication, DWCActionType, Job};
 use log::info;
@@ -17,6 +18,7 @@ use reqwest::Client as HttpClient;
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
+use crate::worker::connector::{send_message, WORKER_PRODUCER};
 use crate::worker::constants::DEFAULT_JOB_EXPIRATION_TIME;
 
 use crate::worker::helpers::get_unix_timestamp_as_seconds;
@@ -71,11 +73,19 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
     let global_job_id = JobID::Global();
     let client = HttpClient::new();
 
-
-
-    // Start core
+    //
     let mut track: Option<TrackHandle> = None;
     let start_time = get_unix_timestamp_as_seconds();
+
+    // Send Queue Job Response
+    let mut px = WORKER_PRODUCER.lock().await;
+    let p = px.as_mut();
+
+    send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
+        job_id: job_id.to_string(),
+        worker_id: config.config.worker_id.as_ref().unwrap().clone(),
+    }), config.kafka.kafka_topic.as_str(), &mut *p.unwrap()).await;
+    // Start core
     info!("Worker started");
     while let Ok(msg) = sender.subscribe().recv().await {
         if job_id == msg.job_id || msg.job_id == global_job_id {

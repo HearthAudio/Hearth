@@ -62,14 +62,6 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
                 tokio::spawn(async move {
                     process_job(job,&proc_config,sender,report_error,songbird).await;
                 });
-
-                let mut px = WORKER_PRODUCER.lock().await;
-                let p = px.as_mut();
-
-                send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
-                    job_id,
-                    worker_id: config.config.worker_id.as_ref().unwrap().clone(),
-                }), config.kafka.kafka_topic.as_str(), &mut *p.unwrap()).await;
             }
         }
         _ => {}
