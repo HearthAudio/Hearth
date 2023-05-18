@@ -18,7 +18,6 @@ pub enum ChannelControlError {
     ChannelIDParsingFailed,
     ManagerAcquisitionFailed,
     ChannelLeaveFailed,
-    ChannelJoinFailed
 }
 
 impl fmt::Display for ChannelControlError {
@@ -29,7 +28,6 @@ impl fmt::Display for ChannelControlError {
             ChannelControlError::ChannelIDParsingFailed =>  write!(f, "Channel ID Parsing Failed"),
             ChannelControlError::ManagerAcquisitionFailed =>  write!(f, "Failed to acquire manager"),
             ChannelControlError::ChannelLeaveFailed => write!(f, "Failed to leave channel"),
-            ChannelControlError::ChannelJoinFailed => write!(f, "Failed to join channel"),
         }
     }
 }

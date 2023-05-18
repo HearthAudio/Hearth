@@ -12,6 +12,7 @@ use log::info;
 
 
 use reqwest::Client as HttpClient;
+use serenity::all::Change::GuildId;
 
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
@@ -68,15 +69,9 @@ pub struct ProcessorIPC {
 pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<ProcessorIPCData>>, report_error: fn(ErrorReport,&Config), mut manager: Option<Arc<Songbird>>) {
     let job_id = JobID::Specific(job.job_id.clone());
     let global_job_id = JobID::Global();
-    let client = HttpClient::new(); //TODO: TEMP We should move this into an arc and share across jobs
+    let client = HttpClient::new();
 
-    // println!("IXX");
-    // let x = config.clone();
-    // tokio::spawn(async move {
-    //     // sleep(Duration::from_millis(500)).await;
-    //     println!("JOINT");
-    //     join_channel("1103424891329445989".to_string(),"1103424892541607939".to_string(),"123".to_string(),"987".to_string(),&mut manager, report_error, x).await.unwrap();
-    // }).await.unwrap();
+
 
     // Start core
     let mut track: Option<TrackHandle> = None;

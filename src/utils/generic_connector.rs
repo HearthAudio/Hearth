@@ -22,50 +22,42 @@ use tokio::sync::broadcast::Sender;
 use anyhow::{Result};
 
 
-pub fn initialize_producer(brokers: &String) -> FutureProducer {
-    let producer: FutureProducer = ClientConfig::new()
-        .set("bootstrap.servers", brokers)
-        .set("security.protocol","ssl")
-        //SSL
-        .set("ssl.ca.location","ca.pem")
-        .set("ssl.certificate.location","service.cert")
-        .set("ssl.key.location","service.key")
-        .clone()
-        .create()
-        .expect("Failed to create Producer");
+fn configure_kafka_ssl(mut kafka_config: ClientConfig,config: &Config) -> ClientConfig {
+    if config.kafka.kafka_use_ssl {
+        kafka_config.set("ssl.ca.location",config.kafka.kafka_ssl_ca.clone().expect("Kafka CA Not Found"))
+            .set("ssl.certificate.location",config.kafka.kafka_ssl_cert.clone().expect("Kafka Cert Not Found"))
+            .set("ssl.key.location",config.kafka.kafka_ssl_key.clone().expect("Kafka Key Not Found"));
+    }
+    return kafka_config;
+}
+
+pub fn initialize_producer(brokers: &String,config: &Config) -> FutureProducer {
+
+    let mut kafka_config = ClientConfig::new()
+            .set("bootstrap.servers", brokers)
+        .clone();
+
+    kafka_config = configure_kafka_ssl(kafka_config,config);
+
+    let producer : FutureProducer = kafka_config.clone().create().expect("Failed to create Producer");
+
     return producer;
 }
 
-
 pub async fn initialize_consume_generic(brokers: &String,  config: &Config, callback: impl AsyncFn4<Message, Config,Arc<Sender<ProcessorIPCData>>,Option<Arc<Songbird>>,Output = Result<()>>, ipc: &mut ProcessorIPC, initialized_callback: impl AsyncFn1<Config, Output = ()>,songbird: Option<Arc<Songbird>>,group_id: &String) {
 
-    let mut consumer : StreamConsumer;
-    if config.kafka.kafka_use_ssl {
-        consumer = ClientConfig::new()
-            .set("group.id", group_id)
-            .set("bootstrap.servers", brokers)
-            .set("enable.partition.eof", "false")
-            .set("session.timeout.ms", "6000")
-            .set("enable.auto.commit", "true")
-            .set("security.protocol","ssl")
-            //SSL
-            .set("ssl.ca.location","ca.pem")
-            .set("ssl.certificate.location","service.cert")
-            .set("ssl.key.location","service.key")
-            .clone()
-            .create()
-            .expect("Failed to create Kafka Configuration");
-    } else {
-        consumer = ClientConfig::new()
-            .set("group.id", group_id)
-            .set("bootstrap.servers", brokers)
-            .set("enable.partition.eof", "false")
-            .set("session.timeout.ms", "6000")
-            .set("enable.auto.commit", "true")
-            .clone()
-            .create()
-            .expect("Failed to create Kafka Configuration");
-    }
+    let mut kafka_config = ClientConfig::new()
+        .set("group.id", group_id)
+        .set("bootstrap.servers", brokers)
+        .set("enable.partition.eof", "false")
+        .set("session.timeout.ms", "6000")
+        .set("enable.auto.commit", "true")
+        .set("security.protocol","ssl")
+        .clone();
+
+    kafka_config = configure_kafka_ssl(kafka_config,config);
+
+    let consumer : StreamConsumer = kafka_config.clone().create().expect("Failed to create Consumer");
 
     consumer
         .subscribe(&[&config.kafka.kafka_topic])
@@ -74,6 +66,7 @@ pub async fn initialize_consume_generic(brokers: &String,  config: &Config, call
 
 
     initialized_callback(config.clone()).await; // Unfortunate clone because of Async trait
+
     loop {
         let mss = consumer.recv().await;
         match mss {
@@ -86,11 +79,7 @@ pub async fn initialize_consume_generic(brokers: &String,  config: &Config, call
 
                         match parsed_message {
                             Ok(m) => {
-                                let _parse = callback(m,config.clone(),ipc.sender.clone(),songbird.clone()).await; // More Unfortunate clones because of Async trait. At least most of these implement Arc so it's not the worst thing in the world
-                                // match parse {
-                                //     Ok(_) => {},
-                                //     Err(e) => error!("Failed to parse message with error: {}",e)
-                                // }
+                                let parse = callback(m,config.clone(),ipc.sender.clone(),songbird.clone()).await; // More Unfortunate clones because of Async trait. At least most of these implement Arc so it's not the worst thing in the world
                             },
                             Err(e) => error!("{}",e)
                         }

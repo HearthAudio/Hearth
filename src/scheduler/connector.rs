@@ -27,7 +27,7 @@ lazy_static! {
 pub async fn initialize_api(config: &Config,ipc: &mut ProcessorIPC,group_id: &String) {
     let broker = config.kafka.kafka_uri.to_owned();
 
-    let producer : FutureProducer = initialize_producer(&broker);
+    let producer : FutureProducer = initialize_producer(&broker,config);
     *SCHEDULER_PRODUCER.lock().await = Some(producer);
 
     initialize_scheduler_consume(broker, config,ipc,group_id).await;

@@ -1,25 +1,11 @@
 use std::sync::Arc;
-
-// use std::thread::sleep;
-
-
 use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
-
-
 use log::{debug, error, info};
 use rdkafka::producer::FutureProducer;
 use songbird::Songbird;
-
-
-
-
-
-
 use crate::config::Config;
 use crate::utils::generic_connector::{initialize_producer, send_message_generic};
-// Internal connector
 use crate::utils::initialize_consume_generic;
-
 use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 use anyhow::{Result};
@@ -93,7 +79,7 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
 
 
 pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>,group_id: &String) {
-    let producer : FutureProducer = initialize_producer(&brokers);
+    let producer : FutureProducer = initialize_producer(&brokers,config);
     *WORKER_PRODUCER.lock().await = Some(producer);
     initialize_consume_generic(&brokers, config, parse_message_callback, ipc,initialized_callback,songbird,group_id).await;
 }
