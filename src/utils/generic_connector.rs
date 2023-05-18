@@ -24,7 +24,9 @@ use anyhow::{Result};
 
 fn configure_kafka_ssl(mut kafka_config: ClientConfig,config: &Config) -> ClientConfig {
     if config.kafka.kafka_use_ssl {
-        kafka_config.set("ssl.ca.location",config.kafka.kafka_ssl_ca.clone().expect("Kafka CA Not Found"))
+        kafka_config
+            .set("security.protocol","ssl")
+            .set("ssl.ca.location",config.kafka.kafka_ssl_ca.clone().expect("Kafka CA Not Found"))
             .set("ssl.certificate.location",config.kafka.kafka_ssl_cert.clone().expect("Kafka Cert Not Found"))
             .set("ssl.key.location",config.kafka.kafka_ssl_key.clone().expect("Kafka Key Not Found"));
     }
@@ -39,7 +41,7 @@ pub fn initialize_producer(brokers: &String,config: &Config) -> FutureProducer {
 
     kafka_config = configure_kafka_ssl(kafka_config,config);
 
-    let producer : FutureProducer = kafka_config.clone().create().expect("Failed to create Producer");
+    let producer : FutureProducer = kafka_config.create().expect("Failed to create Producer");
 
     return producer;
 }
@@ -57,7 +59,7 @@ pub async fn initialize_consume_generic(brokers: &String,  config: &Config, call
 
     kafka_config = configure_kafka_ssl(kafka_config,config);
 
-    let consumer : StreamConsumer = kafka_config.clone().create().expect("Failed to create Consumer");
+    let consumer : StreamConsumer = kafka_config.create().expect("Failed to create Consumer");
 
     consumer
         .subscribe(&[&config.kafka.kafka_topic])
