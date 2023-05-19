@@ -78,13 +78,15 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
     let mut last_play_end_time : Option<u64> = None;
 
     // Send Queue Job Response
-    let mut px = WORKER_PRODUCER.lock().await;
-    let p = px.as_mut();
+    {
+        let mut px = WORKER_PRODUCER.lock().await;
+        let p = px.as_mut();
 
-    send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
-        job_id: job_id.to_string(),
-        worker_id: config.config.worker_id.as_ref().unwrap().clone(),
-    }), config.kafka.kafka_topic.as_str(), &mut *p.unwrap()).await;
+        send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
+            job_id: job_id.to_string(),
+            worker_id: config.config.worker_id.as_ref().unwrap().clone(),
+        }), config.kafka.kafka_topic.as_str(), &mut *p.unwrap()).await;
+    }
 
     // Start core
     info!("Worker started");
