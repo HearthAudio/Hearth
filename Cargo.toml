@@ -33,7 +33,7 @@ rand = "0.8.5"
 anyhow = "1.0.71"
 async_fn_traits = "0.1.1"
 sentry = "0.31.0"
-sentry-log = "0.31.0"
+sentry-log = "0.31.1"
 
 [dependencies.songbird]
 git = "https://github.com/Hearth-Industries/songbird-next-fork.git"
