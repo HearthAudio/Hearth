@@ -44,9 +44,8 @@ pub enum JobID {
 
 impl JobID {
     pub fn to_string(&self) -> String {
-        // We don't want to disclose the secret
         if let JobID::Specific(s) = self {
-            format!("{}",s);
+            return format!("{}",s);
         }
         format!("GLOBAL")
     }
@@ -86,6 +85,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
         job_id: job_id.to_string(),
         worker_id: config.config.worker_id.as_ref().unwrap().clone(),
     }), config.kafka.kafka_topic.as_str(), &mut *p.unwrap()).await;
+
     // Start core
     info!("Worker started");
     while let Ok(msg) = sender.subscribe().recv().await {

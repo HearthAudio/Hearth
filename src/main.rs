@@ -63,7 +63,6 @@ async fn main() {
     // Setup Sentry
     let sentry : ClientInitGuard;
     if worker_config.config.sentry_url.is_some() {
-        println!("ES");
         sentry = sentry::init((worker_config.config.sentry_url.clone().unwrap(), sentry::ClientOptions {
             release: sentry::release_name!(),
             ..Default::default()
