@@ -14,6 +14,7 @@ pub struct InternalConfig {
     pub discord_bot_token: String,
     pub worker_id: Option<String>,
     pub job_expiration_time_seconds: Option<u64>,// In seconds
+    pub job_expiration_time_seconds_not_playing:  Option<u64>,
     pub sentry_url: Option<String>,
     pub log_level: Option<String>
 }

@@ -19,7 +19,7 @@ use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
 use crate::worker::connector::{send_message, WORKER_PRODUCER};
-use crate::worker::constants::DEFAULT_JOB_EXPIRATION_TIME;
+use crate::worker::constants::{DEFAULT_JOB_EXPIRATION_TIME, DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING};
 
 use crate::worker::helpers::get_unix_timestamp_as_seconds;
 use super::actions::metadata::get_metadata;
@@ -76,6 +76,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
     //
     let mut track: Option<TrackHandle> = None;
     let start_time = get_unix_timestamp_as_seconds();
+    let mut last_play_end_time : Option<u64> = None;
 
     // Send Queue Job Response
     let mut px = WORKER_PRODUCER.lock().await;
@@ -95,8 +96,16 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     // If this job has been running for more than designated time break it
                     let current_time = get_unix_timestamp_as_seconds();
                     let time_change = current_time - start_time;
+
+                    // If nothing is playing use different end time
+                    if track.is_none() && last_play_end_time.is_some() && current_time - last_play_end_time.unwrap() > config.config.job_expiration_time_seconds_not_playing.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING) {
+                        info!("Killing JOB: {} due to expiration after: {} hours while not playing",job_id.to_string(),(time_change / 60) / 60);
+                        break;
+                    }
+
+                    // If something is playing use different end time
                     if time_change > config.config.job_expiration_time_seconds.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME) {
-                        info!("Killing JOB: {} due to expiration after: {} hours",job_id.to_string(),(time_change / 60) / 60);
+                        info!("Killing JOB: {} due to expiration after: {} hours while playing",job_id.to_string(),(time_change / 60) / 60);
                         break;
                     }
                 },
@@ -109,6 +118,8 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    track = None;
+                    last_play_end_time = Some(get_unix_timestamp_as_seconds());
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
