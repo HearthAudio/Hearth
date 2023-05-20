@@ -186,7 +186,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::GetMetaData) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(get_metadata(&track,config,dwc.request_id.clone().unwrap(),dwc.job_id.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    let _ = error_report!(get_metadata(&track,config,dwc.request_id.clone().unwrap(),dwc.job_id.clone(),dwc.guild_id.clone().unwrap()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                 }
                 _ => {}
             }

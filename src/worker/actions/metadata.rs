@@ -11,10 +11,12 @@ use hearth_interconnect::errors::ErrorReport;
 
 
 // This is a bit of a hack to pass data into the get metadata action
+// If anyone has any better ideas please let me know
 lazy_static! {
     static ref CONFIG: Mutex<Option<Config>> = Mutex::new(None);
     static ref REQUEST_ID: Mutex<Option<String>> = Mutex::new(None);
     static ref JOB_ID: Mutex<Option<String>> = Mutex::new(None);
+     static ref GUILD_ID: Mutex<Option<String>> = Mutex::new(None);
 }
 
 #[macro_export]
@@ -63,13 +65,19 @@ async fn get_codec_metadata(codec: Option<CodecParameters>,position: u64) -> Res
     let mut jx = JOB_ID.lock().await;
     let j = jx.as_mut();
 
+    let mut gx = GUILD_ID.lock().await;
+    let g = gx.as_mut();
+
     let job_id = j.as_ref().context("Failed to get JOB ID. While getting Metadata")?;
+
+    let guild_id = g.as_ref().context("Failed to get JOB ID. While getting Metadata")?;
 
     Ok(Metadata {
         duration: get_duration_wrapper(codec).await,
         position: Some(position),
         sample_rate: Some(codec.sample_rate.context("Failed to get Sample Rate")?),
         job_id: job_id.to_string(),
+        guild_id: guild_id.to_string(),
     })
 }
 
@@ -99,12 +107,13 @@ fn get_metadata_action(view: View) -> Option<Action> {
     None
 }
 
-pub async fn get_metadata(track: &Option<TrackHandle>,config: &Config,request_id: String,job_id: String) -> Result<()> {
+pub async fn get_metadata(track: &Option<TrackHandle>,config: &Config,request_id: String,job_id: String,guild_id: String) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
 
     *CONFIG.lock().await = Some(config.clone());
     *JOB_ID.lock().await = Some(job_id);
     *REQUEST_ID.lock().await = Some(request_id);
+    *GUILD_ID.lock().await = Some(guild_id);
 
     t.action(get_metadata_action).unwrap();
     Ok(())

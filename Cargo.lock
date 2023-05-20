@@ -739,7 +739,7 @@ dependencies = [
 [[package]]
 name = "hearth-interconnect"
 version = "0.1.0"
-source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#ecd2cc4ef0ea9325fb356ec6769e3b796dd2af7f"
+source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#966889f45d98f3854154cf6602b1bc924f9f35f7"
 dependencies = [
  "schemars",
  "serde",
