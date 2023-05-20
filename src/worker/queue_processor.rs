@@ -78,7 +78,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
     let mut last_play_end_time : Option<u64> = None;
 
     // Send Queue Job Response
-    {
+    { // Scoped to release producer mutex
         let mut px = WORKER_PRODUCER.lock().await;
         let p = px.as_mut();
 
