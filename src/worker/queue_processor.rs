@@ -122,6 +122,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
                     track = None;
+                    is_playing = false;
                     last_play_end_time = Some(get_unix_timestamp_as_seconds());
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
