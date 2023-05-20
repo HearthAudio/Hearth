@@ -76,6 +76,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
     let mut track: Option<TrackHandle> = None;
     let start_time = get_unix_timestamp_as_seconds();
     let mut last_play_end_time : Option<u64> = None;
+    let mut is_playing = false;
 
     // Send Queue Job Response
     { // Scoped to release producer mutex
@@ -100,7 +101,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     let time_change = current_time - start_time;
 
                     // If nothing is playing use different end time
-                    if track.is_none() && last_play_end_time.is_some() && current_time - last_play_end_time.unwrap() > config.config.job_expiration_time_seconds_not_playing.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING) {
+                    if is_playing == false && last_play_end_time.is_some() && current_time - last_play_end_time.unwrap() > config.config.job_expiration_time_seconds_not_playing.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING) {
                         info!("Killing JOB: {} due to expiration after: {} hours while not playing",job_id.to_string(),(time_change / 60) / 60);
                         break;
                     }
@@ -142,8 +143,9 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     // Make sure we are not already playing something on this handler
-                    if track.is_none() {
+                    if is_playing == false {
                         track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                        is_playing = true;
                     } else {
                         report_error(ErrorReport {
                             error: "Already playing!".to_string(),
@@ -155,8 +157,9 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     // Make sure we are not already playing something on this handler
-                    if track.is_none() {
+                    if is_playing == false {
                         track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                        is_playing = true;
                     } else {
                         report_error(ErrorReport {
                             error: "Already playing!".to_string(),
@@ -168,10 +171,12 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(pause_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    is_playing = false;
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::ResumePlayback) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(resume_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    is_playing = true;
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
