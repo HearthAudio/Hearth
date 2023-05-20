@@ -22,10 +22,6 @@ pub fn print_warnings() {
     }
 }
 
-pub fn over_servers_warning() {
-    warn!("Guild count is over 5000. Hearth is only free up to 5000 discord servers. You must contact Hearth Industries within 14 Days of passing 5000 servers. For more details see the license in the github repo: LICENSE.md. If you have already acquired a paid license no further action is needed.")
-}
-
 // fn check_use_true_colors() -> bool {
 //     let env_val = env::var("COLORTERM");
 //

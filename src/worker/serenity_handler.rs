@@ -9,7 +9,6 @@ use serenity::{
 };
 use songbird::{SerenityInit};
 use crate::config::Config;
-use crate::deco::over_servers_warning;
 use crate::worker::queue_processor::{ProcessorIPC};
 
 
@@ -42,9 +41,7 @@ pub async fn initialize_songbird(config: &Config,_ipc: &mut ProcessorIPC) -> Opt
 
     let client_data = client.data.clone();
     let server_count = client.cache.guild_count();
-    if server_count > 5000 {
-        over_servers_warning();
-    }
+
     tokio::spawn(async move {
         let _ = client.start_autosharded().await.map_err(|why| println!("Client ended: {:?}", why));
     });

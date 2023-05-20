@@ -73,7 +73,7 @@ We are planning tons of new features to make Hearth even better!
 <h3 align="center">Licensing</h3>
 <hr/>
 <p align="center" >
-Hearth is free to use without any limitations on server count if your bot is open source as well. If your bot is closed source Hearth is free under 5000 servers. Past that you must contact us to acquire an enterprise license. See our <a href="https://github.com/Hearth-Industries/Hearth/blob/master/LICENSE.md">license</a> for more details.
+Hearth is free to use under the MIT licnese.
 </p>
 <h3 align="center">Contact</h3>
 <hr/>
