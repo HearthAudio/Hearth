@@ -141,11 +141,29 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    // Make sure we are not already playing something on this handler
+                    if track.is_none() {
+                        track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    } else {
+                        report_error(ErrorReport {
+                            error: "Already playing!".to_string(),
+                            request_id: dwc.request_id.unwrap(),
+                            job_id: job_id.to_string()
+                        },&config);
+                    }
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    // Make sure we are not already playing something on this handler
+                    if track.is_none() {
+                        track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),config);
+                    } else {
+                        report_error(ErrorReport {
+                            error: "Already playing!".to_string(),
+                            request_id: dwc.request_id.unwrap(),
+                            job_id: job_id.to_string()
+                        },&config);
+                    }
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
