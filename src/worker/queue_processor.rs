@@ -86,6 +86,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
         send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {
             job_id: job_id.to_string(),
             worker_id: config.config.worker_id.as_ref().unwrap().clone(),
+            guild_id: job.guild_id,
         }), config.kafka.kafka_topic.as_str(), &mut *p.unwrap()).await;
     }
 
