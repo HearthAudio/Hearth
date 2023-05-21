@@ -14,6 +14,6 @@ pub fn report_error(error: ErrorReport, config: &Config) {
         let mut px = WORKER_PRODUCER.lock().await;
         let p = px.as_mut();
 
-        send_message(&Message::ErrorReport(error),t_config.kafka.kafka_topic.as_str(),&mut p.unwrap()).await;
+        send_message(&Message::ErrorReport(error),t_config.kafka.kafka_topic.as_str(),p.unwrap()).await;
     });
 }

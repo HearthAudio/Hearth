@@ -71,7 +71,7 @@ impl VoiceEventHandler for TrackErrorNotifier {
 
 #[async_trait]
 impl VoiceEventHandler for TrackEndNotifier {
-    async fn act(&self, ctx: &EventContext<'_>) -> Option<Event> {
+    async fn act(&self, _ctx: &EventContext<'_>) -> Option<Event> {
         let x = self.tx.send(ProcessorIPCData {
             action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::TrackEnded),
             songbird: None,

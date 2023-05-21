@@ -22,7 +22,7 @@ lazy_static! {
 #[macro_export]
 macro_rules! report_metadata_error {
     ($e: ident) => {
-        use crate::errors::report_error;
+        use $crate::errors::report_error;
 
         let mut cx = CONFIG.lock().await;
         let c = cx.as_mut();

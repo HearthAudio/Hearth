@@ -8,13 +8,13 @@ use songbird::tracks::{TrackHandle};
 
 pub async fn pause_playback(track: &Option<TrackHandle>) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
-    let _ = t.pause().context("Failed to pause track")?;
+    t.pause().context("Failed to pause track")?;
     Ok(())
 }
 
 pub async fn resume_playback(track: &Option<TrackHandle>) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
-    let _ = t.play().context("Failed to play track")?;
+    t.play().context("Failed to play track")?;
     Ok(())
 }
 
@@ -27,24 +27,24 @@ pub async fn seek_to_position(track: &Option<TrackHandle>,position: Option<u64>)
 
 pub async fn loop_x_times(track: &Option<TrackHandle>,times: Option<usize>) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
-    let _ = t.loop_for(times.context("Failed to get Loop Times")?);
+    t.loop_for(times.context("Failed to get Loop Times")?)?;
     Ok(())
 }
 
 pub async fn loop_indefinitely(track: &Option<TrackHandle>) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
-    let _ = t.enable_loop();
+    t.enable_loop()?;
     Ok(())
 }
 
 pub async fn force_stop_loop(track: &Option<TrackHandle>) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
-    let _ = t.disable_loop();
+    t.disable_loop()?;
     Ok(())
 }
 
 pub async fn set_playback_volume(track: &Option<TrackHandle>,volume: Option<f32>) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
-    let _ = t.set_volume(volume.context("Failed to get Volume from request")?).context("Failed to set volume")?;
+    t.set_volume(volume.context("Failed to get Volume from request")?).context("Failed to set volume")?;
     Ok(())
 }

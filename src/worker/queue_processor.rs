@@ -105,7 +105,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     let time_change = current_time - start_time;
 
                     // If nothing is playing use different end time
-                    if is_playing == false && last_play_end_time.is_some() && current_time - last_play_end_time.unwrap() > config.config.job_expiration_time_seconds_not_playing.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING) {
+                    if !is_playing && last_play_end_time.is_some() && current_time - last_play_end_time.unwrap() > config.config.job_expiration_time_seconds_not_playing.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING) {
                         info!("Killing JOB: {} due to expiration after: {} hours while not playing",job_id.to_string(),(time_change / 60) / 60);
                         break;
                     }
@@ -120,35 +120,35 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     // Join channel
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.clone(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone(),sender.clone()).await;
-                    let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),guild_id.clone(),config);
+                    error_report!(join,job.request_id.clone(),job_id.to_string(),guild_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
+                    error_report!(leave_channel(&dwc,&mut manager).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                     track = None;
                     is_playing = false;
                     last_play_end_time = Some(get_unix_timestamp_as_seconds());
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::LoopXTimes) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(loop_x_times(&track, dwc.loop_times).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
+                    error_report!(loop_x_times(&track, dwc.loop_times).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::ForceStopLoop) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(force_stop_loop(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
+                    error_report!(force_stop_loop(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::SeekToPosition) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(seek_to_position(&track, dwc.seek_position).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
+                    error_report!(seek_to_position(&track, dwc.seek_position).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::LoopForever) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(loop_indefinitely(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
+                    error_report!(loop_indefinitely(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayDirectLink) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     // Make sure we are not already playing something on this handler
-                    if is_playing == false {
+                    if !is_playing {
                         track = error_report!(play_direct_link(&dwc,&mut manager,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                         is_playing = true;
                     } else {
@@ -163,7 +163,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     // Make sure we are not already playing something on this handler
-                    if is_playing == false {
+                    if !is_playing {
                         track = error_report!(play_from_youtube(&mut manager,&dwc,client.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                         is_playing = true;
                     } else {
@@ -177,21 +177,21 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(pause_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
+                    error_report!(pause_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                     is_playing = false;
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::ResumePlayback) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(resume_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
+                    error_report!(resume_playback(&track).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                     is_playing = true;
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::SetPlaybackVolume) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(set_playback_volume(&track,dwc.new_volume).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
+                    error_report!(set_playback_volume(&track,dwc.new_volume).await,dwc.request_id.unwrap(),dwc.job_id.clone(),guild_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::GetMetaData) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let _ = error_report!(get_metadata(&track,config,dwc.request_id.clone().unwrap(),dwc.job_id.clone(), dwc.guild_id.clone().unwrap()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),dwc.guild_id.clone().unwrap(),config);
+                    error_report!(get_metadata(&track,config,dwc.request_id.clone().unwrap(),dwc.job_id.clone(), dwc.guild_id.clone().unwrap()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),dwc.guild_id.clone().unwrap(),config);
                 },
                 ProcessorIncomingAction::Infrastructure(Infrastructure::TrackEnded) => {
                     info!("Track ended on Job: {}",job_id.to_string());

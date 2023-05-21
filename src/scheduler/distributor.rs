@@ -27,7 +27,7 @@ pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config
 
     let job_id = nanoid!();
     let internal_message = &Message::InternalWorkerQueueJob(Job {
-        job_id: job_id,
+        job_id,
         worker_id: workers_guard[*index_guard].clone(),
         request_id: job.request_id,
         guild_id: job.guild_id
