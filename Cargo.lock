@@ -250,7 +250,7 @@ dependencies = [
 [[package]]
 name = "command_attr"
 version = "0.4.1"
-source = "git+https://github.com/serenity-rs/serenity?branch=next#c6721002be0ed6f7d46d1696163473076fc15915"
+source = "git+https://github.com/serenity-rs/serenity?branch=next#a4cd9f451cf3cbf758e71aa9bcdc26edd4d739eb"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -739,7 +739,7 @@ dependencies = [
 [[package]]
 name = "hearth-interconnect"
 version = "0.1.0"
-source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#966889f45d98f3854154cf6602b1bc924f9f35f7"
+source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#8789e0192ae126d689c9422f319708c314210788"
 dependencies = [
  "schemars",
  "serde",
@@ -2147,7 +2147,7 @@ dependencies = [
 [[package]]
 name = "serenity"
 version = "0.11.5"
-source = "git+https://github.com/serenity-rs/serenity?branch=next#c6721002be0ed6f7d46d1696163473076fc15915"
+source = "git+https://github.com/serenity-rs/serenity?branch=next#a4cd9f451cf3cbf758e71aa9bcdc26edd4d739eb"
 dependencies = [
  "async-trait",
  "base64 0.21.0",
@@ -2180,7 +2180,7 @@ dependencies = [
 [[package]]
 name = "serenity-voice-model"
 version = "0.1.1"
-source = "git+https://github.com/serenity-rs/serenity?branch=next#c6721002be0ed6f7d46d1696163473076fc15915"
+source = "git+https://github.com/serenity-rs/serenity?branch=next#a4cd9f451cf3cbf758e71aa9bcdc26edd4d739eb"
 dependencies = [
  "bitflags",
  "enum_primitive",

@@ -38,6 +38,7 @@ pub async fn leave_channel(dwc: &DirectWorkerCommunication, manager: &mut Option
 struct TrackErrorNotifier {
     error_reporter: fn(ErrorReport,&Config),
     request_id: String,
+    guild_id: String,
     job_id: String,
     config: Config
 }
@@ -51,7 +52,8 @@ impl VoiceEventHandler for TrackErrorNotifier {
                     error: format!( "Track {:?} encountered an error: {:?}", handle.uuid(), state.playing),
                     request_id: self.request_id.clone(),
                     job_id: self.job_id.clone(),
-                },&self.config)
+                    guild_id: self.guild_id.clone(),
+                }, &self.config)
             }
         }
 
@@ -69,7 +71,8 @@ pub async fn join_channel(guild_id: String, voice_channel_id: String, job_id: St
             error_reporter: error_reporter,
             job_id: job_id,
             request_id: request_id,
-            config: config
+            config: config,
+            guild_id: guild_id
         });
     }
     Ok(())

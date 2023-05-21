@@ -33,10 +33,14 @@ macro_rules! report_metadata_error {
         let mut rx = REQUEST_ID.lock().await;
         let r = rx.as_mut();
 
+        let mut gx = GUILD_ID.lock().await;
+        let g = gx.as_mut();
+
         report_error(ErrorReport {
             error: format!("Failed to perform Metadata Extraction with error: {}",$e),
             request_id: r.unwrap().clone(),
             job_id: j.unwrap().clone(),
+            guild_id: g.unwrap().clone()
         }, & *c.unwrap());
     };
 }

@@ -42,6 +42,7 @@ async fn parse_message_callback(parsed_message: Message, config: Config, _: Arc<
             let p = px.as_mut();
 
             let rid = j.request_id.clone();
+            let guild_id = j.guild_id.clone();
 
             let distribute = distribute_job(j, &mut *p.unwrap(), &config).await;
             match distribute {
@@ -51,6 +52,7 @@ async fn parse_message_callback(parsed_message: Message, config: Config, _: Arc<
                         error: e.to_string(),
                         request_id: rid,
                         job_id: "N/A".to_string(),
+                        guild_id
                     },&config)
                 }
             }
