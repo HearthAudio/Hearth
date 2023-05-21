@@ -10,9 +10,10 @@ use serenity::{
 use songbird::{SerenityInit};
 use crate::config::Config;
 use crate::worker::queue_processor::{ProcessorIPC};
-
+use songbird::Config as SongbirdConfig;
 
 use std::sync::Arc;
+use songbird::driver::{CryptoMode, MixMode};
 
 use songbird::Songbird;
 
@@ -47,6 +48,9 @@ pub async fn initialize_songbird(config: &Config,_ipc: &mut ProcessorIPC) -> Opt
     });
 
     info!("Songbird INIT");
-    let manager = songbird::get(client_data.read().await).await;
+    let mut manager = songbird::get(client_data.read().await).await;
+    let mut config = SongbirdConfig::default();
+    config.use_softclip = false; // Disable soft clip as Hearth only allows one audio source to play at a time. So this should result in a marginal performance improvement
+    manager.as_mut().unwrap().set_config(config);
     return manager;
 }
