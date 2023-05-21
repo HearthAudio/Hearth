@@ -1,3 +1,4 @@
+use std::fmt;
 use std::sync::Arc;
 
 use songbird::Songbird;
@@ -27,7 +28,8 @@ use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_pos
 
 #[derive(Clone,Debug)]
 pub enum Infrastructure {
-    CheckTime
+    CheckTime,
+    TrackEnded
 }
 
 #[derive(Clone,Debug)]
@@ -42,12 +44,12 @@ pub enum JobID {
     Specific(String)
 }
 
-impl JobID {
-    pub fn to_string(&self) -> String {
+impl fmt::Display for JobID {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let JobID::Specific(s) = self {
-            return format!("{}",s);
+            return write!(f, "{}",s);
         }
-        format!("GLOBAL")
+        write!(f, "GLOBAL")
     }
 }
 
@@ -117,7 +119,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::JoinChannel) => {
                     // Join channel
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.to_string(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone()).await;
+                    let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.clone(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone(),sender.clone()).await;
                     let _ = error_report!(join,job.request_id.clone(),job_id.to_string(),guild_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
@@ -155,7 +157,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                             request_id: dwc.request_id.unwrap(),
                             job_id: job_id.to_string(),
                             guild_id: guild_id.clone()
-                        },&config);
+                        },config);
                     }
                 },
                 ProcessorIncomingAction::Actions(DWCActionType::PlayFromYoutube) => {
@@ -170,7 +172,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                             request_id: dwc.request_id.unwrap(),
                             job_id: job_id.to_string(),
                             guild_id: guild_id.clone()
-                        },&config);
+                        },config);
                     }
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::PausePlayback) => {
@@ -190,6 +192,11 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::GetMetaData) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let _ = error_report!(get_metadata(&track,config,dwc.request_id.clone().unwrap(),dwc.job_id.clone(), dwc.guild_id.clone().unwrap()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),dwc.guild_id.clone().unwrap(),config);
+                },
+                ProcessorIncomingAction::Infrastructure(Infrastructure::TrackEnded) => {
+                    info!("Track ended on Job: {}",job_id.to_string());
+                    is_playing = false;
+                    track = None;
                 }
                 _ => {}
             }
