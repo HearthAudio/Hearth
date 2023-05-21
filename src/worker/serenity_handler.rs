@@ -13,7 +13,7 @@ use crate::worker::queue_processor::{ProcessorIPC};
 use songbird::Config as SongbirdConfig;
 
 use std::sync::Arc;
-use songbird::driver::{CryptoMode, MixMode};
+
 
 use songbird::Songbird;
 
@@ -41,7 +41,6 @@ pub async fn initialize_songbird(config: &Config,_ipc: &mut ProcessorIPC) -> Opt
         ;
 
     let client_data = client.data.clone();
-    let server_count = client.cache.guild_count();
 
     tokio::spawn(async move {
         let _ = client.start_autosharded().await.map_err(|why| println!("Client ended: {:?}", why));

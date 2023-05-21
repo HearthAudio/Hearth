@@ -72,21 +72,17 @@ impl VoiceEventHandler for TrackErrorNotifier {
 #[async_trait]
 impl VoiceEventHandler for TrackEndNotifier {
     async fn act(&self, ctx: &EventContext<'_>) -> Option<Event> {
-        if let EventContext::Track(track_list) = ctx {
-            for (state, handle) in *track_list {
-                let x = self.tx.send(ProcessorIPCData {
-                    action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::TrackEnded),
-                    songbird: None,
-                    dwc: None,
-                    error_report: None,
-                    job_id: self.job_id.clone()
-                });
-                match x {
-                    Ok(_) => {},
-                    Err(e) => {
-                        error!("Failed to notifty job: {} that track has ended.",self.job_id.to_string());
-                    }
-                }
+        let x = self.tx.send(ProcessorIPCData {
+            action_type: ProcessorIncomingAction::Infrastructure(Infrastructure::TrackEnded),
+            songbird: None,
+            dwc: None,
+            error_report: None,
+            job_id: self.job_id.clone()
+        });
+        match x {
+            Ok(_) => {},
+            Err(_e) => {
+                error!("Failed to notify job: {} that track has ended.",self.job_id.to_string());
             }
         }
 

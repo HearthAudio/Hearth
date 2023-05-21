@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
+use hearth_interconnect::messages::{Message, PingPongResponse};
 use log::{debug, error, info};
 use rdkafka::producer::FutureProducer;
 use songbird::Songbird;
@@ -54,7 +54,6 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
         Message::InternalWorkerQueueJob(job) => {
             if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
                 let proc_config = config.clone();
-                let job_id = job.job_id.clone();
 
                 let sender = sender.clone();
                 info!("Starting new worker");

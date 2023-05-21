@@ -1,8 +1,8 @@
 use std::{env, fs};
-use log::{error, warn};
+use log::{warn};
 use colored::Colorize;
 use rand::Rng;
-use anyhow::Result;
+
 
 fn is_program_in_path(program: &str) -> bool {
     if let Ok(path) = env::var("PATH") {
