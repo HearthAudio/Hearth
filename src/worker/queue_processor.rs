@@ -7,7 +7,7 @@ use tokio::sync::broadcast::{Receiver, Sender};
 use crate::config::Config;
 use crate::{error_report};
 use hearth_interconnect::errors::ErrorReport;
-use hearth_interconnect::messages::{ExternalQueueJobResponse, Message};
+use hearth_interconnect::messages::{ExternalQueueJobResponse, JobExpired, Message};
 
 use hearth_interconnect::worker_communication::{DirectWorkerCommunication, DWCActionType, Job};
 use log::info;
@@ -68,6 +68,15 @@ pub struct ProcessorIPC {
     pub receiver: Receiver<ProcessorIPCData>
 }
 
+async fn notify_expiration(guild_id: String, job_id: String,config: &Config) {
+    let mut px = WORKER_PRODUCER.lock().await;
+    let p = px.as_mut();
+
+    send_message(&Message::ExternalJobExpired(JobExpired {
+        guild_id,
+        job_id
+    }),&config.kafka.kafka_topic,&mut p.unwrap()).await;
+}
 
 pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<ProcessorIPCData>>, report_error: fn(ErrorReport,&Config), mut manager: Option<Arc<Songbird>>) {
     let job_id = JobID::Specific(job.job_id.clone());
@@ -107,12 +116,14 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     // If nothing is playing use different end time
                     if !is_playing && last_play_end_time.is_some() && current_time - last_play_end_time.unwrap() > config.config.job_expiration_time_seconds_not_playing.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING) {
                         info!("Killing JOB: {} due to expiration after: {} hours while not playing",job_id.to_string(),(time_change / 60) / 60);
+                        notify_expiration(guild_id,job_id.to_string(),config);
                         break;
                     }
 
                     // If something is playing use different end time
                     if time_change > config.config.job_expiration_time_seconds.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME) {
                         info!("Killing JOB: {} due to expiration after: {} hours while playing",job_id.to_string(),(time_change / 60) / 60);
+                        notify_expiration(guild_id,job_id.to_string(),config);
                         break;
                     }
                 },
