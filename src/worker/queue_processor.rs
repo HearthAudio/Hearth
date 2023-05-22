@@ -116,14 +116,14 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                     // If nothing is playing use different end time
                     if !is_playing  && current_time - last_play_end_time.unwrap() > config.config.job_expiration_time_seconds_not_playing.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING) {
                         info!("Killing JOB: {} due to expiration after: {} hours while not playing",job_id.to_string(),(time_change / 60) / 60);
-                        notify_expiration(guild_id,job_id.to_string(),config);
+                        notify_expiration(guild_id,job_id.to_string(),config).await;
                         break;
                     }
 
                     // If something is playing use different end time
                     if time_change > config.config.job_expiration_time_seconds.unwrap_or(DEFAULT_JOB_EXPIRATION_TIME) && is_playing {
                         info!("Killing JOB: {} due to expiration after: {} hours while playing",job_id.to_string(),(time_change / 60) / 60);
-                        notify_expiration(guild_id,job_id.to_string(),config);
+                        notify_expiration(guild_id,job_id.to_string(),config).await;
                         break;
                     }
                 },
