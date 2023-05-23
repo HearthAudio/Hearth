@@ -36,7 +36,8 @@ sentry = "0.31.1"
 sentry-log = "0.31.0"
 
 [dependencies.songbird]
-git = "https://github.com/Hearth-Industries/songbird-next-fork.git"
+git = "https://github.com/Hearth-Industries/songbird.git"
+branch = "next"
 
 [dependencies.serenity]
 features = ["client", "standard_framework", "voice", "native_tls_backend","builder","cache","gateway","http","model","utils"]
