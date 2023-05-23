@@ -45,3 +45,8 @@ branch = "next"
 
 [dependencies.hearth-interconnect]
 git = "https://github.com/Hearth-Industries/hearth-interconnect.git"
+
+[profile.release]
+# Optimizes performance for Release Build but turns compile times from a bit slow to molasses (my system about 3mins)
+lto = "fat"
+codegen-units = 1
