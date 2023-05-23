@@ -28,7 +28,7 @@ pub mod constants;
 pub mod expiration;
 
 lazy_static! {
-    static ref WORKER_JOB_IDS: Mutex<Vec<String>> = Mutex::new(vec![]);
+    static ref WORKER_GUILD_IDS: Mutex<Vec<String>> = Mutex::new(vec![]);
 }
 
 pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
@@ -41,13 +41,13 @@ pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
 }
 
 pub async fn gracefully_shutdown_worker(config: &Config) {
-    let worker_job_ids = WORKER_JOB_IDS.lock().await;
+    let worker_guild_ids = WORKER_GUILD_IDS.lock().await;
 
     let mut px = WORKER_PRODUCER.lock().await;
     let p = px.as_mut();
 
     send_message(&Message::WorkerShutdownAlert(ShutdownAlert {
         worker_id: config.config.worker_id.clone().unwrap(),
-        affected_job_ids: (*worker_job_ids.clone()).to_owned(), // This isn't great but we have to do it to send the kafka message
+        affected_guild_ids: (*worker_guild_ids.clone()).to_owned(), // This isn't great but we have to do it to send the kafka message
     }), &config.kafka.kafka_topic, p.unwrap()).await;
 }

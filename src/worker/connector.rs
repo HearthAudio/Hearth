@@ -12,7 +12,7 @@ use anyhow::{Result};
 use lazy_static::lazy_static;
 use tokio::sync::broadcast::Sender;
 use tokio::sync::Mutex;
-use crate::worker::WORKER_JOB_IDS;
+use crate::worker::WORKER_GUILD_IDS;
 
 lazy_static! {
     pub static ref WORKER_PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
@@ -59,7 +59,7 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
                 let sender = sender.clone();
                 info!("Starting new worker");
 
-                WORKER_JOB_IDS.lock().await.push(job.job_id.clone());
+                WORKER_GUILD_IDS.lock().await.push(job.guild_id.clone());
 
                 tokio::spawn(async move {
                     process_job(job,&proc_config,sender,report_error,songbird).await;
