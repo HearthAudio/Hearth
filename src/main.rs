@@ -43,9 +43,9 @@ async fn initialize_worker_internal(config: Config, songbird_ipc: &mut Processor
 
 #[tokio::main]
 async fn main() {
-    // let source = uri_stream("").await;
     print_intro();
     print_warnings();
+    // Check if our platform is supported
     let platform_check = check_platform_supported();
     match platform_check {
         Ok(res) => {
@@ -90,21 +90,17 @@ async fn main() {
     };
 
     // Depending on roles initialize worker and or scheduler on separate threads
-    // let mut futures = vec![];
     if worker_config.roles.worker {
-        let worker = tokio::spawn(async move {
+        let _worker = tokio::spawn(async move {
             initialize_worker_internal(worker_config, &mut worker_ipc).await;
         });
-        // futures.push(worker);
     }
     if scheduler_config.roles.scheduler {
-        let scheduler = tokio::spawn(async move {
+        let _scheduler = tokio::spawn(async move {
             initialize_scheduler_internal(scheduler_config, &mut scheduler_ipc).await;
         });
-        // futures.push(scheduler);
     }
 
-    // futures::future::join_all(futures).await;
     match signal::ctrl_c().await {
         Ok(()) => {
             warn!("Initiating Graceful Shutdown! Do not attempt to cancel!");
