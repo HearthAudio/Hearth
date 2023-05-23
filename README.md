@@ -55,7 +55,7 @@ Ready to get started with Hearth? See the getting started guide <a href="https:/
 <h3 align="center">Compatability</h3>
 <hr/>
 <p align="center" >
-Note: Hearth does not support usage on Apple Silicon as resampling with Rubato does not seem to be supported on Apple Silicon thus Hearth will fail silently if used on Apple Silicon. We recommend running Hearth in production on Ubuntu Linux.
+Note: Hearth does not support usage on Apple Silicon/ Hearth will fail silently if used on Apple Silicon. We recommend running Hearth in production on Ubuntu Linux on either an x86 platform or a non M series ARM chip.
 <h3 align="center">Contributions</h3>
 <hr/>
 <p align="center" >
