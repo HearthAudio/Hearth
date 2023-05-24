@@ -28,6 +28,6 @@ jobs:
             - uses: dtolnay/rust-toolchain@stable
               with:
                   components: clippy
-            - uses: auguwu/clippy-action@v1
+            - uses: auguwu/clippy-action@1.0.0
               with:
                 all-features: true
