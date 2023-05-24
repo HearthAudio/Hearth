@@ -123,7 +123,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 ProcessorIncomingAction::Actions(DWCActionType::JoinChannel) => {
                     // Join channel
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    let join = join_channel(dwc.guild_id.unwrap(), dwc.voice_channel_id.unwrap(), job_id.clone(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone(),sender.clone()).await;
+                    let join = join_channel(dwc.guild_id, dwc.voice_channel_id.unwrap(), job_id.clone(), dwc.request_id.unwrap(), &mut manager, report_error, config.clone(),sender.clone()).await;
                     error_report!(join,job.request_id.clone(),job_id.to_string(),guild_id.clone(),config);
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::LeaveChannel) => {
@@ -195,7 +195,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::GetMetaData) => {
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
-                    error_report!(get_metadata(&track,config,dwc.request_id.clone().unwrap(),dwc.job_id.clone(), dwc.guild_id.clone().unwrap()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),dwc.guild_id.clone().unwrap(),config);
+                    error_report!(get_metadata(&track,config,dwc.request_id.clone().unwrap(),dwc.job_id.clone(), dwc.guild_id.clone()).await,dwc.request_id.unwrap(),dwc.job_id.clone(),dwc.guild_id,config);
                 },
                 ProcessorIncomingAction::Infrastructure(Infrastructure::TrackEnded) => {
                     info!("Track ended on Job: {}",job_id.to_string());

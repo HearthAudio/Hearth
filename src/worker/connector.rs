@@ -55,7 +55,7 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
                             error: "Job does not exist".to_string(),
                             request_id: dwc.request_id.unwrap(),
                             job_id,
-                            guild_id: dwc.guild_id.unwrap(),
+                            guild_id: dwc.guild_id,
                         },&config);
                     }
                 }

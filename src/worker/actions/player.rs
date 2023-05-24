@@ -26,7 +26,7 @@ impl fmt::Display for PlaybackError {
 
 
 pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Option<Arc<Songbird>>,client: Client) -> Result<TrackHandle> {
-    let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(PlaybackError::GuildIDNotFound.to_string())?,manager).await?;
+    let handler_lock = get_manager_call(&dwc.guild_id,manager).await?;
     let mut handler = handler_lock.lock().await;
     let source = HttpRequest::new(client, dwc.play_audio_url.clone().context(PlaybackError::MissingAudioURL.to_string())?);
     let track_handle = handler.play_input(source.into());
@@ -34,7 +34,7 @@ pub async fn play_direct_link(dwc: &DirectWorkerCommunication, manager: &mut Opt
 }
 
 pub async fn play_from_youtube(manager: &mut Option<Arc<Songbird>>,dwc: &DirectWorkerCommunication,client: Client) -> Result<TrackHandle> {
-    let handler_lock = get_manager_call(dwc.guild_id.as_ref().context(PlaybackError::GuildIDNotFound.to_string())?,manager).await?;
+    let handler_lock = get_manager_call(&dwc.guild_id,manager).await?;
     let mut handler = handler_lock.lock().await;
     let source = YoutubeDl::new(client, dwc.play_audio_url.clone().context(PlaybackError::MissingAudioURL.to_string())?);
     let track_handle = handler.play_input(source.into());

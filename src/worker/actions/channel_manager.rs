@@ -34,7 +34,7 @@ impl fmt::Display for ChannelControlError {
 }
 
 pub async fn leave_channel(dwc: &DirectWorkerCommunication, manager: &mut Option<Arc<Songbird>>) -> Result<()> {
-    manager.as_mut().context(ChannelControlError::ManagerAcquisitionFailed.to_string())?.remove(GuildId(dwc.guild_id.as_ref().context(ChannelControlError::GuildIDNotFound.to_string())?.parse().context(ChannelControlError::GuildIDParsingFailed.to_string())?)).await.context(ChannelControlError::ChannelLeaveFailed.to_string())?;
+    manager.as_mut().context(ChannelControlError::ManagerAcquisitionFailed.to_string())?.remove(GuildId(dwc.guild_id.parse().context(ChannelControlError::GuildIDParsingFailed.to_string())?)).await.context(ChannelControlError::ChannelLeaveFailed.to_string())?;
     Ok(())
 }
 
