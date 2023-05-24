@@ -41,6 +41,9 @@ If you want to adjust the log level (The defualt is `INFO`) you can set the log 
 log_level = "DEBUG"
 ```
 
+## Running Multiple Workers
+Running multiple workers is super easy with Hearth! All you have todo is copy the config from your scheduler and your SSL config for Kafka. Change `scheduler = true` to `scheduler = false` so your worker is only a worker and not a scheduler. Then just restart your scheduler. And your done!
+
 ## Definitions:
 
 ## Worker
