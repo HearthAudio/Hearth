@@ -13,15 +13,15 @@
 <img src="https://camo.githubusercontent.com/107e932aa93175670d273c86cae8be4c96f156da7e13b9b8223b63fa23563fb0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f646163792d422d677265656e"
 </p>
 <p align="center">
-Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more concurrent streams and uses 18x less memory. It does not support every feature of LavaLink but it does support most of them. And we are working hard on bringing Hearth to feature parity.
+Hearth is a LavaLink Alternative written in Rust. That uses 30X less memory, and is almost in a state of feature parity.
 </p>
 <h3 align="center">Features</h3>
 <hr/>
 <p align="center" >
 <ul>
-  <li>💨 Hearth is extremely performant and can support 60x more concurrent streams than LavaLink which means significantly less node servers potentially saving thousands of dollars.</li><br/>
-  <li >🔐 Heath is very secure due to it's memory safe nature.</li><br/>
-  <li >🔧 Hearth is extremely easy to integrate into your project with our wide selection of client libraries for Javascript, Java, Typescript, and Rust. With more coming soon!</li><br/>
+  <li>💨 Hearth is extremely performant and uses 30X less memory than LavaLink (See Benchmark section for more details)</li><br/>
+  <li>📈 Hearth is designed from the ground up for massive scale and is horizontaly scalable.</li><br/>
+  <li >🔧 Hearth is extremely easy to integrate into your project with a native Rust client library. And bindings for TS, Java, and Python coming soon!</li><br/>
 </ul>
 <div style="display: flex;align-content: center;justify-content: center;">
     <div style="display: flex;flex-direction: column;">
@@ -52,6 +52,12 @@ Hearth is a LavaLink Alternative that uses 20x less CPU cycles supports 60x more
 <p align="center" >
 Ready to get started with Hearth? See the getting started guide <a href="https://github.com/Hearth-Industries/Hearth/blob/master/GETTING_STARTED.md">here</a> to start a new project with Hearth or integrate Hearth into your pre-existing project.
 </p>
+<h3 align="center">Benchmarks</h3>
+<hr/>
+<p align="center" >
+Hearth uses 30X less Memory than LavaLink, unfortunately Hearth has slightly worse CPU usage than LavaLink, due to inefficiencies
+in the client library Hearth uses to interact with Discord. But this should be fixed in a future update! These numbers where derived by running Hearth in a DigitalOcean Droplet with 4 Intel CPU cores and 4GB of Memory. And observing CPU usage with `top` and memory usage with `ps`
+</p>
 <h3 align="center">Compatability</h3>
 <hr/>
 <p align="center" >
@@ -66,6 +72,7 @@ If you want to create an Issue, PR, Or contribute in any other way I'm happy to 
 We are planning tons of new features to make Hearth even better!
 <hr/>
 <p align="center" >
+  CPU Performance Improvements<br/><br/>
   Effects<br/><br/>
   Dynamic Worker Joins to support Autoscaling nodes on platforms like AWS<br/><br/>
   Soundcloud Support<br/><br/>
@@ -74,9 +81,4 @@ We are planning tons of new features to make Hearth even better!
 <hr/>
 <p align="center" >
 Hearth is free to use under the MIT licnese.
-</p>
-<h3 align="center">Contact</h3>
-<hr/>
-<p align="center" >
-Want to get in touch? Just send me an email at <a href="mailto:max@hearthindustries.io">max@hearthindustries.io</a>
 </p>
