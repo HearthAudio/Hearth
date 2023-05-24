@@ -39,13 +39,11 @@ dashmap = "5.4.0"
 [dependencies.songbird]
 git = "https://github.com/Hearth-Industries/songbird.git"
 rev = "bf6e58b"
-branch = "next"
 
 [dependencies.serenity]
 features = ["client", "standard_framework", "voice", "native_tls_backend","builder","cache","gateway","http","model","utils"]
 git = "https://github.com/serenity-rs/serenity"
 rev = "99b004d"
-branch = "next"
 
 [dependencies.hearth-interconnect]
 git = "https://github.com/Hearth-Industries/hearth-interconnect.git"
