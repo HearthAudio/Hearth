@@ -11,14 +11,12 @@ use anyhow::{Context, Result};
 
 #[derive(Debug)]
 enum PlaybackError {
-    GuildIDNotFound,
     MissingAudioURL
 }
 
 impl fmt::Display for PlaybackError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            PlaybackError::GuildIDNotFound => write!(f, "Guild ID Not Found"),
             PlaybackError::MissingAudioURL => write!(f, "Missing Audio URL"),
         }
     }

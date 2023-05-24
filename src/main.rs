@@ -1,6 +1,4 @@
-use std::process;
 use std::sync::Arc;
-
 use log::{error, info, warn};
 use sentry::ClientInitGuard;
 use tokio::signal;
@@ -9,11 +7,8 @@ use crate::deco::{print_intro, print_warnings};
 use crate::logger::{setup_logger};
 use crate::scheduler::*;
 use crate::worker::*;
-
-
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::{Receiver, Sender};
-
 use crate::platform::check_platform_supported;
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 

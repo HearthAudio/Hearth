@@ -14,7 +14,6 @@ use tokio::sync::broadcast::Sender;
 use crate::worker::queue_processor::{Infrastructure, JobID, ProcessorIncomingAction, ProcessorIPCData};
 
 pub enum ChannelControlError {
-    GuildIDNotFound,
     GuildIDParsingFailed,
     ChannelIDParsingFailed,
     ManagerAcquisitionFailed,
@@ -24,7 +23,6 @@ pub enum ChannelControlError {
 impl fmt::Display for ChannelControlError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            ChannelControlError::GuildIDNotFound => write!(f, "Guild ID Not Found"),
             ChannelControlError::GuildIDParsingFailed => write!(f, "Guild ID Parsing Failed"),
             ChannelControlError::ChannelIDParsingFailed =>  write!(f, "Channel ID Parsing Failed"),
             ChannelControlError::ManagerAcquisitionFailed =>  write!(f, "Failed to acquire manager"),
