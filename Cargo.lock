@@ -250,7 +250,7 @@ dependencies = [
 [[package]]
 name = "command_attr"
 version = "0.4.1"
-source = "git+https://github.com/serenity-rs/serenity?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -746,7 +746,7 @@ dependencies = [
 [[package]]
 name = "hearth-interconnect"
 version = "0.1.0"
-source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#02598fd4585907354c9e311c362d982f0d515ad9"
+source = "git+https://github.com/Hearth-Industries/hearth-interconnect.git#b78dc2a843ef7c5b37807f7531492db53e408a4c"
 dependencies = [
  "schemars",
  "serde",
@@ -948,9 +948,9 @@ dependencies = [
 
 [[package]]
 name = "io-lifetimes"
-version = "1.0.10"
+version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9c66c74d2ae7e79a5a8f7ac924adbe38ee42a859c6539ad869eb51f0b52dc220"
+checksum = "eae7b9aee968036d54dce06cebaefd919e4472e753296daccd6d344e3e2df0c2"
 dependencies = [
  "hermit-abi 0.3.1",
  "libc",
@@ -2160,7 +2160,7 @@ dependencies = [
 [[package]]
 name = "serenity"
 version = "0.11.5"
-source = "git+https://github.com/serenity-rs/serenity?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
 dependencies = [
  "async-trait",
  "base64 0.21.1",
@@ -2193,7 +2193,7 @@ dependencies = [
 [[package]]
 name = "serenity-voice-model"
 version = "0.1.1"
-source = "git+https://github.com/serenity-rs/serenity?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
 dependencies = [
  "bitflags",
  "enum_primitive",
@@ -3021,9 +3021,9 @@ checksum = "92888ba5573ff080736b3648696b70cafad7d250551175acbaa4e0385b3e1460"
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.8"
+version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5464a87b239f13a63a501f2701565754bae92d243d4bb7eb12f6d57d2269bf4"
+checksum = "b15811caf2415fb889178633e7724bad2509101cde276048e013b9def5e51fa0"
 
 [[package]]
 name = "unicode-normalization"

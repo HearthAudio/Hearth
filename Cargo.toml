@@ -38,16 +38,15 @@ dashmap = "5.4.0"
 
 [dependencies.songbird]
 git = "https://github.com/Hearth-Industries/songbird.git"
-rev = "bf6e58b"
+branch="next"
 
 [dependencies.serenity]
 features = ["client", "standard_framework", "voice", "native_tls_backend","builder","cache","gateway","http","model","utils"]
-git = "https://github.com/serenity-rs/serenity"
-rev = "99b004d"
+git = "https://github.com/serenity-rs/serenity.git"
+branch="next"
 
 [dependencies.hearth-interconnect]
 git = "https://github.com/Hearth-Industries/hearth-interconnect.git"
-rev = "b78dc2a"
 
 [profile.release]
 # Optimizes performance for Release Build but turns compile times from a bit slow to molasses (my system about 3mins)
