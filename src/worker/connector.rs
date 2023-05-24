@@ -60,19 +60,28 @@ async fn parse_message_callback(message: Message, config: Config, _sender: Arc<S
 
                 match channel {
                     Some(channel) => {
-                        let result = channel.send(ProcessorIPCData {
-                            action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
-                            songbird: None,
-                            job_id: JobID::Specific(job_id.clone()),
-                            dwc: Some(dwc),
-                            error_report: None
-                        });
-                        match result {
-                            Ok(_) => {},
-                            Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
+                                let result = channel.send(ProcessorIPCData {
+                                    action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
+                                    songbird: None,
+                                    job_id: JobID::Specific(job_id.clone()),
+                                    dwc: Some(dwc.clone()),
+                                    error_report: None
+                                });
+                                match result {
+                                    Ok(_) => {},
+                                    Err(_e) => {
+                                        error!("Failed to route DWC job message");
+                                    },
                         }
                     },
                     None => {
+                        error!("Failed to route DWC job message - Could not find channel!");
+
+                        // This is a bit sketchy in the future we should probably shift to a better state sync system
+                        // That runs if this happens to resync client and server state across the distributed system
+                        // The main issue with this is that it will only really work with `join` commands
+                        // As all other commands relly on a pre-existing state notion that will be non-existent in this case
+
                         // If job does not exist create it
                         queue_internal_job(Job {
                             job_id: job_id.clone(),
@@ -80,21 +89,12 @@ async fn parse_message_callback(message: Message, config: Config, _sender: Arc<S
                             request_id: dwc.request_id.clone().unwrap(),
                             guild_id: dwc.guild_id.clone(),
                         },&config,songbird).await;
-                        //
-                        let channel = JOB_CHANNELS.get(&JobID::Specific(job_id.clone()));
 
-                        let result = channel.expect("Guaranteed to exist because we just created it").send(ProcessorIPCData {
-                            action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
-                            songbird: None,
-                            job_id: JobID::Specific(job_id.clone()),
-                            dwc: Some(dwc),
-                            error_report: None
-                        });
-
-                        match result {
-                            Ok(_) => {},
-                            Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
-                        }
+                        // We could attempt to perform the action again but this would involve waiting for confirmation
+                        // And would not work most of the time anyway because of a desynced state notion instead we will
+                        // Just create the job and hope the user retry's and it works. This is well... pretty bad
+                        // In the future as a slight upgrade to this we can send an erorr report and have the client auto-retry
+                        // If it was a `join` command otherwise throw an error
                     }
                 }
 
