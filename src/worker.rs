@@ -1,22 +1,6 @@
 // Main handler for worker role
 
 
-
-
-use hearth_interconnect::messages::{Message, ShutdownAlert};
-use lazy_static::lazy_static;
-use log::info;
-use nanoid::nanoid;
-
-use crate::config::Config;
-
-use crate::worker::connector::{initialize_api, send_message, WORKER_PRODUCER};
-
-use crate::worker::expiration::init_expiration_timer;
-use crate::worker::queue_processor::ProcessorIPC;
-use crate::worker::serenity_handler::initialize_songbird;
-use tokio::sync::Mutex;
-
 pub mod connector;
 pub mod queue_processor;
 pub mod analytics_reporter;
@@ -27,8 +11,24 @@ pub mod helpers;
 pub mod constants;
 pub mod expiration;
 
+use hearth_interconnect::messages::{Message, ShutdownAlert};
+use lazy_static::lazy_static;
+use log::info;
+use nanoid::nanoid;
+use crate::config::Config;
+use dashmap::DashMap;
+use tokio::sync::broadcast::Sender;
+use crate::worker::connector::{initialize_api, send_message, WORKER_PRODUCER};
+use crate::worker::expiration::init_expiration_timer;
+use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
+use crate::worker::serenity_handler::initialize_songbird;
+use crate::worker::queue_processor::JobID;
+use tokio::sync::Mutex;
+use std::sync::Arc;
+
 lazy_static! {
     static ref WORKER_GUILD_IDS: Mutex<Vec<String>> = Mutex::new(vec![]);
+    pub static ref JOB_CHANNELS: DashMap<JobID,Arc<Sender<ProcessorIPCData>>> = DashMap::new();
 }
 
 pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {

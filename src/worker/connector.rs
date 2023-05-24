@@ -9,10 +9,11 @@ use crate::utils::initialize_consume_generic;
 use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 use anyhow::{Result};
+use hearth_interconnect::errors::ErrorReport;
 use lazy_static::lazy_static;
-use tokio::sync::broadcast::Sender;
-use tokio::sync::Mutex;
-use crate::worker::WORKER_GUILD_IDS;
+use tokio::sync::broadcast::{Receiver, Sender};
+use tokio::sync::{broadcast, Mutex};
+use crate::worker::{JOB_CHANNELS, WORKER_GUILD_IDS};
 
 lazy_static! {
     pub static ref WORKER_PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
@@ -31,17 +32,34 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
         Message::DirectWorkerCommunication(dwc) => {
             if &dwc.worker_id == config.config.worker_id.as_ref().unwrap() {
                 let job_id = dwc.job_id.clone();
-                let result = sender.send(ProcessorIPCData {
-                    action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
-                    songbird: None,
-                    job_id: JobID::Specific(job_id.clone()),
-                    dwc: Some(dwc),
-                    error_report: None
-                });
-                match result {
-                    Ok(_) => {},
-                    Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
+
+                let channel = JOB_CHANNELS.get(&JobID::Specific(job_id.clone()));
+
+                match channel {
+                    Some(channel) => {
+                        let result = channel.send(ProcessorIPCData {
+                            action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
+                            songbird: None,
+                            job_id: JobID::Specific(job_id.clone()),
+                            dwc: Some(dwc),
+                            error_report: None
+                        });
+                        match result {
+                            Ok(_) => {},
+                            Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
+                        }
+                    },
+                    None => {
+                        //TODO: Remove unwrap(s)
+                        report_error(ErrorReport {
+                            error: "Job does not exist".to_string(),
+                            request_id: dwc.request_id.unwrap(),
+                            job_id,
+                            guild_id: dwc.guild_id.unwrap(),
+                        },&config);
+                    }
                 }
+
             }
         },
         Message::InternalPingPongRequest => {
@@ -54,15 +72,23 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
         }
         Message::InternalWorkerQueueJob(job) => {
             if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
-                let proc_config = config.clone();
-
-                let sender = sender.clone();
                 info!("Starting new worker");
 
-                WORKER_GUILD_IDS.lock().await.push(job.guild_id.clone());
+                let proc_config = config.clone();
+
+                let (tx_processor, _rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
+
+                let tx_arc = Arc::new(tx_processor);
+
+                { // Scoped to minimize lock time
+                    WORKER_GUILD_IDS.lock().await.push(job.guild_id.clone());
+                    JOB_CHANNELS.insert(JobID::Specific(job.job_id.clone()),tx_arc.clone());
+                }
+
+                let job_tx = tx_arc.clone();
 
                 tokio::spawn(async move {
-                    process_job(job,&proc_config,sender,report_error,songbird).await;
+                    process_job(job,&proc_config,job_tx,report_error,songbird).await;
                 });
             }
         }

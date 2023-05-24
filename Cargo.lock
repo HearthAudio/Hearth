@@ -714,6 +714,7 @@ dependencies = [
  "async_fn_traits",
  "bytes",
  "colored 2.0.0",
+ "dashmap",
  "fern",
  "futures",
  "hearth-interconnect",

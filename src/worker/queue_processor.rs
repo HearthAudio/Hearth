@@ -1,6 +1,5 @@
 use std::fmt;
 use std::sync::Arc;
-
 use songbird::Songbird;
 use songbird::tracks::TrackHandle;
 use tokio::sync::broadcast::{Receiver, Sender};
@@ -8,20 +7,14 @@ use crate::config::Config;
 use crate::{error_report};
 use hearth_interconnect::errors::ErrorReport;
 use hearth_interconnect::messages::{ExternalQueueJobResponse, JobExpired, Message};
-
 use hearth_interconnect::worker_communication::{DirectWorkerCommunication, DWCActionType, Job};
 use log::info;
-
-
 use reqwest::Client as HttpClient;
-
-
 use crate::worker::actions::channel_manager::{join_channel, leave_channel};
 use crate::worker::actions::player::{play_direct_link, play_from_youtube};
 use crate::worker::actions::track_manager::{force_stop_loop, pause_playback, resume_playback, set_playback_volume};
 use crate::worker::connector::{send_message, WORKER_PRODUCER};
 use crate::worker::constants::{DEFAULT_JOB_EXPIRATION_TIME, DEFAULT_JOB_EXPIRATION_TIME_NOT_PLAYING};
-
 use crate::worker::helpers::get_unix_timestamp_as_seconds;
 use super::actions::metadata::get_metadata;
 use super::actions::track_manager::{loop_indefinitely, loop_x_times, seek_to_position};
@@ -38,7 +31,7 @@ pub enum ProcessorIncomingAction {
     Actions(DWCActionType)
 }
 
-#[derive(Clone,Debug,PartialEq)]
+#[derive(Clone,Debug,PartialEq,Eq,Hash)]
 pub enum JobID {
     Global(),
     Specific(String)
