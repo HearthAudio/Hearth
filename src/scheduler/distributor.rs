@@ -27,9 +27,10 @@ pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config
 
     let job_id = nanoid!();
     let internal_message = &Message::InternalWorkerQueueJob(Job {
-        job_id: job_id,
+        job_id,
         worker_id: workers_guard[*index_guard].clone(),
-        request_id: job.request_id
+        request_id: job.request_id,
+        guild_id: job.guild_id
     });
     send_message(internal_message,config.kafka.kafka_topic.as_str(),producer).await;
     *index_guard += 1;

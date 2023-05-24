@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use hearth_interconnect::messages::{ExternalQueueJobResponse, Message, PingPongResponse};
+use hearth_interconnect::messages::{Message, PingPongResponse};
 use log::{debug, error, info};
 use rdkafka::producer::FutureProducer;
 use songbird::Songbird;
@@ -9,12 +9,37 @@ use crate::utils::initialize_consume_generic;
 use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 use anyhow::{Result};
+use hearth_interconnect::worker_communication::Job;
 use lazy_static::lazy_static;
-use tokio::sync::broadcast::Sender;
-use tokio::sync::Mutex;
+use tokio::sync::broadcast::{Receiver, Sender};
+use tokio::sync::{broadcast, Mutex};
+use crate::worker::{JOB_CHANNELS, WORKER_GUILD_IDS};
 
 lazy_static! {
     pub static ref WORKER_PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
+}
+
+pub async fn queue_internal_job(job: Job,config: &Config,songbird: Option<Arc<Songbird>>) {
+    if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
+        info!("Starting new worker");
+
+        let proc_config = config.clone();
+
+        let (tx_processor, _rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
+
+        let tx_arc = Arc::new(tx_processor);
+
+        { // Scoped to minimize lock time
+            WORKER_GUILD_IDS.lock().await.push(job.guild_id.clone());
+            JOB_CHANNELS.insert(JobID::Specific(job.job_id.clone()),tx_arc.clone());
+        }
+
+        let job_tx = tx_arc.clone();
+
+        tokio::spawn(async move {
+            process_job(job,&proc_config,job_tx,report_error,songbird).await;
+        });
+    }
 }
 
 pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>,group_id: &String) {
@@ -24,23 +49,55 @@ pub async fn initialize_api(config: &Config, ipc: &mut ProcessorIPC,songbird: Op
     initialize_worker_consume(broker, config,ipc,songbird,group_id).await;
 }
 
-async fn parse_message_callback(message: Message, config: Config, sender: Arc<Sender<ProcessorIPCData>>,songbird: Option<Arc<Songbird>>) -> Result<()> {
+async fn parse_message_callback(message: Message, config: Config, _sender: Arc<Sender<ProcessorIPCData>>,songbird: Option<Arc<Songbird>>) -> Result<()> {
     debug!("WORKER GOT MSG: {:?}",message);
     match message {
         Message::DirectWorkerCommunication(dwc) => {
             if &dwc.worker_id == config.config.worker_id.as_ref().unwrap() {
                 let job_id = dwc.job_id.clone();
-                let result = sender.send(ProcessorIPCData {
-                    action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
-                    songbird: None,
-                    job_id: JobID::Specific(job_id.clone()),
-                    dwc: Some(dwc),
-                    error_report: None
-                });
-                match result {
-                    Ok(_) => {},
-                    Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
+
+                let channel = JOB_CHANNELS.get(&JobID::Specific(job_id.clone()));
+
+                match channel {
+                    Some(channel) => {
+                        let result = channel.send(ProcessorIPCData {
+                            action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
+                            songbird: None,
+                            job_id: JobID::Specific(job_id.clone()),
+                            dwc: Some(dwc),
+                            error_report: None
+                        });
+                        match result {
+                            Ok(_) => {},
+                            Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
+                        }
+                    },
+                    None => {
+                        // If job does not exist create it
+                        queue_internal_job(Job {
+                            job_id: job_id.clone(),
+                            worker_id: dwc.worker_id.clone(),
+                            request_id: dwc.request_id.clone().unwrap(),
+                            guild_id: dwc.guild_id.clone(),
+                        },&config,songbird).await;
+                        //
+                        let channel = JOB_CHANNELS.get(&JobID::Specific(job_id.clone()));
+
+                        let result = channel.expect("Guaranteed to exist because we just created it").send(ProcessorIPCData {
+                            action_type: ProcessorIncomingAction::Actions(dwc.action_type.clone()),
+                            songbird: None,
+                            job_id: JobID::Specific(job_id.clone()),
+                            dwc: Some(dwc),
+                            error_report: None
+                        });
+
+                        match result {
+                            Ok(_) => {},
+                            Err(_e) => error!("Failed to send DWC to job: {}",&job_id),
+                        }
+                    }
                 }
+
             }
         },
         Message::InternalPingPongRequest => {
@@ -52,17 +109,7 @@ async fn parse_message_callback(message: Message, config: Config, sender: Arc<Se
             }),&config.kafka.kafka_topic, &mut *p.unwrap()).await;
         }
         Message::InternalWorkerQueueJob(job) => {
-            if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
-                let proc_config = config.clone();
-                let job_id = job.job_id.clone();
-
-                let sender = sender.clone();
-                info!("Starting new worker");
-
-                tokio::spawn(async move {
-                    process_job(job,&proc_config,sender,report_error,songbird).await;
-                });
-            }
+            queue_internal_job(job,&config,songbird).await;
         }
         _ => {}
     }

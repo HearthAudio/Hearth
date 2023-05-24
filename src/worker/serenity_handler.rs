@@ -10,9 +10,10 @@ use serenity::{
 use songbird::{SerenityInit};
 use crate::config::Config;
 use crate::worker::queue_processor::{ProcessorIPC};
-
+use songbird::Config as SongbirdConfig;
 
 use std::sync::Arc;
+
 
 use songbird::Songbird;
 
@@ -40,13 +41,15 @@ pub async fn initialize_songbird(config: &Config,_ipc: &mut ProcessorIPC) -> Opt
         ;
 
     let client_data = client.data.clone();
-    let server_count = client.cache.guild_count();
 
     tokio::spawn(async move {
         let _ = client.start_autosharded().await.map_err(|why| println!("Client ended: {:?}", why));
     });
 
     info!("Songbird INIT");
-    let manager = songbird::get(client_data.read().await).await;
+    let mut manager = songbird::get(client_data.read().await).await;
+    let mut config = SongbirdConfig::default();
+    config.use_softclip = false; // Disable soft clip as Hearth only allows one audio source to play at a time. So this should result in a marginal performance improvement
+    manager.as_mut().unwrap().set_config(config);
     return manager;
 }

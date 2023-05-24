@@ -1,17 +1,14 @@
 use std::sync::Arc;
-
 use log::{error, info, warn};
 use sentry::ClientInitGuard;
+use tokio::signal;
 use crate::config::*;
 use crate::deco::{print_intro, print_warnings};
 use crate::logger::{setup_logger};
 use crate::scheduler::*;
 use crate::worker::*;
-
-
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::{Receiver, Sender};
-
 use crate::platform::check_platform_supported;
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 
@@ -41,9 +38,9 @@ async fn initialize_worker_internal(config: Config, songbird_ipc: &mut Processor
 
 #[tokio::main]
 async fn main() {
-    // let source = uri_stream("").await;
     print_intro();
     print_warnings();
+    // Check if our platform is supported
     let platform_check = check_platform_supported();
     match platform_check {
         Ok(res) => {
@@ -56,6 +53,7 @@ async fn main() {
     // Load config
     let worker_config = init_config();
     let scheduler_config = worker_config.clone();
+    let shutdown_config = worker_config.clone();
 
     // Setup logger
     setup_logger(&worker_config).expect("Logger Setup Failed - A bit ironic no?");
@@ -87,19 +85,28 @@ async fn main() {
     };
 
     // Depending on roles initialize worker and or scheduler on separate threads
-    let mut futures = vec![];
     if worker_config.roles.worker {
-        let worker = tokio::spawn(async move {
+        let _worker = tokio::spawn(async move {
             initialize_worker_internal(worker_config, &mut worker_ipc).await;
         });
-        futures.push(worker);
     }
     if scheduler_config.roles.scheduler {
-        let scheduler = tokio::spawn(async move {
+        let _scheduler = tokio::spawn(async move {
             initialize_scheduler_internal(scheduler_config, &mut scheduler_ipc).await;
         });
-        futures.push(scheduler);
     }
 
-    futures::future::join_all(futures).await;
+    match signal::ctrl_c().await {
+        Ok(()) => {
+            warn!("Initiating Graceful Shutdown! Do not attempt to cancel!");
+            if shutdown_config.roles.worker {
+                gracefully_shutdown_worker(&shutdown_config).await;
+                info!("Graceful shutdown complete!");
+            }
+        },
+        Err(err) => {
+            error!("Unable to listen for shutdown signal: {}", err);
+            // we also shut down in case of error
+        },
+    }
 }
