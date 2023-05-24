@@ -13,7 +13,7 @@ use anyhow::{bail, Result};
 // Handles distribution across worker nodes via round robin or maybe another method?
 
 
-static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
+pub static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
 pub static WORKERS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(vec![]));
 
 pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) -> Result<()> {

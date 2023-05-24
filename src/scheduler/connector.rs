@@ -7,7 +7,7 @@ use crate::utils::initialize_consume_generic;
 use songbird::Songbird;
 
 
-use crate::scheduler::distributor::{distribute_job, WORKERS};
+use crate::scheduler::distributor::{distribute_job, ROUND_ROBIN_INDEX, WORKERS};
 use crate::config::Config;
 use crate::utils::generic_connector::{initialize_producer, send_message_generic};
 use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
@@ -56,7 +56,14 @@ async fn parse_message_callback(parsed_message: Message, config: Config, _: Arc<
                     },&config)
                 }
             }
-        }
+        },
+        Message::WorkerShutdownAlert(shutdown_alert) => {
+            let mut workers = WORKERS.lock().await;
+            workers.retain(|x| x != &shutdown_alert.worker_id); // Remove worker from possible workers in scheduler if shut down
+            // We will also reset the round robin index here to make sure that if it is on the new worker it does not get stuck
+            let mut index_guard = ROUND_ROBIN_INDEX.lock().await;
+            *index_guard = 0;
+        },
         Message::InternalWorkerAnalytics(_a) => {
             //TODO
         },
