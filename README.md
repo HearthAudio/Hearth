@@ -13,7 +13,7 @@
 <img src="https://camo.githubusercontent.com/107e932aa93175670d273c86cae8be4c96f156da7e13b9b8223b63fa23563fb0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f636f646163792d422d677265656e"
 </p>
 <p align="center">
-Hearth is a LavaLink Alternative written in Rust. That uses 30X less memory, and is almost in a state of feature parity.
+Hearth is a LavaLink Alternative written in Rust. That uses 30X less memory, and is almost in a state of feature parity. LavaLink is a audio streaming server for discord bots written in Java. That handles all of the complex audio processing required for music discord bots.
 </p>
 <h3 align="center">Features</h3>
 <hr/>
