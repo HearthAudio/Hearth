@@ -250,7 +250,7 @@ dependencies = [
 [[package]]
 name = "command_attr"
 version = "0.4.1"
-source = "git+https://github.com/serenity-rs/serenity.git?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#6f256e7c11713bd0b457520c5c1a5f736ac3f9ec"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2028,9 +2028,9 @@ dependencies = [
 
 [[package]]
 name = "sentry-log"
-version = "0.31.2"
+version = "0.31.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "958f539c85854acf7fa0fa46f07077be9050c7b28602ddfb5a651e9d11b27740"
+checksum = "616d3919dde6d40c1aba2b3c66b1c241780c2886250fc1f634a53d945dab1685"
 dependencies = [
  "log",
  "sentry-core",
@@ -2173,7 +2173,7 @@ dependencies = [
 [[package]]
 name = "serenity"
 version = "0.11.5"
-source = "git+https://github.com/serenity-rs/serenity.git?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#6f256e7c11713bd0b457520c5c1a5f736ac3f9ec"
 dependencies = [
  "async-trait",
  "base64 0.21.1",
@@ -2206,7 +2206,7 @@ dependencies = [
 [[package]]
 name = "serenity-voice-model"
 version = "0.1.1"
-source = "git+https://github.com/serenity-rs/serenity.git?branch=next#99b004d26b79ad9fe7ef7466870dcd7323561ddb"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#6f256e7c11713bd0b457520c5c1a5f736ac3f9ec"
 dependencies = [
  "bitflags",
  "enum_primitive",
@@ -2673,9 +2673,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.28.1"
+version = "1.28.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0aa32867d44e6f2ce3385e89dceb990188b8bb0fb25b0cf576647a6f98ac5105"
+checksum = "94d7b1cfd2aa4011f2de74c2c4c63665e27a71006b0a192dcd2710272e73dfa2"
 dependencies = [
  "autocfg",
  "bytes",
