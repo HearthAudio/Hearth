@@ -54,3 +54,6 @@ A scheduler distributes load across one or many workers using a round-robin algo
 
 ## Extra:
 See ARCHITECTURE.MD for more details about Hearth's architecture.
+
+## A Note On Optimization:
+When using Hearth and Lavalink for that matter. You should always use Ogg Vorbis files (.ogg) because if you do not use this format Lavalink & Hearth have to downscale it to ogg vorbis in realtime. As it is the only audio format Discord supports. So it is better to downscale it ahead of time then at runtime. This will make hearth vastly better than Lavalink as it is no longer CPU bound when used like this.
