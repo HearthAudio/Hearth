@@ -65,7 +65,7 @@ Note: Hearth does not support usage on Apple Silicon/ Hearth will fail silently 
 <h3 align="center">Contributions</h3>
 <hr/>
 <p align="center" >
-If you want to create an Issue, PR, Or contribute in any other way I'm happy to review PRs, issues, or just chat.
+If you want to create an Issue, PR, Or contribute in any other way I'm happy to review PRs, or Issues.
 </p>
 <h3 align="center">Roadmap</h3>
 <p align="center" >
