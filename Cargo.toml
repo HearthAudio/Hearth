@@ -32,8 +32,8 @@ colored = "2.0.0"
 rand = "0.8.5"
 anyhow = "1.0.71"
 async_fn_traits = "0.1.1"
+sentry = "0.31.3"
 sentry-log = "0.31.3"
-sentry = "0.31.2"
 dashmap = "5.4.0"
 
 [dependencies.songbird]
