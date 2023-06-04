@@ -33,8 +33,8 @@ fn configure_kafka_ssl(mut kafka_config: ClientConfig,config: &Config) -> Client
         kafka_config
             .set("security.protocol","SASL_SSL")
             .set("sasl.mechanisms","PLAIN")
-            .set("sasl.username",config.kafka.kafka_username.unwrap())
-            .set("sasl.password",config.kafka.kafka_password.unwrap());
+            .set("sasl.username",config.kafka.kafka_username.as_ref().unwrap())
+            .set("sasl.password",config.kafka.kafka_password.as_ref().unwrap());
     }
     return kafka_config;
 }

@@ -26,7 +26,10 @@ use crate::worker::queue_processor::JobID;
 use tokio::sync::Mutex;
 use std::sync::Arc;
 
-
+lazy_static! {
+    static ref WORKER_GUILD_IDS: Mutex<Vec<String>> = Mutex::new(vec![]);
+    pub static ref JOB_CHANNELS: DashMap<JobID,Arc<Sender<ProcessorIPCData>>> = DashMap::new();
+}
 
 pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
     info!("Worker INIT");
