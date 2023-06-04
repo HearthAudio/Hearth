@@ -23,12 +23,18 @@ use anyhow::{Result};
 
 
 fn configure_kafka_ssl(mut kafka_config: ClientConfig,config: &Config) -> ClientConfig {
-    if config.kafka.kafka_use_ssl {
+    if config.kafka.kafka_use_ssl.unwrap_or(false) {
         kafka_config
             .set("security.protocol","ssl")
             .set("ssl.ca.location",config.kafka.kafka_ssl_ca.clone().expect("Kafka CA Not Found"))
             .set("ssl.certificate.location",config.kafka.kafka_ssl_cert.clone().expect("Kafka Cert Not Found"))
             .set("ssl.key.location",config.kafka.kafka_ssl_key.clone().expect("Kafka Key Not Found"));
+    } else if config.kafka.kafka_use_sasl.unwrap_or(false) {
+        kafka_config
+            .set("security.protocol","SASL_SSL")
+            .set("sasl.mechanisms","PLAIN")
+            .set("sasl.username",config.kafka.kafka_username.unwrap())
+            .set("sasl.password",config.kafka.kafka_password.unwrap());
     }
     return kafka_config;
 }

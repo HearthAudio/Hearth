@@ -19,11 +19,16 @@ pub struct InternalConfig {
     pub log_level: Option<String>
 }
 
+
+
 #[derive(Deserialize,Clone,Serialize)]
 pub struct KafkaConfig {
     pub kafka_uri: String,
     pub kafka_topic: String,
-    pub kafka_use_ssl: bool,
+    pub kafka_use_ssl: Option<bool>,
+    pub kafka_use_sasl: Option<bool>,
+    pub kafka_username: Option<String>,
+    pub kafka_password: Option<String>,
     pub kafka_ssl_cert: Option<String>,
     pub kafka_ssl_key: Option<String>,
     pub kafka_ssl_ca: Option<String>,

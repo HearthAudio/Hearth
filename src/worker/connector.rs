@@ -13,7 +13,6 @@ use hearth_interconnect::worker_communication::Job;
 use lazy_static::lazy_static;
 use tokio::sync::broadcast::{Receiver, Sender};
 use tokio::sync::{broadcast, Mutex};
-use crate::worker::{JOB_CHANNELS, WORKER_GUILD_IDS};
 
 lazy_static! {
     pub static ref WORKER_PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
