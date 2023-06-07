@@ -32,6 +32,7 @@ pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
     info!("Worker INIT");
 
     JOB_CHANNELS.set(DashMap::new()).unwrap();
+    WORKER_GUILD_IDS.set(Mutex::new(vec![]));
     //
     let songbird = initialize_songbird(&config, ipc).await;
 
