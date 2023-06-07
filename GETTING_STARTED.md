@@ -1,5 +1,5 @@
 # Getting Started:
-Hearth can run both the worker and the scheduler in the instance if you do not want to 
+Hearth can run both the worker and the scheduler in the instance if you do not want to
 setup individual workers and a scheduler.
 
 Start by downloading the binary from Github Releases. And then create a `config.toml` file
@@ -26,6 +26,12 @@ kafka_ssl_key = "service.key"
 kafka_ssl_ca = "ca.pem"
 ```
 If your Kafka Instance has SSL then you can configure that inside of the config.
+If you want to use SASL authentication instead of SSL you can include the following in you config instead of the SSL config:
+```toml
+kafka_use_sasl = true
+kafka_username = "USERNAME_HERE"
+kafka_password = "PASSWORD_HERE"
+```
 
 
 ## Configuration:
