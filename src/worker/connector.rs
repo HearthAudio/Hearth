@@ -116,7 +116,7 @@ async fn parse_message_callback(message: Message, config: Config, _sender: Arc<S
 
 pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>,group_id: &String) {
     let producer : FutureProducer = initialize_producer(&brokers,config);
-    *WORKER_PRODUCER.get().unwrap().lock().await = Some(producer);
+    WORKER_PRODUCER.set(Mutex::new(Some(producer)));
     initialize_consume_generic(&brokers, config, parse_message_callback, ipc,initialized_callback,songbird,group_id).await;
 }
 
