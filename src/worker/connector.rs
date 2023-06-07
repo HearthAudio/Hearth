@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::sync::{Arc, OnceLock};
 use hearth_interconnect::messages::{Message, PingPongResponse};
 use log::{debug, error, info};
 use rdkafka::producer::FutureProducer;
@@ -10,14 +10,11 @@ use crate::worker::errors::report_error;
 use crate::worker::queue_processor::{JobID, process_job, ProcessorIncomingAction, ProcessorIPC, ProcessorIPCData};
 use anyhow::{Result};
 use hearth_interconnect::worker_communication::Job;
-use lazy_static::lazy_static;
 use tokio::sync::broadcast::{Receiver, Sender};
 use tokio::sync::{broadcast, Mutex};
 use crate::worker::{JOB_CHANNELS, WORKER_GUILD_IDS};
 
-lazy_static! {
-    pub static ref WORKER_PRODUCER: Mutex<Option<FutureProducer>> = Mutex::new(None);
-}
+pub static WORKER_PRODUCER: OnceLock<Mutex<Option<FutureProducer>>> = OnceLock::new();
 
 pub async fn queue_internal_job(job: Job,config: &Config,songbird: Option<Arc<Songbird>>) {
     if &job.worker_id == config.config.worker_id.as_ref().unwrap() {
@@ -30,8 +27,8 @@ pub async fn queue_internal_job(job: Job,config: &Config,songbird: Option<Arc<So
         let tx_arc = Arc::new(tx_processor);
 
         { // Scoped to minimize lock time
-            WORKER_GUILD_IDS.lock().await.push(job.guild_id.clone());
-            JOB_CHANNELS.insert(JobID::Specific(job.job_id.clone()),tx_arc.clone());
+            WORKER_GUILD_IDS.get().unwrap().lock().await.push(job.guild_id.clone());
+            JOB_CHANNELS.get().unwrap().insert(JobID::Specific(job.job_id.clone()),tx_arc.clone());
         }
 
         let job_tx = tx_arc.clone();
@@ -56,7 +53,7 @@ async fn parse_message_callback(message: Message, config: Config, _sender: Arc<S
             if &dwc.worker_id == config.config.worker_id.as_ref().unwrap() {
                 let job_id = dwc.job_id.clone();
 
-                let channel = JOB_CHANNELS.get(&JobID::Specific(job_id.clone()));
+                let channel = JOB_CHANNELS.get().unwrap().get(&JobID::Specific(job_id.clone()));
 
                 match channel {
                     Some(channel) => {
@@ -101,7 +98,7 @@ async fn parse_message_callback(message: Message, config: Config, _sender: Arc<S
             }
         },
         Message::InternalPingPongRequest => {
-            let mut px = WORKER_PRODUCER.lock().await;
+            let mut px = WORKER_PRODUCER.get().unwrap().lock().await;
             let p = px.as_mut();
 
             send_message(&Message::InternalPongResponse(PingPongResponse {
@@ -119,7 +116,7 @@ async fn parse_message_callback(message: Message, config: Config, _sender: Arc<S
 
 pub async fn initialize_worker_consume(brokers: String,  config: &Config, ipc: &mut ProcessorIPC,songbird: Option<Arc<Songbird>>,group_id: &String) {
     let producer : FutureProducer = initialize_producer(&brokers,config);
-    *WORKER_PRODUCER.lock().await = Some(producer);
+    *WORKER_PRODUCER.get().unwrap().lock().await = Some(producer);
     initialize_consume_generic(&brokers, config, parse_message_callback, ipc,initialized_callback,songbird,group_id).await;
 }
 

@@ -1,10 +1,7 @@
+use std::sync::OnceLock;
 use tokio::sync::Mutex;
 use hearth_interconnect::messages::{JobRequest, Message};
 use hearth_interconnect::worker_communication::Job;
-
-
-use once_cell::sync::Lazy;
-
 use nanoid::nanoid;
 use rdkafka::producer::FutureProducer;
 use crate::config::Config;
@@ -13,13 +10,13 @@ use anyhow::{bail, Result};
 // Handles distribution across worker nodes via round robin or maybe another method?
 
 
-pub static ROUND_ROBIN_INDEX: Lazy<Mutex<usize>> = Lazy::new(|| Mutex::new(0));
-pub static WORKERS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(vec![]));
+pub static ROUND_ROBIN_INDEX: OnceLock<Mutex<usize>> = OnceLock::new();
+pub static WORKERS: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
 
 pub async fn distribute_job(job: JobRequest,producer: &mut FutureProducer,config: &Config) -> Result<()> {
 
-    let mut index_guard = ROUND_ROBIN_INDEX.lock().await;
-    let workers_guard = WORKERS.lock().await;
+    let mut index_guard = ROUND_ROBIN_INDEX.get().unwrap().lock().await;
+    let workers_guard = WORKERS.get().unwrap().lock().await;
 
     if workers_guard.len() == 0 {
         bail!("No Workers Registered! Can't distribute Job!")

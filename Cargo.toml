@@ -14,7 +14,6 @@ tokio = { version = "1", features = ["full"] }
 rdkafka = { version = "0.31", features = ["cmake-build","ssl"] }
 openssl = "0.10.54"
 log = "0.4"
-once_cell = "1.18.0"
 humantime = "2.1.0"
 nanoid = "0.4.0"
 serde_json = "1.0.96"
@@ -26,7 +25,6 @@ symphonia = { version = "0.5.3", features = ['pcm','mp3','wav','isomp4','aac','a
 retry = "2.0.0"
 url = "2.4.0"
 symphonia-core = "0.5.2"
-lazy_static = "1.4.0"
 sysinfo = "0.29.0"
 colored = "2.0.0"
 rand = "0.8.5"

@@ -1,6 +1,5 @@
-
+use std::sync::OnceLock;
 use hearth_interconnect::messages::{Message, Metadata};
-use lazy_static::lazy_static;
 use anyhow::{Context, Result};
 use songbird::tracks::{Action, TrackHandle, View};
 use symphonia_core::codecs::CodecParameters;
@@ -12,28 +11,26 @@ use hearth_interconnect::errors::ErrorReport;
 
 // This is a bit of a hack to pass data into the get metadata action
 // If anyone has any better ideas please let me know
-lazy_static! {
-    static ref CONFIG: Mutex<Option<Config>> = Mutex::new(None);
-    static ref REQUEST_ID: Mutex<Option<String>> = Mutex::new(None);
-    static ref JOB_ID: Mutex<Option<String>> = Mutex::new(None);
-     static ref GUILD_ID: Mutex<Option<String>> = Mutex::new(None);
-}
+static CONFIG: OnceLock<Mutex<Option<Config>>> = OnceLock::new();
+static REQUEST_ID: OnceLock<Mutex<Option<String>>> = OnceLock::new();
+static JOB_ID: OnceLock<Mutex<Option<String>>> = OnceLock::new();
+static GUILD_ID: OnceLock<Mutex<Option<String>>> = OnceLock::new();
 
 #[macro_export]
 macro_rules! report_metadata_error {
     ($e: ident) => {
         use $crate::errors::report_error;
 
-        let mut cx = CONFIG.lock().await;
+        let mut cx = CONFIG.get().unwrap().lock().await;
         let c = cx.as_mut();
 
-        let mut jx = JOB_ID.lock().await;
+        let mut jx = JOB_ID.get().unwrap().lock().await;
         let j = jx.as_mut();
 
-        let mut rx = REQUEST_ID.lock().await;
+        let mut rx = REQUEST_ID.get().unwrap().lock().await;
         let r = rx.as_mut();
 
-        let mut gx = GUILD_ID.lock().await;
+        let mut gx = GUILD_ID.get().unwrap().lock().await;
         let g = gx.as_mut();
 
         report_error(ErrorReport {
@@ -66,10 +63,10 @@ async fn get_duration_wrapper(codec: &CodecParameters) -> Option<u64> {
 async fn get_codec_metadata(codec: Option<CodecParameters>,position: u64) -> Result<Metadata> {
     let codec = codec.as_ref().context("Failed to get codec")?;
 
-    let mut jx = JOB_ID.lock().await;
+    let mut jx = JOB_ID.get().unwrap().lock().await;
     let j = jx.as_mut();
 
-    let mut gx = GUILD_ID.lock().await;
+    let mut gx = GUILD_ID.get().unwrap().lock().await;
     let g = gx.as_mut();
 
     let job_id = j.as_ref().context("Failed to get JOB ID. While getting Metadata")?;
@@ -92,10 +89,10 @@ fn get_metadata_action(view: View) -> Option<Action> {
         let r = get_codec_metadata(codec,position).await;
         match r {
             Ok(a) => {
-                let mut px = WORKER_PRODUCER.lock().await;
+                let mut px = WORKER_PRODUCER.get().unwrap().lock().await;
                 let p = px.as_mut();
 
-                let mut cx = CONFIG.lock().await;
+                let mut cx = CONFIG.get().unwrap().lock().await;
                 let c = cx.as_mut();
 
                 let config = c.unwrap();
@@ -114,10 +111,11 @@ fn get_metadata_action(view: View) -> Option<Action> {
 pub async fn get_metadata(track: &Option<TrackHandle>,config: &Config,request_id: String,job_id: String,guild_id: String) -> Result<()> {
     let t = track.as_ref().context("Track not found")?;
 
-    *CONFIG.lock().await = Some(config.clone());
-    *JOB_ID.lock().await = Some(job_id);
-    *REQUEST_ID.lock().await = Some(request_id);
-    *GUILD_ID.lock().await = Some(guild_id);
+    CONFIG.set(Mutex::new(Some(config.clone())));
+    JOB_ID.set(Mutex::new(Some(job_id)));
+    REQUEST_ID.set(Mutex::new(Some(request_id)));
+    GUILD_ID.set(Mutex::new(Some(guild_id)));
+
 
     t.action(get_metadata_action).unwrap();
     Ok(())

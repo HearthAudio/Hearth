@@ -62,7 +62,7 @@ pub struct ProcessorIPC {
 }
 
 async fn notify_expiration(guild_id: String, job_id: String,config: &Config) {
-    let mut px = WORKER_PRODUCER.lock().await;
+    let mut px = WORKER_PRODUCER.get().unwrap().lock().await;
     let p = px.as_mut();
 
     send_message(&Message::ExternalJobExpired(JobExpired {
@@ -85,7 +85,7 @@ pub async fn process_job(job: Job, config: &Config, sender: Arc<Sender<Processor
 
     // Send Queue Job Response
     { // Scoped to release producer mutex
-        let mut px = WORKER_PRODUCER.lock().await;
+        let mut px = WORKER_PRODUCER.get().unwrap().lock().await;
         let p = px.as_mut();
 
         send_message(&Message::ExternalQueueJobResponse(ExternalQueueJobResponse {

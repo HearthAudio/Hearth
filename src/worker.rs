@@ -12,7 +12,6 @@ pub mod constants;
 pub mod expiration;
 
 use hearth_interconnect::messages::{Message, ShutdownAlert};
-use lazy_static::lazy_static;
 use log::info;
 use nanoid::nanoid;
 use crate::config::Config;
@@ -24,15 +23,15 @@ use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 use crate::worker::serenity_handler::initialize_songbird;
 use crate::worker::queue_processor::JobID;
 use tokio::sync::Mutex;
-use std::sync::Arc;
-
-lazy_static! {
-    static ref WORKER_GUILD_IDS: Mutex<Vec<String>> = Mutex::new(vec![]);
-    pub static ref JOB_CHANNELS: DashMap<JobID,Arc<Sender<ProcessorIPCData>>> = DashMap::new();
-}
+use std::sync::{Arc, OnceLock};
+// .push(job.guild_id.clone());
+static WORKER_GUILD_IDS: OnceLock<Mutex<Vec<String>>> = OnceLock::new();
+pub static JOB_CHANNELS: OnceLock<DashMap<JobID,Arc<Sender<ProcessorIPCData>>>> = OnceLock::new();
 
 pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
     info!("Worker INIT");
+
+    JOB_CHANNELS.set(DashMap::new()).unwrap();
     //
     let songbird = initialize_songbird(&config, ipc).await;
 
@@ -41,9 +40,9 @@ pub async fn initialize_worker(config: Config, ipc: &mut ProcessorIPC) {
 }
 
 pub async fn gracefully_shutdown_worker(config: &Config) {
-    let worker_guild_ids = WORKER_GUILD_IDS.lock().await;
+    let worker_guild_ids = WORKER_GUILD_IDS.get().unwrap().lock().await;
 
-    let mut px = WORKER_PRODUCER.lock().await;
+    let mut px = WORKER_PRODUCER.get().unwrap().lock().await;
     let p = px.as_mut();
 
     send_message(&Message::WorkerShutdownAlert(ShutdownAlert {
