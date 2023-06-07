@@ -6,7 +6,6 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-#songbird = { version = "0.3.2", features = ["twilight-native","gateway","zlib-stock"] }
 toml = "0.7.4"
 serde_derive = "1.0.160"
 serde = "1.0.160"
@@ -22,7 +21,6 @@ fern = { version = "0.6.2", features = ["colored"] }
 reqwest = "0.11.18"
 bytes = "1.4.0"
 symphonia = { version = "0.5.3", features = ['pcm','mp3','wav','isomp4','aac','alac'] }
-retry = "2.0.0"
 url = "2.4.0"
 symphonia-core = "0.5.2"
 sysinfo = "0.29.0"
