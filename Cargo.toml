@@ -24,7 +24,7 @@ reqwest = "0.11.18"
 bytes = "1.4.0"
 symphonia = { version = "0.5.3", features = ['pcm','mp3','wav','isomp4','aac','alac'] }
 retry = "2.0.0"
-url = "2.3.1"
+url = "2.4.0"
 symphonia-core = "0.5.2"
 lazy_static = "1.4.0"
 sysinfo = "0.29.0"
