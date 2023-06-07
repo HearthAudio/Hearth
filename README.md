@@ -55,7 +55,7 @@ Ready to get started with Hearth? See the getting started guide <a href="https:/
 <hr/>
 <p align="center" >
 Hearth uses 30X less Memory than LavaLink, unfortunately Hearth has slightly worse CPU usage than LavaLink, due to inefficiencies
-in the client library Hearth uses to interact with Discord. But this should be fixed in a future update! These numbers where derived by running Hearth in a DigitalOcean Droplet with 4 Intel CPU cores and 4GB of Memory. And observing CPU usage with `top` and memory usage with `ps`
+in the client library Hearth uses to interact with Discord. But this should be fixed in a future update! These issues will also not present if you use Opus Vorbis audio (And will probably be substantially better than LavaLink at utilizing CPU as well). These numbers where derived by running Hearth in a DigitalOcean Droplet with 4 Intel CPU cores and 4GB of Memory. And observing CPU usage with `top` and memory usage with `ps`
 </p>
 <h3 align="center">Compatability</h3>
 <hr/>
