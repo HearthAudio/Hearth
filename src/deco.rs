@@ -1,8 +1,7 @@
-use std::{env, fs};
-use log::{warn};
 use colored::Colorize;
+use log::warn;
 use rand::Rng;
-
+use std::{env, fs};
 
 fn is_program_in_path(program: &str) -> bool {
     if let Ok(path) = env::var("PATH") {
@@ -50,11 +49,11 @@ pub fn print_intro() {
     // let use_true_colors = check_use_true_colors();
 
     match dice {
-        0 => println!("{}",s.red()),
-        1 => print!("{}",s.yellow()),
+        0 => println!("{}", s.red()),
+        1 => print!("{}", s.yellow()),
         _ => {
             // This really should not happen but just in case
-            println!("{}",s.red());
+            println!("{}", s.red());
         }
     }
     println!();

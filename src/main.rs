@@ -1,16 +1,16 @@
-use std::sync::Arc;
-use log::{error, info, warn};
-use sentry::ClientInitGuard;
-use tokio::signal;
 use crate::config::*;
 use crate::deco::{print_intro, print_warnings};
-use crate::logger::{setup_logger};
+use crate::logger::setup_logger;
+use crate::platform::check_platform_supported;
 use crate::scheduler::*;
+use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 use crate::worker::*;
+use log::{error, info, warn};
+use sentry::ClientInitGuard;
+use std::sync::Arc;
+use tokio::signal;
 use tokio::sync::broadcast;
 use tokio::sync::broadcast::{Receiver, Sender};
-use crate::platform::check_platform_supported;
-use crate::worker::queue_processor::{ProcessorIPC, ProcessorIPCData};
 
 mod config;
 
@@ -23,18 +23,17 @@ mod logger;
 mod utils;
 
 mod deco;
-mod platform;
 mod extensions;
+mod platform;
 
 // This is a bit of a hack to get around annoying type issues
-async fn initialize_scheduler_internal(config: Config,songbird_ipc: &mut ProcessorIPC) {
-    initialize_scheduler(config,songbird_ipc).await;
+async fn initialize_scheduler_internal(config: Config, songbird_ipc: &mut ProcessorIPC) {
+    initialize_scheduler(config, songbird_ipc).await;
 }
 
 async fn initialize_worker_internal(config: Config, songbird_ipc: &mut ProcessorIPC) {
-    initialize_worker(config,songbird_ipc).await;
+    initialize_worker(config, songbird_ipc).await;
 }
-
 
 #[tokio::main]
 async fn main() {
@@ -47,8 +46,8 @@ async fn main() {
             if res {
                 warn!("Hearth may or may not work when running on MacOS with Apple Silicon.");
             }
-        },
-        Err(e) => error!("Failed to get system OS with error: {}", e)
+        }
+        Err(e) => error!("Failed to get system OS with error: {}", e),
     }
     // Load config
     let worker_config = init_config();
@@ -59,19 +58,23 @@ async fn main() {
     setup_logger(&worker_config).expect("Logger Setup Failed - A bit ironic no?");
 
     // Setup Sentry
-    let sentry : ClientInitGuard;
+    let sentry: ClientInitGuard;
     if worker_config.config.sentry_url.is_some() {
-        sentry = sentry::init((worker_config.config.sentry_url.clone().unwrap(), sentry::ClientOptions {
-            release: sentry::release_name!(),
-            ..Default::default()
-        }));
+        sentry = sentry::init((
+            worker_config.config.sentry_url.clone().unwrap(),
+            sentry::ClientOptions {
+                release: sentry::release_name!(),
+                ..Default::default()
+            },
+        ));
         if sentry.is_enabled() {
             info!("Sentry Logger Enabled!");
         }
     }
 
     // Setup IPC
-    let (tx_processor, _rx_processor) : (Sender<ProcessorIPCData>,Receiver<ProcessorIPCData>) = broadcast::channel(16);
+    let (tx_processor, _rx_processor): (Sender<ProcessorIPCData>, Receiver<ProcessorIPCData>) =
+        broadcast::channel(16);
     let scheduler_rx = tx_processor.subscribe();
     let worker_rx = tx_processor.subscribe();
     let tx_main = Arc::new(tx_processor);
@@ -103,10 +106,10 @@ async fn main() {
                 gracefully_shutdown_worker(&shutdown_config).await;
                 info!("Graceful shutdown complete!");
             }
-        },
+        }
         Err(err) => {
             error!("Unable to listen for shutdown signal: {}", err);
             // we also shut down in case of error
-        },
+        }
     }
 }

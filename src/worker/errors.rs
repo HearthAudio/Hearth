@@ -6,7 +6,7 @@ use crate::config::Config;
 use crate::worker::connector::{send_message, WORKER_PRODUCER};
 
 pub fn report_error(error: ErrorReport, config: &Config) {
-    error!("{}",error.error);
+    error!("{}", error.error);
 
     let t_config = config.clone();
 
@@ -14,6 +14,11 @@ pub fn report_error(error: ErrorReport, config: &Config) {
         let mut px = WORKER_PRODUCER.get().unwrap().lock().await;
         let p = px.as_mut();
 
-        send_message(&Message::ErrorReport(error),t_config.kafka.kafka_topic.as_str(),p.unwrap()).await;
+        send_message(
+            &Message::ErrorReport(error),
+            t_config.kafka.kafka_topic.as_str(),
+            p.unwrap(),
+        )
+        .await;
     });
 }

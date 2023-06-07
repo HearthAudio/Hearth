@@ -1,4 +1,3 @@
-
 use anyhow::{Context, Result};
 use sysinfo::{System, SystemExt};
 
@@ -9,5 +8,5 @@ pub fn check_platform_supported() -> Result<bool> {
     if sys.name().context("Failed to get OS Name")? == "Darwin" {
         return Ok(true);
     }
-    return Ok(false);
+    Ok(false)
 }

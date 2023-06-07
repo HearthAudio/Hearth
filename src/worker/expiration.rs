@@ -1,10 +1,12 @@
 use std::sync::Arc;
 
-use log::{error, info};
-use tokio::{task, time};
-use tokio::sync::broadcast::Sender;
 use crate::worker::constants::EXPIRATION_CHECK_TIME;
-use crate::worker::queue_processor::{Infrastructure, JobID, ProcessorIncomingAction, ProcessorIPCData};
+use crate::worker::queue_processor::{
+    Infrastructure, JobID, ProcessorIPCData, ProcessorIncomingAction,
+};
+use log::{error, info};
+use tokio::sync::broadcast::Sender;
+use tokio::{task, time};
 
 pub fn init_expiration_timer(s: Arc<Sender<ProcessorIPCData>>) {
     let _expiration_timer = task::spawn(async move {
@@ -24,7 +26,7 @@ pub fn init_expiration_timer(s: Arc<Sender<ProcessorIPCData>>) {
                     info!("Sent expiration check for jobs")
                 }
                 Err(e) => {
-                    error!("Failed to send expiration check with error: {}",e)
+                    error!("Failed to send expiration check with error: {}", e)
                 }
             }
         }

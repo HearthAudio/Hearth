@@ -1,4 +1,3 @@
-
 use std::time::SystemTime;
 
 use fern::colors::{Color, ColoredLevelConfig};
@@ -6,9 +5,7 @@ use log::{info, Level};
 
 use crate::config::Config;
 
-
 pub fn setup_logger(config: &Config) -> Result<(), fern::InitError> {
-
     let colors_line = ColoredLevelConfig::new()
         .error(Color::Red)
         .warn(Color::Yellow)
@@ -39,7 +36,10 @@ pub fn setup_logger(config: &Config) -> Result<(), fern::InitError> {
             // Handles Sentry logging
             if config_f.config.sentry_url.is_some() {
                 if let Level::Error = record.level() {
-                    sentry::capture_message(&format!("[{} {}] {}",record.level(),record.target(),message), sentry::Level::Error);
+                    sentry::capture_message(
+                        &format!("[{} {}] {}", record.level(), record.target(), message),
+                        sentry::Level::Error,
+                    );
                 }
             }
             // Formats
