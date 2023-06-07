@@ -3,7 +3,6 @@
     Hearth
 </h1>
 <div align="center">
-<img src="assets/beta.png" align="center" height="30" />
 </div>
 <img src="assets/spacer_vertical.png" align="center" height="30" />
 <p align="center">
