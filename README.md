@@ -81,3 +81,8 @@ We are planning tons of new features to make Hearth even better!
 <p align="center" >
 Hearth is free to use under the MIT licnese.
 </p>
+<h3 align="center">Other</h3>
+<hr/>
+<p align="center" >
+Hearth MSRV: 1.70.0
+</p>
