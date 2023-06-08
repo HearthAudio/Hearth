@@ -159,6 +159,7 @@ pub async fn process_job(
                 }
                 ProcessorIncomingAction::Actions(DWCActionType::JoinChannel) => {
                     // Join channel
+                    is_playing = false; // Helps prevent some desync issues
                     let dwc = dwc.expect("This should never happen. Because this is a DWC type and is parsed previously.");
                     let join = join_channel(
                         dwc.guild_id,
