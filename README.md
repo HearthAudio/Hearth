@@ -84,4 +84,5 @@ Hearth is free to use under the MIT licnese.
 <hr/>
 <p align="center" >
 Hearth MSRV: 1.70.0
+Hearth is pre-release and not yet ready for production usage
 </p>
