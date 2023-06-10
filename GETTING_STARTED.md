@@ -2,7 +2,7 @@
 Hearth can run both the worker and the scheduler in the instance if you do not want to
 setup individual workers and a scheduler.
 
-Start by downloading the binary from Github Releases. And then create a `config.toml` file
+Start by downloading the binary from Github Releases https://github.com/Hearth-Industries/Hearth/releases. And then create a `config.toml` file
 in that directory and configure like this:
 ```toml
 [roles]
