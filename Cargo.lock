@@ -250,7 +250,7 @@ dependencies = [
 [[package]]
 name = "command_attr"
 version = "0.4.1"
-source = "git+https://github.com/serenity-rs/serenity.git?branch=next#82359c3973e085503598b53fbd7428af6bdcb040"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#9ea366098273ce9360f88301de8327f8d7414c51"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1842,6 +1842,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "secrecy"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9bd1c54ea06cfd2f6b63219704de0b9b4f72dcc2b8fdef820be6cd799780e91e"
+dependencies = [
+ "serde",
+ "zeroize",
+]
+
+[[package]]
 name = "security-framework"
 version = "2.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2076,7 +2086,7 @@ dependencies = [
 [[package]]
 name = "serenity"
 version = "0.11.5"
-source = "git+https://github.com/serenity-rs/serenity.git?branch=next#82359c3973e085503598b53fbd7428af6bdcb040"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#9ea366098273ce9360f88301de8327f8d7414c51"
 dependencies = [
  "async-trait",
  "base64 0.21.1",
@@ -2093,6 +2103,7 @@ dependencies = [
  "parking_lot",
  "percent-encoding",
  "reqwest",
+ "secrecy",
  "serde",
  "serde_json",
  "static_assertions",
@@ -2108,7 +2119,7 @@ dependencies = [
 [[package]]
 name = "serenity-voice-model"
 version = "0.1.1"
-source = "git+https://github.com/serenity-rs/serenity.git?branch=next#82359c3973e085503598b53fbd7428af6bdcb040"
+source = "git+https://github.com/serenity-rs/serenity.git?branch=next#9ea366098273ce9360f88301de8327f8d7414c51"
 dependencies = [
  "bitflags",
  "enum_primitive",
@@ -2184,7 +2195,7 @@ dependencies = [
 [[package]]
 name = "songbird"
 version = "0.3.2"
-source = "git+https://github.com/Hearth-Industries/songbird.git?branch=next#bf6e58b166893a10a3ba0f5a0047497c83b1fcc2"
+source = "git+https://github.com/Hearth-Industries/songbird.git?branch=next#c244678ac88757b5b2522c6e65001429413b9a89"
 dependencies = [
  "async-trait",
  "audiopus",
