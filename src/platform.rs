@@ -1,11 +1,9 @@
-use anyhow::{Context, Result};
-use sysinfo::{System, SystemExt};
+use anyhow::Result;
+use std::env;
 
 // Get platform info and make sure it is supported
 pub fn check_platform_supported() -> Result<bool> {
-    let mut sys = System::new_all();
-    sys.refresh_all();
-    if sys.name().context("Failed to get OS Name")? == "Darwin" {
+    if env::consts::OS == "macos" {
         return Ok(true);
     }
     Ok(false)

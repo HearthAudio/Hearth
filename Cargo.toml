@@ -23,13 +23,11 @@ bytes = "1.4.0"
 symphonia = { version = "0.5.3", features = ['pcm','mp3','wav','isomp4','aac','alac'] }
 url = "2.4.0"
 symphonia-core = "0.5.2"
-sysinfo = "0.29.0"
 colored = "2.0.0"
 rand = "0.8.5"
 anyhow = "1.0.71"
 async_fn_traits = "0.1.1"
 sentry = "0.31.3"
-sentry-log = "0.31.3"
 dashmap = "5.4.0"
 
 [dependencies.songbird]
