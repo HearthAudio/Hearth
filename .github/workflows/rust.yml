@@ -25,9 +25,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - uses: dtolnay/rust-toolchain@1.70.0
+            - uses: dtolnay/rust-toolchain@master
               with:
                   components: clippy
+                  toolchain: 1.70.0
             - uses: auguwu/clippy-action@1.0.0
               with:
                 all-features: true
