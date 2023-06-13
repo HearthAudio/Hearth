@@ -10,7 +10,7 @@ toml = "0.7.4"
 serde_derive = "1.0.160"
 serde = "1.0.160"
 tokio = { version = "1", features = ["full"] }
-rdkafka = { version = "0.31", features = ["cmake-build","ssl"] }
+rdkafka = { version = "0.32", features = ["cmake-build","ssl"] }
 openssl = "0.10.54"
 log = "0.4"
 humantime = "2.1.0"
