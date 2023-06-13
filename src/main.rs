@@ -26,6 +26,9 @@ mod deco;
 mod extensions;
 mod platform;
 
+#[allow(clippy::too_many_arguments)]
+#[allow(clippy::enum_variant_names)]
+
 // This is a bit of a hack to get around annoying type issues
 async fn initialize_scheduler_internal(config: Config, songbird_ipc: &mut ProcessorIPC) {
     initialize_scheduler(config, songbird_ipc).await;
