@@ -66,6 +66,7 @@ impl VoiceEventHandler for TrackErrorNotifier {
     async fn act(&self, ctx: &EventContext<'_>) -> Option<Event> {
         if let EventContext::Track(track_list) = ctx {
             for (state, handle) in *track_list {
+                #[allow(clippy::clone_on_copy)] // This is a false positive in clippy right now
                 self.error_reporter.clone()(
                     ErrorReport {
                         error: format!(
