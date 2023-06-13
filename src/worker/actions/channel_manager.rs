@@ -15,6 +15,7 @@ use std::fmt;
 use std::sync::Arc;
 use tokio::sync::broadcast::Sender;
 
+#[allow(clippy::enum_variant_names)]
 pub enum ChannelControlError {
     GuildIDParsingFailed,
     ChannelIDParsingFailed,
@@ -111,6 +112,7 @@ impl VoiceEventHandler for TrackEndNotifier {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 pub async fn join_channel(
     guild_id: String,
     voice_channel_id: String,
