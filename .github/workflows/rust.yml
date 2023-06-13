@@ -33,5 +33,3 @@ jobs:
                   components: clippy
                   toolchain: 1.70.0
             - uses: auguwu/clippy-action@1.0.0
-              with:
-                all-features: true
