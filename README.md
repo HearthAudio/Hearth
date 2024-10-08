@@ -6,8 +6,8 @@
 </div>
 <img src="assets/spacer_vertical.png" align="center" height="30" />
 <p align="center">
-<img alt="GitHub Workflow Status (with branch)" src="https://img.shields.io/github/actions/workflow/status/Hearth-Industries/Hearth/rust.yml?branch=master">
-<img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/Hearth-Industries/Hearth">
+<img alt="GitHub Workflow Status (with branch)" src="https://img.shields.io/github/actions/workflow/status/HearthAudio/Hearth/rust.yml?branch=master">
+<img alt="GitHub release (latest SemVer)" src="https://img.shields.io/github/v/release/HearthAudio/Hearth">
     
 </p>
 <p align="center">
@@ -48,7 +48,7 @@ Hearth is a LavaLink Alternative written in Rust. That uses 30X less memory, and
 <h3 align="center">Getting Started</h3>
 <hr/>
 <p align="center" >
-Ready to get started with Hearth? See the getting started guide <a href="https://github.com/Hearth-Industries/Hearth/blob/master/GETTING_STARTED.md">here</a> to start a new project with Hearth or integrate Hearth into your pre-existing project.
+Ready to get started with Hearth? See the getting started guide <a href="https://github.com/HearthAudio/Hearth/blob/master/GETTING_STARTED.md">here</a> to start a new project with Hearth or integrate Hearth into your pre-existing project.
 </p>
 <h3 align="center">Benchmarks</h3>
 <hr/>
