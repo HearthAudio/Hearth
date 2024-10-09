@@ -38,6 +38,7 @@ branch="next"
 features = ["client", "standard_framework", "voice", "native_tls_backend","builder","cache","gateway","http","model","utils"]
 git = "https://github.com/serenity-rs/serenity.git"
 branch="next"
+rev="4d54465e933756dc1cb5d68d9bcec8bb9aade0fc"
 
 [dependencies.hearth-interconnect]
 git = "https://github.com/Hearth-Industries/hearth-interconnect.git"
